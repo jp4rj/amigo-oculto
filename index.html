@@ -24,6 +24,42 @@
     h1 { text-align: center; margin-bottom: 8px; }
     .subtitle { text-align: center; color: #888; margin-bottom: 24px; font-size: 14px; }
 
+    .evento-bar {
+      background: #f7f7fb;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .evento-bar label {
+      font-size: 13px;
+      color: #666;
+      font-weight: 600;
+    }
+    .evento-row { display: flex; gap: 8px; }
+    .evento-row input, .evento-row select {
+      flex: 1;
+      padding: 10px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+      background: #fff;
+    }
+    .evento-row input:focus, .evento-row select:focus { border-color: #667eea; }
+    .evento-row button { padding: 10px 16px; font-size: 14px; }
+    .btn-excluir-evento {
+      background: #fff;
+      color: #e74c3c;
+      border: 2px solid #ffd6d0;
+      padding: 10px 14px;
+      font-size: 14px;
+      border-radius: 10px;
+    }
+    .btn-excluir-evento:hover { background: #ffe5e0; border-color: #e74c3c; }
+
     .input-group { display: flex; gap: 8px; margin-bottom: 16px; }
     input[type="text"] {
       flex: 1;
@@ -134,11 +170,7 @@
       margin-top: 16px;
     }
 
-    /* Tela de revelação (quando abre link de resultado) */
-    .revelar-box {
-      text-align: center;
-      padding: 40px 20px;
-    }
+    .revelar-box { text-align: center; padding: 40px 20px; }
     .revelar-box h2 { margin-bottom: 12px; }
     .revelar-box .sua-vez { color: #888; margin-bottom: 20px; }
     .revelar-nome {
@@ -165,10 +197,28 @@
   </style>
 </head>
 <body>
-  <!-- TELA PRINCIPAL (organizador) -->
   <div class="container" id="telaPrincipal">
     <h1>🎁 Amigo Oculto</h1>
-    <p class="subtitle">Adicione os participantes, sorteie e envie o link de cada um</p>
+    <p class="subtitle">Gerencie eventos, sorteie e envie os links</p>
+
+    <div class="evento-bar">
+      <label for="eventoInput">📅 Nome do evento</label>
+      <div class="evento-row">
+        <input type="text" id="eventoInput" placeholder="Ex: Natal 2026" autocomplete="off">
+        <button onclick="salvarEvento()" id="btnSalvarEvento">Salvar</button>
+      </div>
+      <div class="evento-row">
+        <select id="seletorEvento" onchange="carregarEvento(this.value)">
+          <option value="">— Eventos salvos —</option>
+        </select>
+        <button class="btn-excluir-evento" onclick="excluirEvento()" id="btnExcluirEvento" disabled>🗑️</button>
+      </div>
+      <div class="evento-row">
+        <button class="ghost" onclick="exportarEventos()" style="flex:1;">⬇️ Exportar</button>
+        <button class="ghost" onclick="document.getElementById('importInput').click()" style="flex:1;">⬆️ Importar</button>
+        <input type="file" id="importInput" accept=".json,application/json" style="display:none" onchange="importarEventos(event)">
+      </div>
+    </div>
 
     <div class="input-group">
       <input type="text" id="nomeInput" placeholder="Nome do participante" autocomplete="off">
@@ -179,19 +229,18 @@
 
     <div class="actions">
       <button id="btnSortear" onclick="sortear()" disabled>🎲 Sortear</button>
-      <button class="danger" onclick="limpar()">Limpar tudo</button>
+      <button class="danger" onclick="limpar()">Limpar participantes</button>
     </div>
 
     <div id="resultado"></div>
 
     <div class="aviso">
       🔒 <strong>Como funciona:</strong> cada participante recebe um link único que mostra
-      <em>apenas</em> o nome que ele tirou. Você (organizador) vê todos os links abaixo
-      para repassar.
+      <em>apenas</em> o nome que ele tirou. Os eventos ficam salvos neste navegador —
+      use <strong>Exportar</strong> para fazer backup.
     </div>
   </div>
 
-  <!-- TELA DE REVELAÇÃO (quando alguém abre um link) -->
   <div class="container escondido" id="telaRevelar">
     <div class="revelar-box">
       <h1>🎁 Amigo Oculto</h1>
@@ -212,20 +261,25 @@
 
   <script>
     let participantes = [];
+    let resultadoAtual = null;
+    let eventoAtualId = null;
+
+    const STORAGE_KEY = 'amigoOculto.eventos.v1';
 
     const nomeInput = document.getElementById('nomeInput');
+    const eventoInput = document.getElementById('eventoInput');
+    const seletorEvento = document.getElementById('seletorEvento');
+    const btnExcluirEvento = document.getElementById('btnExcluirEvento');
     const lista = document.getElementById('lista');
     const btnSortear = document.getElementById('btnSortear');
     const resultadoDiv = document.getElementById('resultado');
 
-    // ---------- UTILITÁRIOS ----------
     function escapeHtml(text) {
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
     }
 
-    // Encode/decode com suporte a acentos (UTF-8) via base64
     function encodePayload(obj) {
       const json = JSON.stringify(obj);
       const bytes = new TextEncoder().encode(json);
@@ -240,15 +294,25 @@
         while (b64.length % 4) b64 += '=';
         const bin = atob(b64);
         const bytes = new Uint8Array([...bin].map(c => c.charCodeAt(0)));
-        const json = new TextDecoder().decode(bytes);
-        return JSON.parse(json);
-      } catch (e) {
-        return null;
-      }
+        return JSON.parse(new TextDecoder().decode(bytes));
+      } catch (e) { return null; }
     }
 
-    // ---------- DETECTA SE É LINK DE RESULTADO ----------
-    // Formato: #r=<payload>
+    function carregarTodosEventos() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) { return {}; }
+    }
+
+    function salvarTodosEventos(obj) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+    }
+
+    function gerarId() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    }
+
     function checarLinkResultado() {
       const hash = window.location.hash;
       if (!hash.startsWith('#r=')) return false;
@@ -257,11 +321,9 @@
 
       document.getElementById('telaPrincipal').classList.add('escondido');
       document.getElementById('telaRevelar').classList.remove('escondido');
-      document.getElementById('revelarQuem').textContent = 'Olá, ' + payload.q + '!';
+      document.getElementById('revelarQuem').textContent =
+        (payload.e ? payload.e + ' — ' : '') + 'Olá, ' + payload.q + '!';
       document.getElementById('revelarNome').textContent = payload.t;
-
-      // Botão de revelar
-      window._payloadAtual = payload;
       return true;
     }
 
@@ -270,7 +332,6 @@
       document.getElementById('blocoRevelado').classList.remove('escondido');
     }
 
-    // ---------- LÓGICA PRINCIPAL ----------
     nomeInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') adicionar();
     });
@@ -286,19 +347,23 @@
       nomeInput.value = '';
       nomeInput.focus();
       renderizar();
+      autoSalvar();
     }
 
     function remover(index) {
       participantes.splice(index, 1);
       renderizar();
+      autoSalvar();
     }
 
     function limpar() {
-      if (participantes.length === 0) return;
-      if (!confirm('Tem certeza que quer apagar todos os participantes?')) return;
+      if (participantes.length === 0 && !resultadoAtual) return;
+      if (!confirm('Apagar todos os participantes e o sorteio atual?')) return;
       participantes = [];
+      resultadoAtual = null;
       resultadoDiv.innerHTML = '';
       renderizar();
+      autoSalvar();
     }
 
     function renderizar() {
@@ -316,9 +381,10 @@
         });
       }
       btnSortear.disabled = participantes.length < 2;
+      if (resultadoAtual) renderizarResultado(resultadoAtual);
+      else resultadoDiv.innerHTML = '';
     }
 
-    // Fisher-Yates
     function shuffle(array) {
       const arr = [...array];
       for (let i = arr.length - 1; i > 0; i--) {
@@ -346,19 +412,21 @@
         } while (embaralhado.some((nome, i) => nome === participantes[i]));
       }
 
-      const resultado = participantes.map((nome, i) => ({
+      resultadoAtual = participantes.map((nome, i) => ({
         quem: nome,
         tirou: embaralhado[i]
       }));
 
-      renderizarResultado(resultado);
+      renderizarResultado(resultadoAtual);
+      autoSalvar();
     }
 
     function montarLinkResultado(quem, tirou) {
-      const payload = encodePayload({ q: quem, t: tirou });
-      // Usa a URL atual sem hash, e adiciona o hash do resultado
+      const nomeEvento = eventoInput.value.trim();
+      const payload = { q: quem, t: tirou };
+      if (nomeEvento) payload.e = nomeEvento;
       const base = window.location.origin + window.location.pathname;
-      return base + '#r=' + payload;
+      return base + '#r=' + encodePayload(payload);
     }
 
     function copiarLink(idInput) {
@@ -371,16 +439,16 @@
         btn.textContent = '✓ Copiado!';
         setTimeout(() => btn.textContent = txtAntigo, 1500);
       }).catch(() => {
-        // Fallback para navegadores antigos
         document.execCommand('copy');
         alert('Link copiado!');
       });
     }
 
     function enviarWhatsApp(quem, link) {
-      const msg = `🎁 *Amigo Oculto* 🎁\n\nOlá, ${quem}! Aqui está o seu resultado:\n${link}\n\n🤫 Abra o link e clique em "Revelar". Não conte para ninguém!`;
-      const url = 'https://wa.me/?text=' + encodeURIComponent(msg);
-      window.open(url, '_blank');
+      const nomeEvento = eventoInput.value.trim();
+      const titulo = nomeEvento ? `*${nomeEvento}* 🎁` : '*Amigo Oculto* 🎁';
+      const msg = `${titulo}\n\nOlá, ${quem}! Aqui está o seu resultado:\n${link}\n\n🤫 Abra o link e clique em "Revelar". Não conte para ninguém!`;
+      window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
     }
 
     function renderizarResultado(resultado) {
@@ -409,9 +477,216 @@
       resultadoDiv.innerHTML = html;
     }
 
+    function salvarEvento() {
+      const nome = eventoInput.value.trim();
+      if (!nome) {
+        alert('Dê um nome ao evento (ex: Natal 2026)');
+        eventoInput.focus();
+        return;
+      }
+      if (participantes.length === 0) {
+        alert('Adicione pelo menos um participante antes de salvar.');
+        return;
+      }
+
+      const eventos = carregarTodosEventos();
+
+      if (eventoAtualId && eventos[eventoAtualId]) {
+        eventos[eventoAtualId] = {
+          ...eventos[eventoAtualId],
+          nome,
+          participantes: [...participantes],
+          resultado: resultadoAtual,
+          atualizadoEm: Date.now()
+        };
+      } else {
+        const novoId = gerarId();
+        eventos[novoId] = {
+          nome,
+          participantes: [...participantes],
+          resultado: resultadoAtual,
+          criadoEm: Date.now(),
+          atualizadoEm: Date.now()
+        };
+        eventoAtualId = novoId;
+      }
+
+      salvarTodosEventos(eventos);
+      atualizarSeletor();
+      seletorEvento.value = eventoAtualId;
+      btnExcluirEvento.disabled = false;
+
+      const btn = document.getElementById('btnSalvarEvento');
+      const txt = btn.textContent;
+      btn.textContent = '✓ Salvo!';
+      setTimeout(() => btn.textContent = txt, 1500);
+    }
+
+    function autoSalvar() {
+      if (!eventoAtualId) return;
+      const eventos = carregarTodosEventos();
+      if (!eventos[eventoAtualId]) return;
+      eventos[eventoAtualId].participantes = [...participantes];
+      eventos[eventoAtualId].resultado = resultadoAtual;
+      eventos[eventoAtualId].atualizadoEm = Date.now();
+      salvarTodosEventos(eventos);
+    }
+
+    function carregarEvento(id) {
+      if (!id) {
+        eventoAtualId = null;
+        btnExcluirEvento.disabled = true;
+        return;
+      }
+      const eventos = carregarTodosEventos();
+      const ev = eventos[id];
+      if (!ev) return;
+
+      eventoAtualId = id;
+      eventoInput.value = ev.nome;
+      participantes = [...(ev.participantes || [])];
+      resultadoAtual = ev.resultado || null;
+      btnExcluirEvento.disabled = false;
+      renderizar();
+    }
+
+    function excluirEvento() {
+      if (!eventoAtualId) return;
+      const eventos = carregarTodosEventos();
+      const ev = eventos[eventoAtualId];
+      if (!ev) return;
+      if (!confirm(`Excluir o evento "${ev.nome}"? Isso apaga participantes e sorteio salvos.`)) return;
+
+      delete eventos[eventoAtualId];
+      salvarTodosEventos(eventos);
+
+      eventoAtualId = null;
+      eventoInput.value = '';
+      participantes = [];
+      resultadoAtual = null;
+      btnExcluirEvento.disabled = true;
+      atualizarSeletor();
+      renderizar();
+    }
+
+    function atualizarSeletor() {
+      const eventos = carregarTodosEventos();
+      const atual = seletorEvento.value;
+      seletorEvento.innerHTML = '<option value="">— Eventos salvos —</option>';
+
+      const listaOrdenada = Object.entries(eventos)
+        .sort((a, b) => (b[1].atualizadoEm || 0) - (a[1].atualizadoEm || 0));
+
+      listaOrdenada.forEach(([id, ev]) => {
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = ev.nome;
+        seletorEvento.appendChild(opt);
+      });
+
+      if (atual && eventos[atual]) seletorEvento.value = atual;
+      else if (eventoAtualId && eventos[eventoAtualId]) seletorEvento.value = eventoAtualId;
+    }
+
+    // ---------- EXPORTAR / IMPORTAR ----------
+    function exportarEventos() {
+      const eventos = carregarTodosEventos();
+      const ids = Object.keys(eventos);
+      if (ids.length === 0) {
+        alert('Não há eventos salvos para exportar.');
+        return;
+      }
+
+      const pacote = {
+        app: 'amigo-oculto',
+        versao: 1,
+        exportadoEm: new Date().toISOString(),
+        eventos
+      };
+
+      const json = JSON.stringify(pacote, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+
+      const data = new Date().toISOString().slice(0, 10);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `amigo-oculto-backup-${data}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function importarEventos(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        let pacote;
+        try {
+          pacote = JSON.parse(e.target.result);
+        } catch (err) {
+          alert('Arquivo inválido: não é um JSON válido.');
+          event.target.value = '';
+          return;
+        }
+
+        if (!pacote || pacote.app !== 'amigo-oculto' || !pacote.eventos) {
+          alert('Esse arquivo não parece ser um backup do Amigo Oculto.');
+          event.target.value = '';
+          return;
+        }
+
+        const novosIds = Object.keys(pacote.eventos);
+        const eventosAtuais = carregarTodosEventos();
+        const existentes = Object.keys(eventosAtuais).length;
+
+        const confirmMsg =
+          `Importar ${novosIds.length} evento(s)?\n\n` +
+          `Eventos atuais: ${existentes}\n` +
+          `Os eventos importados serão adicionados (não apagam os existentes).`;
+
+        if (!confirm(confirmMsg)) {
+          event.target.value = '';
+          return;
+        }
+
+        let importados = 0;
+        novosIds.forEach(id => {
+          let idFinal = id;
+          if (eventosAtuais[idFinal]) idFinal = gerarId();
+          const ev = pacote.eventos[id];
+          eventosAtuais[idFinal] = {
+            nome: ev.nome || 'Evento importado',
+            participantes: Array.isArray(ev.participantes) ? ev.participantes : [],
+            resultado: ev.resultado || null,
+            criadoEm: ev.criadoEm || Date.now(),
+            atualizadoEm: ev.atualizadoEm || Date.now()
+          };
+          importados++;
+        });
+
+        salvarTodosEventos(eventosAtuais);
+        atualizarSeletor();
+        event.target.value = '';
+
+        alert(`✅ ${importados} evento(s) importado(s) com sucesso!`);
+      };
+
+      reader.onerror = () => {
+        alert('Erro ao ler o arquivo.');
+        event.target.value = '';
+      };
+
+      reader.readAsText(file);
+    }
+
     // ---------- INICIALIZAÇÃO ----------
     if (!checarLinkResultado()) {
       renderizar();
+      atualizarSeletor();
     }
   </script>
 </body>
