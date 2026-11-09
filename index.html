@@ -85,14 +85,18 @@
       display: flex; flex-direction: column; gap: 10px;
     }
     .evento-bar label { font-size: 13px; color: #666; font-weight: 600; }
-    .evento-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .evento-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
     .evento-row input, .evento-row select {
       flex: 1; min-width: 140px; padding: 10px 14px;
       border: 2px solid #e0e0e0; border-radius: 10px;
       font-size: 15px; outline: none; background: #fff;
     }
-    .evento-row input:focus { border-color: #667eea; }
+    .evento-row input:focus, .evento-row select:focus { border-color: #667eea; }
     .evento-row button { padding: 10px 16px; font-size: 14px; }
+    .evento-row .label-inline {
+      font-size: 13px; color: #666; font-weight: 600;
+      min-width: auto; flex: 0 0 auto;
+    }
 
     .input-group { display: flex; gap: 8px; margin-bottom: 16px; }
     input[type="text"] {
@@ -192,6 +196,7 @@
     .resultado-item .linha-topo {
       display: flex; justify-content: space-between;
       align-items: center; margin-bottom: 8px;
+      gap: 8px; flex-wrap: wrap;
     }
     .resultado-item .nome { font-weight: 600; color: #667eea; }
     .resultado-item .tirou { color: #555; font-size: 14px; }
@@ -252,12 +257,6 @@
     /* ===== TELA DE REVELAÇÃO ===== */
     .revelar-box { text-align: center; padding: 30px 10px; }
     .revelar-box .sua-vez { color: #888; margin-bottom: 20px; }
-    .revelar-nome {
-      font-size: 32px; font-weight: 700; color: #667eea;
-      margin: 20px 0; padding: 20px; background: #f0f4ff;
-      border-radius: 16px; border: 2px dashed #667eea;
-      word-break: break-word;
-    }
     .revelar-msg { color: #666; margin-bottom: 24px; }
     .btn-grande {
       font-size: 18px; padding: 16px 32px; border-radius: 12px;
@@ -265,22 +264,40 @@
     }
     .btn-grande:hover { background: #5568d3; }
 
-    .desejos-revelados {
-      background: #fff; border-radius: 14px;
-      padding: 20px; margin-top: 20px;
-      border: 2px solid #f0f4ff; text-align: left;
+    /* Bloco de cada pessoa revelada (1 ou 2) */
+    .pessoa-revelada {
+      background: #f0f4ff; border-radius: 16px;
+      padding: 20px; margin: 20px 0;
+      border: 2px dashed #667eea;
     }
-    .desejos-revelados h3 {
-      font-size: 16px; margin-bottom: 12px; color: #667eea;
-      text-align: center;
+    .pessoa-revelada .pessoa-titulo {
+      font-size: 13px; color: #888; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .pessoa-revelada .pessoa-nome {
+      font-size: 28px; font-weight: 700; color: #667eea;
+      word-break: break-word;
+      margin-bottom: 16px;
+    }
+    .desejos-revelados {
+      background: #fff; border-radius: 12px;
+      padding: 16px; text-align: left;
+    }
+    .desejos-revelados h4 {
+      font-size: 14px; margin-bottom: 10px; color: #667eea;
     }
     .desejos-revelados ol {
       margin-left: 20px; color: #333;
     }
     .desejos-revelados li {
-      padding: 8px 0; font-size: 15px;
+      padding: 6px 0; font-size: 15px;
       list-style: decimal; background: transparent;
       display: list-item;
+    }
+    .desejos-revelados .sem-lista {
+      list-style: none; color: #aaa; font-style: italic;
+      margin-left: 0;
     }
     .escondido { display: none; }
 
@@ -328,6 +345,22 @@
       padding: 4px 8px; border-radius: 6px; font-weight: 600;
     }
     .btn-reenviar:hover { background: #f0f4ff; }
+
+    .config-sorteio {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px; background: #fafafa;
+      border-radius: 10px; margin-bottom: 12px;
+    }
+    .config-sorteio label {
+      font-size: 14px; color: #444; font-weight: 600;
+      flex: 1;
+    }
+    .config-sorteio select {
+      padding: 8px 12px; border: 2px solid #e0e0e0;
+      border-radius: 8px; font-size: 14px; background: #fff;
+      outline: none;
+    }
+    .config-sorteio select:focus { border-color: #667eea; }
   </style>
 </head>
 <body>
@@ -424,6 +457,14 @@
       </h3>
 
       <div id="conteudoMomento2">
+        <div class="config-sorteio">
+          <label for="configSorteios">Quantos nomes cada pessoa tira?</label>
+          <select id="configSorteios" onchange="mudarConfigSorteios(this.value)" disabled>
+            <option value="1">1 nome</option>
+            <option value="2">2 nomes (sorteio duplo)</option>
+          </select>
+        </div>
+
         <div id="statusM2"></div>
 
         <div class="evento-row" style="margin-top: 12px;">
@@ -437,8 +478,8 @@
     <div id="resultado"></div>
 
     <div class="aviso">
-      🔒 Cada participante recebe um link que mostra <em>apenas</em> o resultado dele
-      e a lista de desejos de quem ele tirou.
+      🔒 Cada participante recebe um link que mostra <em>apenas</em> os resultados dele
+      e a(s) lista(s) de desejos de quem ele tirou.
     </div>
   </div>
 
@@ -492,19 +533,13 @@
       <p class="sua-vez" id="revelarQuem"></p>
 
       <div id="blocoOculto">
-        <p class="revelar-msg">Clique no botão abaixo para descobrir quem você tirou:</p>
+        <p class="revelar-msg" id="revelarInstrucao">Clique no botão abaixo para descobrir quem você tirou:</p>
         <button class="btn-grande" onclick="revelar()">Revelar meu amigo oculto 👀</button>
       </div>
 
       <div id="blocoRevelado" class="escondido">
-        <p class="revelar-msg">Você tirou:</p>
-        <div class="revelar-nome" id="revelarNome"></div>
-
-        <div class="desejos-revelados">
-          <h3>🎁 Lista de desejos</h3>
-          <ol id="revelarDesejos"></ol>
-        </div>
-
+        <p class="revelar-msg" id="revelarIntro">Você tirou:</p>
+        <div id="revelarPessoas"></div>
         <p class="revelar-msg" style="margin-top: 24px;">🤫 Guarde segredo! Não mostre para ninguém.</p>
       </div>
     </div>
@@ -515,11 +550,10 @@
     let eventos = {};
     let eventoAtualId = null;
     let participantes = [];
-    let resultadoAtual = null;
+    let resultadoAtual = null;   // Agora: array de { quem, tirou: [nome1] ou [nome1, nome2] }
 
-    const STORAGE_KEY = 'amigoOculto.eventos.v2';
+    const STORAGE_KEY = 'amigoOculto.eventos.v3';
 
-    // ============ ELEMENTOS ============
     const $ = id => document.getElementById(id);
 
     // ============ STORAGE ============
@@ -567,6 +601,14 @@
       return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
     }
 
+    // Garante que o evento tenha os campos novos (compatibilidade)
+    function normalizarEvento(ev) {
+      if (!ev.listasDesejos) ev.listasDesejos = {};
+      if (!ev.resultado) ev.resultado = null;
+      if (!ev.qtdSorteios) ev.qtdSorteios = 1;
+      return ev;
+    }
+
     // ============ ROTEADOR (hash) ============
     function rotear() {
       const hash = window.location.hash;
@@ -607,11 +649,12 @@
       );
 
       grid.innerHTML = ordenados.map(id => {
-        const ev = eventos[id];
+        const ev = normalizarEvento(eventos[id]);
         const qtd = (ev.participantes || []).length;
         const listas = ev.listasDesejos || {};
         const cadastrados = (ev.participantes || []).filter(p => listas[p]).length;
         const sort = ev.resultado && ev.resultado.length > 0;
+        const qtdSort = ev.qtdSorteios || 1;
 
         let m1Html;
         if (qtd === 0) {
@@ -624,9 +667,9 @@
 
         let m2Html;
         if (sort) {
-          m2Html = '<span class="card-status status-sorteado">2️⃣ ✅ Sorteado</span>';
+          m2Html = `<span class="card-status status-sorteado">2️⃣ ✅ ${qtdSort}x sorteado</span>`;
         } else if (qtd > 0) {
-          m2Html = '<span class="card-status status-pendente">2️⃣ ⏳ Não sorteado</span>';
+          m2Html = `<span class="card-status status-pendente">2️⃣ ⏳ Não sorteado</span>`;
         } else {
           m2Html = '<span class="card-status status-vazio">2️⃣ —</span>';
         }
@@ -655,6 +698,7 @@
         participantes: [],
         listasDesejos: {},
         resultado: null,
+        qtdSorteios: 1,
         criadoEm: Date.now(),
         atualizadoEm: Date.now()
       };
@@ -673,7 +717,7 @@
     function abrirEvento(id) {
       if (!eventos[id]) return;
       eventoAtualId = id;
-      const ev = eventos[id];
+      const ev = normalizarEvento(eventos[id]);
       participantes = [...(ev.participantes || [])];
       resultadoAtual = ev.resultado || null;
 
@@ -699,12 +743,14 @@
 
     // ============ PAINEL DO EVENTO ============
     function renderizarPainel() {
-      const ev = eventos[eventoAtualId];
+      const ev = normalizarEvento(eventos[eventoAtualId]);
       const listas = ev.listasDesejos || {};
       const total = participantes.length;
       const cadastrados = participantes.filter(p => listas[p]).length;
       const temResultado = resultadoAtual && resultadoAtual.length > 0;
+      const qtdSort = ev.qtdSorteios || 1;
 
+      // Participantes
       const lista = $('lista');
       lista.innerHTML = '';
       if (participantes.length === 0) {
@@ -721,6 +767,7 @@
       }
       $('badgeParticipantes').textContent = participantes.length;
 
+      // Momento 1: progresso
       $('progressoTextoM1').textContent = `${cadastrados} de ${total} cadastraram`;
       const pct = total > 0 ? Math.round((cadastrados / total) * 100) : 0;
       $('progressoFillM1').style.width = pct + '%';
@@ -754,6 +801,7 @@
         aviso.classList.add('escondido');
       }
 
+      // Colapsar momento 1 após sorteio
       const secaoM1 = $('secaoMomento1');
       if (temResultado) {
         secaoM1.classList.add('colapsado');
@@ -763,15 +811,29 @@
         $('btnCollapseM1').textContent = '▾';
       }
 
+      // Config de sorteios (bloqueado após sortear)
+      const selectConfig = $('configSorteios');
+      selectConfig.value = String(qtdSort);
+      selectConfig.disabled = temResultado;
+
+      // Status Momento 2
       const statusM2 = $('statusM2');
       const badgeM2 = $('badgeM2');
+
+      // Valida se dá para sortear com essa configuração
+      const minimo = qtdSort + 1; // precisa de pelo menos qtdSorteios + 1 para não repetir a si mesmo
+      const podeSortear = total >= minimo;
 
       if (total === 0) {
         statusM2.innerHTML = '<div class="status-box info">Adicione participantes para começar.</div>';
         badgeM2.className = 'badge-momento vazio';
         badgeM2.textContent = '—';
+      } else if (!podeSortear) {
+        statusM2.innerHTML = `<div class="status-box aviso">⚠️ Para ${qtdSort} sorteio${qtdSort > 1 ? 's' : ''} por pessoa, você precisa de pelo menos ${minimo} participantes. Atualmente há ${total}.</div>`;
+        badgeM2.className = 'badge-momento pend';
+        badgeM2.textContent = '⚠️ Insuficiente';
       } else if (temResultado) {
-        statusM2.innerHTML = `<div class="status-box ok">✅ Sorteio realizado. Envie os links individuais para cada participante.</div>`;
+        statusM2.innerHTML = `<div class="status-box ok">✅ Sorteio realizado (${qtdSort} nome${qtdSort > 1 ? 's' : ''} por pessoa). Envie os links individuais.</div>`;
         badgeM2.className = 'badge-momento ok';
         badgeM2.textContent = '✅ Feito';
       } else if (faltam > 0) {
@@ -784,7 +846,7 @@
         badgeM2.textContent = '🎉 Pronto';
       }
 
-      $('btnSortear').disabled = participantes.length < 2;
+      $('btnSortear').disabled = !podeSortear;
       $('btnVerLinks').disabled = !temResultado;
 
       if (temResultado) {
@@ -792,6 +854,21 @@
       } else {
         $('resultado').innerHTML = '';
       }
+    }
+
+    function mudarConfigSorteios(valor) {
+      const ev = eventos[eventoAtualId];
+      if (!ev) return;
+      if (ev.resultado && ev.resultado.length > 0) {
+        // Não deveria acontecer (select bloqueado), mas por segurança:
+        alert('Não é possível mudar a configuração depois de sortear.');
+        $('configSorteios').value = String(ev.qtdSorteios || 1);
+        return;
+      }
+      ev.qtdSorteios = parseInt(valor, 10) || 1;
+      ev.atualizadoEm = Date.now();
+      salvarEventos();
+      renderizarPainel();
     }
 
     function adicionar() {
@@ -974,8 +1051,52 @@
       return arr;
     }
 
+    // Verifica se um array `sorteado` (mesmo tamanho de `original`)
+    // atende a regra: para cada índice i, sorteado[i] não contém o próprio original[i]
+    // e os nomes dentro de cada sorteado[i] são distintos.
+    function sorteioValido(original, sorteado, qtd) {
+      for (let i = 0; i < original.length; i++) {
+        const nomes = sorteado[i];
+        if (!Array.isArray(nomes)) return false;
+        if (nomes.length !== qtd) return false;
+        if (nomes.includes(original[i])) return false;
+        if (new Set(nomes).size !== qtd) return false;
+      }
+      return true;
+    }
+
+    // Gera um sorteio válido tentando N vezes. Para qtd=2 com N>=3 sempre
+    // existe solução; usando Fisher-Yates em "rodadas" (uma por sorteio),
+    // a probabilidade de acerto é alta.
+    function gerarSorteioValido(participantes, qtd) {
+      const n = participantes.length;
+      if (n < qtd + 1) return null;
+
+      const maxTentativas = 5000;
+      for (let t = 0; t < maxTentativas; t++) {
+        // Para cada "rodada" (1..qtd), faz um shuffle independente
+        const rodadas = [];
+        for (let r = 0; r < qtd; r++) {
+          rodadas.push(shuffle(participantes));
+        }
+        // Junta: sorteado[i] = [rodadas[0][i], rodadas[1][i], ...]
+        const sorteado = participantes.map((_, i) => rodadas.map(rod => rod[i]));
+
+        if (sorteioValido(participantes, sorteado, qtd)) {
+          return sorteado;
+        }
+      }
+      return null; // improvável com N>=3
+    }
+
     function sortear() {
-      if (participantes.length < 2) return;
+      const ev = normalizarEvento(eventos[eventoAtualId]);
+      const qtd = ev.qtdSorteios || 1;
+
+      if (participantes.length < qtd + 1) {
+        alert(`Para ${qtd} sorteio${qtd > 1 ? 's' : ''} por pessoa, são necessários pelo menos ${qtd + 1} participantes.`);
+        return;
+      }
 
       if (resultadoAtual && resultadoAtual.length > 0) {
         if (!confirm('⚠️ Já existe um sorteio para este evento.\n\nSe sortear de novo, os resultados antigos serão substituídos. Os LINKS ANTIGOS continuarão funcionando (mas ninguém deveria usar).\n\nDeseja sortear novamente?')) {
@@ -983,21 +1104,15 @@
         }
       }
 
-      let embaralhado;
-      if (participantes.length === 2) {
-        embaralhado = [participantes[1], participantes[0]];
-      } else {
-        let tentativas = 0;
-        do {
-          embaralhado = shuffle(participantes);
-          tentativas++;
-          if (tentativas > 1000) { alert('Não foi possível sortear.'); return; }
-        } while (embaralhado.some((nome, i) => nome === participantes[i]));
+      const sorteado = gerarSorteioValido(participantes, qtd);
+      if (!sorteado) {
+        alert('Não foi possível gerar um sorteio válido. Tente novamente.');
+        return;
       }
 
       resultadoAtual = participantes.map((nome, i) => ({
         quem: nome,
-        tirou: embaralhado[i]
+        tirou: sorteado[i]  // array (1 ou 2 nomes)
       }));
 
       eventos[eventoAtualId].resultado = resultadoAtual;
@@ -1013,11 +1128,17 @@
       $('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    function montarLinkResultado(quem, tirou) {
+    function montarLinkResultado(quem, tirouArr) {
       const ev = eventos[eventoAtualId];
-      const desejos = (ev.listasDesejos && ev.listasDesejos[tirou]) || null;
-      const payload = { q: quem, t: tirou, e: ev.nome };
-      if (desejos) payload.d = desejos;
+      const nomes = Array.isArray(tirouArr) ? tirouArr : [tirouArr];
+      const desejos = nomes.map(n => (ev.listasDesejos && ev.listasDesejos[n]) || null);
+
+      const payload = { q: quem, t: nomes, e: ev.nome };
+      // Só inclui `d` se pelo menos um tiver lista
+      if (desejos.some(d => d)) {
+        payload.d = desejos;
+      }
+
       const base = window.location.origin + window.location.pathname;
       return base + '#r=' + encodePayload(payload);
     }
@@ -1041,15 +1162,17 @@
 
     function renderizarResultado(resultado) {
       let html = '<div class="resultado"><h2>✨ Resultado do sorteio</h2>';
-      html += '<p style="font-size:13px;color:#888;margin-bottom:14px;">Envie o link de cada pessoa. Cada link mostra apenas o resultado e a lista de desejos de quem ela tirou.</p>';
+      html += '<p style="font-size:13px;color:#888;margin-bottom:14px;">Envie o link de cada pessoa. Cada link mostra o(s) resultado(s) e a(s) lista(s) de desejos de quem ela tirou.</p>';
 
       resultado.forEach((item, i) => {
         const link = montarLinkResultado(item.quem, item.tirou);
+        const nomes = Array.isArray(item.tirou) ? item.tirou : [item.tirou];
+        const tirouStr = nomes.map(n => escapeHtml(n)).join(' e ');
         html += `
           <div class="resultado-item">
             <div class="linha-topo">
               <span class="nome">${escapeHtml(item.quem)}</span>
-              <span class="tirou">tirou <strong>${escapeHtml(item.tirou)}</strong></span>
+              <span class="tirou">tirou <strong>${tirouStr}</strong></span>
             </div>
             <div class="link-row">
               <input type="text" value="${escapeHtml(link)}" readonly onclick="this.select()">
@@ -1116,6 +1239,9 @@
     }
 
     // ============ TELA: REVELAÇÃO ============
+    // Payload esperado:
+    // { q: "João", t: ["Maria"] ou ["Maria","Pedro"], e: "Natal 2026",
+    //   d: [ ["presente1","presente2","presente3"] , [...] ]  (opcional) }
     function abrirTelaRevelar(payload) {
       $('telaCards').classList.add('escondido');
       $('telaPainel').classList.add('escondido');
@@ -1123,19 +1249,35 @@
       $('telaRevelar').classList.remove('escondido');
 
       $('revelarQuem').textContent = (payload.e ? payload.e + ' — ' : '') + 'Olá, ' + payload.q + '!';
-      $('revelarNome').textContent = payload.t;
 
-      const ol = $('revelarDesejos');
-      ol.innerHTML = '';
-      if (payload.d && Array.isArray(payload.d) && payload.d.length > 0) {
-        payload.d.forEach(item => {
-          const li = document.createElement('li');
-          li.textContent = item;
-          ol.appendChild(li);
-        });
-      } else {
-        ol.innerHTML = '<li style="list-style:none;color:#aaa;">(sem lista de desejos cadastrada)</li>';
-      }
+      const nomes = Array.isArray(payload.t) ? payload.t : [payload.t];
+      const desejosArr = Array.isArray(payload.d) ? payload.d : [];
+
+      $('revelarIntro').textContent = nomes.length > 1 ? 'Você tirou:' : 'Você tirou:';
+      $('revelarInstrucao').textContent = nomes.length > 1
+        ? 'Clique no botão abaixo para descobrir quem você tirou (2 nomes):'
+        : 'Clique no botão abaixo para descobrir quem você tirou:';
+
+      // Monta os blocos
+      const container = $('revelarPessoas');
+      container.innerHTML = nomes.map((nome, i) => {
+        const lista = desejosArr[i];
+        let listaHtml = '<li class="sem-lista">(sem lista de desejos cadastrada)</li>';
+        if (lista && Array.isArray(lista) && lista.length > 0) {
+          listaHtml = lista.map(p => `<li>${escapeHtml(p)}</li>`).join('');
+        }
+        const titulo = nomes.length > 1 ? `Sorteio ${i + 1}` : 'Amigo oculto';
+        return `
+          <div class="pessoa-revelada">
+            <div class="pessoa-titulo">${titulo}</div>
+            <div class="pessoa-nome">${escapeHtml(nome)}</div>
+            <div class="desejos-revelados">
+              <h4>🎁 Lista de desejos</h4>
+              <ol>${listaHtml}</ol>
+            </div>
+          </div>
+        `;
+      }).join('');
 
       $('blocoOculto').classList.remove('escondido');
       $('blocoRevelado').classList.add('escondido');
@@ -1154,7 +1296,7 @@
       }
       const pacote = {
         app: 'amigo-oculto',
-        versao: 2,
+        versao: 3,
         exportadoEm: new Date().toISOString(),
         eventos
       };
@@ -1201,6 +1343,7 @@
             participantes: Array.isArray(ev.participantes) ? ev.participantes : [],
             listasDesejos: ev.listasDesejos || {},
             resultado: ev.resultado || null,
+            qtdSorteios: ev.qtdSorteios || 1,
             criadoEm: ev.criadoEm || Date.now(),
             atualizadoEm: ev.atualizadoEm || Date.now()
           };
