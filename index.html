@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amigo Oculto 🎁</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+    h1 { text-align: center; margin-bottom: 8px; }
+    .subtitle { text-align: center; color: #888; margin-bottom: 24px; font-size: 14px; }
+
+    .input-group { display: flex; gap: 8px; margin-bottom: 16px; }
+    input[type="text"] {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+      transition: border 0.2s;
+    }
+    input[type="text"]:focus { border-color: #667eea; }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #667eea;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    button:hover { background: #5568d3; }
+    button:active { transform: scale(0.97); }
+    button.danger { background: #e74c3c; }
+    button.danger:hover { background: #c0392b; }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+
+    ul { list-style: none; margin-bottom: 20px; }
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: #f7f7fb;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      animation: slideIn 0.2s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .remove-btn {
+      background: transparent;
+      color: #e74c3c;
+      font-size: 20px;
+      padding: 0 8px;
+    }
+    .remove-btn:hover { background: #ffe5e0; }
+
+    .actions { display: flex; gap: 8px; margin-bottom: 20px; }
+    .actions button { flex: 1; }
+
+    .empty { text-align: center; color: #aaa; padding: 20px; font-style: italic; }
+
+    .resultado {
+      margin-top: 20px;
+      padding: 20px;
+      background: #f0f4ff;
+      border-radius: 12px;
+      border: 2px dashed #667eea;
+    }
+    .resultado h2 { margin-bottom: 12px; font-size: 18px; }
+    .resultado-item {
+      padding: 10px 14px;
+      background: #fff;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .resultado-item .quem { font-weight: 600; color: #667eea; }
+    .resultado-item .tirou { color: #444; }
+    .arrow { color: #aaa; margin: 0 8px; }
+
+    .aviso {
+      background: #fff8e1;
+      border-left: 4px solid #ffb300;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #666;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎁 Amigo Oculto</h1>
+    <p class="subtitle">Adicione os participantes e faça o sorteio</p>
+
+    <div class="input-group">
+      <input type="text" id="nomeInput" placeholder="Nome do participante" autocomplete="off">
+      <button onclick="adicionar()">Adicionar</button>
+    </div>
+
+    <ul id="lista"></ul>
+
+    <div class="actions">
+      <button id="btnSortear" onclick="sortear()" disabled>🎲 Sortear</button>
+      <button class="danger" onclick="limpar()">Limpar tudo</button>
+    </div>
+
+    <div id="resultado"></div>
+
+    <div class="aviso">
+      💡 <strong>Dica:</strong> tire um print ou anote antes de fechar a página.
+      O sorteio não é salvo automaticamente.
+    </div>
+  </div>
+
+  <script>
+    let participantes = [];
+
+    const nomeInput = document.getElementById('nomeInput');
+    const lista = document.getElementById('lista');
+    const btnSortear = document.getElementById('btnSortear');
+    const resultadoDiv = document.getElementById('resultado');
+
+    // Enter para adicionar
+    nomeInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') adicionar();
+    });
+
+    function adicionar() {
+      const nome = nomeInput.value.trim();
+      if (!nome) return;
+      if (participantes.includes(nome)) {
+        alert('Esse nome já foi adicionado!');
+        return;
+      }
+      participantes.push(nome);
+      nomeInput.value = '';
+      nomeInput.focus();
+      renderizar();
+    }
+
+    function remover(index) {
+      participantes.splice(index, 1);
+      renderizar();
+    }
+
+    function limpar() {
+      if (participantes.length === 0) return;
+      if (!confirm('Tem certeza que quer apagar todos os participantes?')) return;
+      participantes = [];
+      resultadoDiv.innerHTML = '';
+      renderizar();
+    }
+
+    function renderizar() {
+      lista.innerHTML = '';
+      if (participantes.length === 0) {
+        lista.innerHTML = '<div class="empty">Nenhum participante ainda...</div>';
+      } else {
+        participantes.forEach((nome, i) => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <span>${escapeHtml(nome)}</span>
+            <button class="remove-btn" onclick="remover(${i})">✕</button>
+          `;
+          lista.appendChild(li);
+        });
+      }
+      btnSortear.disabled = participantes.length < 2;
+    }
+
+    // Fisher-Yates shuffle (embaralhamento correto)
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function sortear() {
+      if (participantes.length < 2) return;
+
+      let embaralhado;
+      // Garante que ninguém tire a si mesmo
+      // Para 2 pessoas, isso é impossível — avisamos
+      if (participantes.length === 2) {
+        // Com 2 pessoas, um tira o outro (sempre funciona)
+        embaralhado = [participantes[1], participantes[0]];
+      } else {
+        let tentativas = 0;
+        do {
+          embaralhado = shuffle(participantes);
+          tentativas++;
+          // Evita loop infinito (raro, mas seguro)
+          if (tentativas > 1000) {
+            alert('Não foi possível sortear. Tente novamente.');
+            return;
+          }
+        } while (embaralhado.some((nome, i) => nome === participantes[i]));
+      }
+
+      const resultado = participantes.map((nome, i) => ({
+        quem: nome,
+        tirou: embaralhado[i]
+      }));
+
+      renderizarResultado(resultado);
+    }
+
+    function renderizarResultado(resultado) {
+      let html = '<div class="resultado"><h2>✨ Resultado do sorteio</h2>';
+      resultado.forEach(item => {
+        html += `
+          <div class="resultado-item">
+            <span class="quem">${escapeHtml(item.quem)}</span>
+            <span class="arrow">→</span>
+            <span class="tirou">${escapeHtml(item.tirou)}</span>
+          </div>
+        `;
+      });
+      html += '</div>';
+      resultadoDiv.innerHTML = html;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    renderizar();
+  </script>
+</body>
+</html>
