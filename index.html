@@ -52,6 +52,8 @@
     button.danger { background: #e74c3c; }
     button.danger:hover { background: #c0392b; }
     button:disabled { background: #ccc; cursor: not-allowed; }
+    button.ghost { background: #f0f0f5; color: #444; }
+    button.ghost:hover { background: #e4e4ee; }
 
     ul { list-style: none; margin-bottom: 20px; }
     li {
@@ -90,17 +92,37 @@
     }
     .resultado h2 { margin-bottom: 12px; font-size: 18px; }
     .resultado-item {
-      padding: 10px 14px;
+      padding: 12px 14px;
       background: #fff;
       border-radius: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+    }
+    .resultado-item .linha-topo {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 8px;
     }
-    .resultado-item .quem { font-weight: 600; color: #667eea; }
-    .resultado-item .tirou { color: #444; }
-    .arrow { color: #aaa; margin: 0 8px; }
+    .resultado-item .nome { font-weight: 600; color: #667eea; }
+    .resultado-item .tirou { color: #555; font-size: 14px; }
+    .resultado-item .tirou strong { color: #333; }
+    .link-row { display: flex; gap: 6px; }
+    .link-row input {
+      flex: 1;
+      font-size: 12px;
+      padding: 8px 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      color: #666;
+      background: #fafafa;
+    }
+    .link-row button {
+      padding: 8px 12px;
+      font-size: 13px;
+      border-radius: 8px;
+    }
+    .btn-wpp { background: #25d366; }
+    .btn-wpp:hover { background: #1ebe5a; }
 
     .aviso {
       background: #fff8e1;
@@ -111,12 +133,42 @@
       color: #666;
       margin-top: 16px;
     }
+
+    /* Tela de revelação (quando abre link de resultado) */
+    .revelar-box {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .revelar-box h2 { margin-bottom: 12px; }
+    .revelar-box .sua-vez { color: #888; margin-bottom: 20px; }
+    .revelar-nome {
+      font-size: 32px;
+      font-weight: 700;
+      color: #667eea;
+      margin: 20px 0;
+      padding: 20px;
+      background: #f0f4ff;
+      border-radius: 16px;
+      border: 2px dashed #667eea;
+      word-break: break-word;
+    }
+    .revelar-msg { color: #666; margin-bottom: 24px; }
+    .btn-grande {
+      font-size: 18px;
+      padding: 16px 32px;
+      border-radius: 12px;
+      background: #667eea;
+      color: #fff;
+    }
+    .btn-grande:hover { background: #5568d3; }
+    .escondido { display: none; }
   </style>
 </head>
 <body>
-  <div class="container">
+  <!-- TELA PRINCIPAL (organizador) -->
+  <div class="container" id="telaPrincipal">
     <h1>🎁 Amigo Oculto</h1>
-    <p class="subtitle">Adicione os participantes e faça o sorteio</p>
+    <p class="subtitle">Adicione os participantes, sorteie e envie o link de cada um</p>
 
     <div class="input-group">
       <input type="text" id="nomeInput" placeholder="Nome do participante" autocomplete="off">
@@ -133,8 +185,28 @@
     <div id="resultado"></div>
 
     <div class="aviso">
-      💡 <strong>Dica:</strong> tire um print ou anote antes de fechar a página.
-      O sorteio não é salvo automaticamente.
+      🔒 <strong>Como funciona:</strong> cada participante recebe um link único que mostra
+      <em>apenas</em> o nome que ele tirou. Você (organizador) vê todos os links abaixo
+      para repassar.
+    </div>
+  </div>
+
+  <!-- TELA DE REVELAÇÃO (quando alguém abre um link) -->
+  <div class="container escondido" id="telaRevelar">
+    <div class="revelar-box">
+      <h1>🎁 Amigo Oculto</h1>
+      <p class="sua-vez" id="revelarQuem"></p>
+
+      <div id="blocoOculto">
+        <p class="revelar-msg">Clique no botão abaixo para descobrir quem você tirou:</p>
+        <button class="btn-grande" onclick="revelar()">Revelar meu amigo oculto 👀</button>
+      </div>
+
+      <div id="blocoRevelado" class="escondido">
+        <p class="revelar-msg">Você tirou:</p>
+        <div class="revelar-nome" id="revelarNome"></div>
+        <p class="revelar-msg">🤫 Guarde segredo! Não mostre para ninguém.</p>
+      </div>
     </div>
   </div>
 
@@ -146,7 +218,59 @@
     const btnSortear = document.getElementById('btnSortear');
     const resultadoDiv = document.getElementById('resultado');
 
-    // Enter para adicionar
+    // ---------- UTILITÁRIOS ----------
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Encode/decode com suporte a acentos (UTF-8) via base64
+    function encodePayload(obj) {
+      const json = JSON.stringify(obj);
+      const bytes = new TextEncoder().encode(json);
+      let bin = '';
+      bytes.forEach(b => bin += String.fromCharCode(b));
+      return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+
+    function decodePayload(str) {
+      try {
+        let b64 = str.replace(/-/g, '+').replace(/_/g, '/');
+        while (b64.length % 4) b64 += '=';
+        const bin = atob(b64);
+        const bytes = new Uint8Array([...bin].map(c => c.charCodeAt(0)));
+        const json = new TextDecoder().decode(bytes);
+        return JSON.parse(json);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // ---------- DETECTA SE É LINK DE RESULTADO ----------
+    // Formato: #r=<payload>
+    function checarLinkResultado() {
+      const hash = window.location.hash;
+      if (!hash.startsWith('#r=')) return false;
+      const payload = decodePayload(hash.slice(3));
+      if (!payload || !payload.q || !payload.t) return false;
+
+      document.getElementById('telaPrincipal').classList.add('escondido');
+      document.getElementById('telaRevelar').classList.remove('escondido');
+      document.getElementById('revelarQuem').textContent = 'Olá, ' + payload.q + '!';
+      document.getElementById('revelarNome').textContent = payload.t;
+
+      // Botão de revelar
+      window._payloadAtual = payload;
+      return true;
+    }
+
+    function revelar() {
+      document.getElementById('blocoOculto').classList.add('escondido');
+      document.getElementById('blocoRevelado').classList.remove('escondido');
+    }
+
+    // ---------- LÓGICA PRINCIPAL ----------
     nomeInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') adicionar();
     });
@@ -154,7 +278,7 @@
     function adicionar() {
       const nome = nomeInput.value.trim();
       if (!nome) return;
-      if (participantes.includes(nome)) {
+      if (participantes.some(p => p.toLowerCase() === nome.toLowerCase())) {
         alert('Esse nome já foi adicionado!');
         return;
       }
@@ -194,7 +318,7 @@
       btnSortear.disabled = participantes.length < 2;
     }
 
-    // Fisher-Yates shuffle (embaralhamento correto)
+    // Fisher-Yates
     function shuffle(array) {
       const arr = [...array];
       for (let i = arr.length - 1; i > 0; i--) {
@@ -208,17 +332,13 @@
       if (participantes.length < 2) return;
 
       let embaralhado;
-      // Garante que ninguém tire a si mesmo
-      // Para 2 pessoas, isso é impossível — avisamos
       if (participantes.length === 2) {
-        // Com 2 pessoas, um tira o outro (sempre funciona)
         embaralhado = [participantes[1], participantes[0]];
       } else {
         let tentativas = 0;
         do {
           embaralhado = shuffle(participantes);
           tentativas++;
-          // Evita loop infinito (raro, mas seguro)
           if (tentativas > 1000) {
             alert('Não foi possível sortear. Tente novamente.');
             return;
@@ -234,28 +354,65 @@
       renderizarResultado(resultado);
     }
 
+    function montarLinkResultado(quem, tirou) {
+      const payload = encodePayload({ q: quem, t: tirou });
+      // Usa a URL atual sem hash, e adiciona o hash do resultado
+      const base = window.location.origin + window.location.pathname;
+      return base + '#r=' + payload;
+    }
+
+    function copiarLink(idInput) {
+      const input = document.getElementById(idInput);
+      input.select();
+      input.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(input.value).then(() => {
+        const btn = input.nextElementSibling;
+        const txtAntigo = btn.textContent;
+        btn.textContent = '✓ Copiado!';
+        setTimeout(() => btn.textContent = txtAntigo, 1500);
+      }).catch(() => {
+        // Fallback para navegadores antigos
+        document.execCommand('copy');
+        alert('Link copiado!');
+      });
+    }
+
+    function enviarWhatsApp(quem, link) {
+      const msg = `🎁 *Amigo Oculto* 🎁\n\nOlá, ${quem}! Aqui está o seu resultado:\n${link}\n\n🤫 Abra o link e clique em "Revelar". Não conte para ninguém!`;
+      const url = 'https://wa.me/?text=' + encodeURIComponent(msg);
+      window.open(url, '_blank');
+    }
+
     function renderizarResultado(resultado) {
       let html = '<div class="resultado"><h2>✨ Resultado do sorteio</h2>';
-      resultado.forEach(item => {
+      html += '<p style="font-size:13px;color:#888;margin-bottom:14px;">Copie e envie o link de cada pessoa. Cada link mostra apenas o resultado dela.</p>';
+
+      resultado.forEach((item, i) => {
+        const link = montarLinkResultado(item.quem, item.tirou);
+        const inputId = 'link' + i;
         html += `
           <div class="resultado-item">
-            <span class="quem">${escapeHtml(item.quem)}</span>
-            <span class="arrow">→</span>
-            <span class="tirou">${escapeHtml(item.tirou)}</span>
+            <div class="linha-topo">
+              <span class="nome">${escapeHtml(item.quem)}</span>
+              <span class="tirou">tirou <strong>${escapeHtml(item.tirou)}</strong></span>
+            </div>
+            <div class="link-row">
+              <input type="text" id="${inputId}" value="${escapeHtml(link)}" readonly onclick="this.select()">
+              <button class="ghost" onclick="copiarLink('${inputId}')">Copiar</button>
+              <button class="btn-wpp" onclick="enviarWhatsApp('${escapeHtml(item.quem)}', '${escapeHtml(link)}')">WhatsApp</button>
+            </div>
           </div>
         `;
       });
+
       html += '</div>';
       resultadoDiv.innerHTML = html;
     }
 
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
+    // ---------- INICIALIZAÇÃO ----------
+    if (!checarLinkResultado()) {
+      renderizar();
     }
-
-    renderizar();
   </script>
 </body>
 </html>
