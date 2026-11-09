@@ -6,125 +6,186 @@
   <title>Amigo Oculto 🎁</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ============ TEMA NOITE — variáveis ============ */
+    :root {
+      /* fundo geral */
+      --bg-body-1: #0f1226;
+      --bg-body-2: #1a1a3a;
+      --bg-card: #171a2e;
+      --bg-card-soft: #1e2138;
+      --bg-input: #22253f;
+      --bg-input-focus: #2a2d4a;
+
+      /* textos */
+      --txt: #e8eaf6;
+      --txt-soft: #b0b4d0;
+      --txt-mute: #7a7f9a;
+
+      /* bordas */
+      --border: #2a2d4a;
+      --border-soft: #232640;
+
+      /* primária (roxo) */
+      --primary: #8b7cff;
+      --primary-hover: #a394ff;
+
+      /* seção Participantes — azul-arroxeado */
+      --sec-part-bg: #1c1d3d;
+      --sec-part-border: #4b4ba8;
+      --sec-part-accent: #8b7cff;
+
+      /* seção 1 (cadastro) — verde-água */
+      --sec-m1-bg: #142e2c;
+      --sec-m1-border: #2f8b7f;
+      --sec-m1-accent: #4fd1c5;
+
+      /* seção 2 (sorteio) — âmbar/dourado */
+      --sec-m2-bg: #2c2415;
+      --sec-m2-border: #b8862e;
+      --sec-m2-accent: #f6c76a;
+
+      /* estados */
+      --ok-bg: #173d2a;
+      --ok-txt: #7be7a3;
+      --warn-bg: #3d3116;
+      --warn-txt: #f6c76a;
+      --danger: #ef6461;
+      --danger-hover: #ff7b78;
+    }
+
     body {
       font-family: system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh; padding: 20px; color: #333;
+      background: linear-gradient(135deg, var(--bg-body-1) 0%, var(--bg-body-2) 100%);
+      min-height: 100vh; padding: 20px; color: var(--txt);
     }
     .container {
-      max-width: 700px; margin: 0 auto; background: #fff;
+      max-width: 700px; margin: 0 auto;
+      background: var(--bg-card);
       border-radius: 16px; padding: 30px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
-    h1 { text-align: center; margin-bottom: 8px; }
-    .subtitle { text-align: center; color: #888; margin-bottom: 24px; font-size: 14px; }
+    h1 { text-align: center; margin-bottom: 8px; color: var(--txt); }
+    .subtitle { text-align: center; color: var(--txt-mute); margin-bottom: 24px; font-size: 14px; }
 
     /* ===== CARDS DE EVENTOS ===== */
     .cards-header {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 16px;
     }
-    .cards-header h2 { font-size: 18px; }
+    .cards-header h2 { font-size: 18px; color: var(--txt); }
     .cards-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 14px; margin-bottom: 20px;
     }
     .evento-card {
-      background: #f7f7fb; border-radius: 14px; padding: 16px;
-      cursor: pointer; border: 2px solid transparent;
+      background: var(--bg-card-soft);
+      border-radius: 14px; padding: 16px;
+      cursor: pointer; border: 2px solid var(--border);
       transition: all 0.2s; position: relative;
     }
     .evento-card:hover {
-      border-color: #667eea; transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(102,126,234,0.2);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(139,124,255,0.25);
     }
     .evento-card .card-nome {
       font-weight: 700; font-size: 16px; margin-bottom: 8px;
-      color: #333; word-break: break-word;
+      color: var(--txt); word-break: break-word;
     }
     .evento-card .card-info {
-      font-size: 13px; color: #666; margin-bottom: 4px;
+      font-size: 13px; color: var(--txt-soft); margin-bottom: 4px;
     }
     .evento-card .card-status {
       display: inline-block; font-size: 11px; font-weight: 700;
       padding: 3px 8px; border-radius: 20px; margin-top: 8px;
     }
-    .status-sorteado { background: #d4f8d4; color: #1a7a1a; }
-    .status-pendente { background: #fff3cd; color: #856404; }
-    .status-vazio { background: #eee; color: #888; }
+    .status-sorteado { background: var(--ok-bg); color: var(--ok-txt); }
+    .status-pendente { background: var(--warn-bg); color: var(--warn-txt); }
+    .status-vazio { background: #252840; color: var(--txt-mute); }
     .evento-card .card-data {
-      font-size: 11px; color: #aaa; margin-top: 8px;
+      font-size: 11px; color: var(--txt-mute); margin-top: 8px;
     }
     .evento-card .card-del {
       position: absolute; top: 8px; right: 8px;
       background: transparent; border: none; cursor: pointer;
-      font-size: 14px; color: #ccc; padding: 4px 6px;
+      font-size: 14px; color: var(--txt-mute); padding: 4px 6px;
       border-radius: 6px; opacity: 0; transition: opacity 0.2s;
     }
     .evento-card:hover .card-del { opacity: 1; }
-    .evento-card .card-del:hover { color: #e74c3c; background: #ffe5e0; }
+    .evento-card .card-del:hover { color: var(--danger); background: #3a1e1e; }
 
     .btn-novo-evento {
-      background: #667eea; color: #fff; padding: 10px 18px;
-      font-size: 14px; border-radius: 10px;
+      background: var(--primary); color: #0f1226;
+      padding: 10px 18px; font-size: 14px; border-radius: 10px;
+      font-weight: 700;
     }
-    .btn-novo-evento:hover { background: #5568d3; }
+    .btn-novo-evento:hover { background: var(--primary-hover); }
 
     /* ===== PAINEL DO EVENTO ===== */
     .voltar-bar { margin-bottom: 16px; }
     .btn-voltar {
-      background: transparent; color: #667eea;
+      background: transparent; color: var(--primary);
       font-size: 14px; padding: 6px 10px;
       border-radius: 8px;
     }
-    .btn-voltar:hover { background: #f0f4ff; }
+    .btn-voltar:hover { background: #23264a; }
 
     .evento-bar {
-      background: #f7f7fb; border-radius: 12px;
-      padding: 14px; margin-bottom: 20px;
+      background: var(--bg-card-soft);
+      border-radius: 12px; padding: 14px; margin-bottom: 20px;
       display: flex; flex-direction: column; gap: 10px;
+      border: 1px solid var(--border);
     }
-    .evento-bar label { font-size: 13px; color: #666; font-weight: 600; }
+    .evento-bar label { font-size: 13px; color: var(--txt-soft); font-weight: 600; }
     .evento-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
     .evento-row input, .evento-row select {
       flex: 1; min-width: 140px; padding: 10px 14px;
-      border: 2px solid #e0e0e0; border-radius: 10px;
-      font-size: 15px; outline: none; background: #fff;
+      border: 2px solid var(--border); border-radius: 10px;
+      font-size: 15px; outline: none;
+      background: var(--bg-input); color: var(--txt);
     }
-    .evento-row input:focus, .evento-row select:focus { border-color: #667eea; }
+    .evento-row input:focus, .evento-row select:focus {
+      border-color: var(--primary); background: var(--bg-input-focus);
+    }
     .evento-row button { padding: 10px 16px; font-size: 14px; }
     .evento-row .label-inline {
-      font-size: 13px; color: #666; font-weight: 600;
+      font-size: 13px; color: var(--txt-soft); font-weight: 600;
       min-width: auto; flex: 0 0 auto;
     }
 
     .input-group { display: flex; gap: 8px; margin-bottom: 16px; }
     input[type="text"] {
       flex: 1; padding: 12px 16px;
-      border: 2px solid #e0e0e0; border-radius: 10px;
+      border: 2px solid var(--border); border-radius: 10px;
       font-size: 16px; outline: none;
+      background: var(--bg-input); color: var(--txt);
     }
-    input[type="text"]:focus { border-color: #667eea; }
+    input[type="text"]:focus { border-color: var(--primary); background: var(--bg-input-focus); }
+    input::placeholder { color: var(--txt-mute); }
 
     button {
       padding: 12px 20px; border: none; border-radius: 10px;
-      background: #667eea; color: #fff; font-size: 16px;
-      font-weight: 600; cursor: pointer;
+      background: var(--primary); color: #0f1226;
+      font-size: 16px; font-weight: 700; cursor: pointer;
       transition: background 0.2s, transform 0.1s;
     }
-    button:hover { background: #5568d3; }
+    button:hover { background: var(--primary-hover); }
     button:active { transform: scale(0.97); }
-    button.danger { background: #e74c3c; }
-    button.danger:hover { background: #c0392b; }
-    button:disabled { background: #ccc; cursor: not-allowed; }
-    button.ghost { background: #f0f0f5; color: #444; }
-    button.ghost:hover { background: #e4e4ee; }
+    button.danger { background: #a83a38; color: #fff; }
+    button.danger:hover { background: var(--danger); }
+    button:disabled { background: #2a2d4a; color: var(--txt-mute); cursor: not-allowed; }
+    button.ghost { background: #252840; color: var(--txt); }
+    button.ghost:hover { background: #2f3352; }
 
     ul { list-style: none; margin-bottom: 20px; }
     li {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 16px; background: #f7f7fb;
+      padding: 12px 16px;
+      background: var(--bg-input); color: var(--txt);
       border-radius: 10px; margin-bottom: 8px;
+      border: 1px solid var(--border-soft);
       animation: slideIn 0.2s ease;
     }
     @keyframes slideIn {
@@ -132,91 +193,146 @@
       to { opacity: 1; transform: translateY(0); }
     }
     .remove-btn {
-      background: transparent; color: #e74c3c;
+      background: transparent; color: var(--danger);
       font-size: 20px; padding: 0 8px;
     }
-    .remove-btn:hover { background: #ffe5e0; }
+    .remove-btn:hover { background: #3a1e1e; }
 
     .actions { display: flex; gap: 8px; margin-bottom: 20px; }
     .actions button { flex: 1; }
 
-    .empty { text-align: center; color: #aaa; padding: 20px; font-style: italic; }
+    .empty {
+      text-align: center; color: var(--txt-mute);
+      padding: 20px; font-style: italic;
+    }
 
-    /* ===== SEÇÕES DO PAINEL ===== */
+    /* ===== SEÇÕES DO PAINEL — cada uma com sua cor ===== */
     .secao {
-      border: 2px solid #e8e8f0; border-radius: 14px;
+      border-radius: 14px;
       padding: 16px; margin-bottom: 20px;
+      border: 2px solid var(--border);
+      background: var(--bg-card-soft);
+      transition: background 0.3s, border-color 0.3s;
     }
     .secao h3 {
-      font-size: 15px; margin-bottom: 12px; color: #444;
+      font-size: 15px; margin-bottom: 12px;
       display: flex; justify-content: space-between; align-items: center;
+      color: var(--txt);
     }
     .secao h3 .badge {
-      font-size: 12px; background: #667eea; color: #fff;
-      padding: 3px 10px; border-radius: 20px; font-weight: 600;
+      font-size: 12px;
+      padding: 3px 10px; border-radius: 20px;
+      font-weight: 700;
     }
 
+    /* Participantes — azul-arroxeado */
+    .secao.secao-participantes {
+      background: var(--sec-part-bg);
+      border-color: var(--sec-part-border);
+    }
+    .secao.secao-participantes h3 .badge {
+      background: var(--sec-part-accent); color: #0f1226;
+    }
+
+    /* Momento 1 — verde-água */
+    .secao.momento1 {
+      background: var(--sec-m1-bg);
+      border-color: var(--sec-m1-border);
+    }
+    .secao.momento1 h3 { color: var(--sec-m1-accent); }
+    .secao.momento1 h3 .badge,
+    .secao.momento1 .badge-momento.ok { background: var(--sec-m1-accent); color: #0f1226; }
+
+    /* Momento 2 — âmbar/dourado */
+    .secao.momento2 {
+      background: var(--sec-m2-bg);
+      border-color: var(--sec-m2-border);
+    }
+    .secao.momento2 h3 { color: var(--sec-m2-accent); }
+    .secao.momento2 .badge-momento.ok { background: var(--sec-m2-accent); color: #0f1226; }
+
+    /* Botões dentro das seções — combinar com a cor */
+    .secao.momento1 .ghost {
+      background: #1b3d3a; color: var(--sec-m1-accent);
+    }
+    .secao.momento1 .ghost:hover { background: #224c48; }
+
+    .secao.momento2 .ghost {
+      background: #3d3116; color: var(--sec-m2-accent);
+    }
+    .secao.momento2 .ghost:hover { background: #4d3d1c; }
+
+    /* ===== LISTA DE DESEJOS ===== */
     .lista-desejos-item {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 12px; background: #fafafa;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.25);
       border-radius: 8px; margin-bottom: 6px; font-size: 14px;
+      color: var(--txt);
     }
     .lista-desejos-item .nome-d { font-weight: 600; }
     .lista-desejos-item .status-d {
       font-size: 12px; padding: 3px 10px; border-radius: 20px;
     }
-    .st-ok { background: #d4f8d4; color: #1a7a1a; }
-    .st-falta { background: #fff3cd; color: #856404; }
+    .st-ok { background: var(--ok-bg); color: var(--ok-txt); }
+    .st-falta { background: var(--warn-bg); color: var(--warn-txt); }
 
     .aviso-falta {
-      background: #fff8e1; border-left: 4px solid #ffb300;
+      background: rgba(246,199,106,0.12);
+      border-left: 4px solid var(--sec-m2-accent);
       padding: 10px 14px; border-radius: 8px;
-      font-size: 13px; color: #666; margin-bottom: 12px;
+      font-size: 13px; color: var(--txt-soft); margin-bottom: 12px;
     }
 
     textarea {
       width: 100%; min-height: 90px; padding: 12px;
-      border: 2px solid #e0e0e0; border-radius: 10px;
+      border: 2px solid var(--border); border-radius: 10px;
       font-family: monospace; font-size: 12px;
       resize: vertical; outline: none;
+      background: var(--bg-input); color: var(--txt);
     }
-    textarea:focus { border-color: #667eea; }
+    textarea:focus { border-color: var(--primary); background: var(--bg-input-focus); }
+    textarea::placeholder { color: var(--txt-mute); }
 
     /* ===== RESULTADO ===== */
     .resultado {
       margin-top: 20px; padding: 20px;
-      background: #f0f4ff; border-radius: 12px;
-      border: 2px dashed #667eea;
+      background: var(--sec-m2-bg); border-radius: 12px;
+      border: 2px dashed var(--sec-m2-border);
     }
-    .resultado h2 { margin-bottom: 12px; font-size: 18px; }
+    .resultado h2 {
+      margin-bottom: 12px; font-size: 18px; color: var(--sec-m2-accent);
+    }
     .resultado-item {
-      padding: 12px 14px; background: #fff;
+      padding: 12px 14px; background: rgba(0,0,0,0.3);
       border-radius: 8px; margin-bottom: 10px;
+      border: 1px solid var(--border-soft);
     }
     .resultado-item .linha-topo {
       display: flex; justify-content: space-between;
       align-items: center; margin-bottom: 8px;
       gap: 8px; flex-wrap: wrap;
     }
-    .resultado-item .nome { font-weight: 600; color: #667eea; }
-    .resultado-item .tirou { color: #555; font-size: 14px; }
-    .resultado-item .tirou strong { color: #333; }
+    .resultado-item .nome { font-weight: 700; color: var(--primary); }
+    .resultado-item .tirou { color: var(--txt-soft); font-size: 14px; }
+    .resultado-item .tirou strong { color: var(--txt); }
     .link-row { display: flex; gap: 6px; }
     .link-row input {
       flex: 1; font-size: 12px; padding: 8px 10px;
-      border: 1px solid #ddd; border-radius: 8px;
-      color: #666; background: #fafafa;
+      border: 1px solid var(--border); border-radius: 8px;
+      color: var(--txt-mute); background: rgba(0,0,0,0.4);
     }
     .link-row button {
       padding: 8px 12px; font-size: 13px; border-radius: 8px;
     }
-    .btn-wpp { background: #25d366; }
-    .btn-wpp:hover { background: #1ebe5a; }
+    .btn-wpp { background: #25d366; color: #0f1226; }
+    .btn-wpp:hover { background: #3ae67a; }
 
     .aviso {
-      background: #fff8e1; border-left: 4px solid #ffb300;
+      background: rgba(246,199,106,0.1);
+      border-left: 4px solid var(--sec-m2-accent);
       padding: 12px 16px; border-radius: 8px;
-      font-size: 13px; color: #666; margin-top: 16px;
+      font-size: 13px; color: var(--txt-soft); margin-top: 16px;
     }
 
     /* ===== TELA DE CADASTRO DE PRESENTES ===== */
@@ -225,78 +341,86 @@
       display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
     }
     .presente-input-group .num {
-      background: #667eea; color: #fff; width: 28px; height: 28px;
+      background: var(--sec-m1-accent); color: #0f1226;
+      width: 28px; height: 28px;
       border-radius: 50%; display: flex; align-items: center;
       justify-content: center; font-weight: 700; font-size: 14px;
       flex-shrink: 0;
     }
     .presente-input-group input {
       flex: 1; padding: 10px 14px;
-      border: 2px solid #e0e0e0; border-radius: 10px;
+      border: 2px solid var(--border); border-radius: 10px;
       font-size: 15px; outline: none;
+      background: var(--bg-input); color: var(--txt);
     }
-    .presente-input-group input:focus { border-color: #667eea; }
+    .presente-input-group input:focus {
+      border-color: var(--sec-m1-accent); background: var(--bg-input-focus);
+    }
     .hint-auto {
-      font-size: 12px; color: #aaa; margin-bottom: 16px;
+      font-size: 12px; color: var(--txt-mute); margin-bottom: 16px;
       font-style: italic;
     }
 
     .codigo-box {
-      background: #f0f4ff; border: 2px dashed #667eea;
+      background: var(--sec-m1-bg);
+      border: 2px dashed var(--sec-m1-border);
       border-radius: 12px; padding: 16px; margin-top: 20px;
     }
-    .codigo-box p { font-size: 14px; margin-bottom: 10px; color: #444; }
-    .codigo-box textarea {
-      background: #fff; font-size: 11px;
-    }
+    .codigo-box p { font-size: 14px; margin-bottom: 10px; color: var(--txt); }
+    .codigo-box textarea { background: rgba(0,0,0,0.4); font-size: 11px; }
     .codigo-box .btn-row {
       display: flex; gap: 8px; margin-top: 10px;
     }
     .codigo-box .btn-row button { flex: 1; }
+    .codigo-box .ghost { background: #1b3d3a; color: var(--sec-m1-accent); }
+    .codigo-box .ghost:hover { background: #224c48; }
 
     /* ===== TELA DE REVELAÇÃO ===== */
     .revelar-box { text-align: center; padding: 30px 10px; }
-    .revelar-box .sua-vez { color: #888; margin-bottom: 20px; }
-    .revelar-msg { color: #666; margin-bottom: 24px; }
+    .revelar-box .sua-vez { color: var(--txt-soft); margin-bottom: 20px; }
+    .revelar-msg { color: var(--txt-soft); margin-bottom: 24px; }
     .btn-grande {
       font-size: 18px; padding: 16px 32px; border-radius: 12px;
-      background: #667eea; color: #fff;
+      background: var(--primary); color: #0f1226; font-weight: 700;
     }
-    .btn-grande:hover { background: #5568d3; }
+    .btn-grande:hover { background: var(--primary-hover); }
 
-    /* Bloco de cada pessoa revelada (1 ou 2) */
+    /* Bloco de cada pessoa revelada — tom verde-água (presente) */
     .pessoa-revelada {
-      background: #f0f4ff; border-radius: 16px;
-      padding: 20px; margin: 20px 0;
-      border: 2px dashed #667eea;
+      background: var(--sec-m1-bg);
+      border-radius: 16px; padding: 20px; margin: 20px 0;
+      border: 2px dashed var(--sec-m1-border);
     }
     .pessoa-revelada .pessoa-titulo {
-      font-size: 13px; color: #888; font-weight: 600;
+      font-size: 13px; color: var(--sec-m1-accent); font-weight: 700;
       text-transform: uppercase; letter-spacing: 0.5px;
       margin-bottom: 6px;
     }
     .pessoa-revelada .pessoa-nome {
-      font-size: 28px; font-weight: 700; color: #667eea;
+      font-size: 28px; font-weight: 700;
+      color: var(--sec-m1-accent);
       word-break: break-word;
       margin-bottom: 16px;
     }
     .desejos-revelados {
-      background: #fff; border-radius: 12px;
-      padding: 16px; text-align: left;
+      background: rgba(0,0,0,0.3);
+      border-radius: 12px; padding: 16px; text-align: left;
+      border: 1px solid var(--border-soft);
     }
     .desejos-revelados h4 {
-      font-size: 14px; margin-bottom: 10px; color: #667eea;
+      font-size: 14px; margin-bottom: 10px;
+      color: var(--sec-m1-accent);
     }
     .desejos-revelados ol {
-      margin-left: 20px; color: #333;
+      margin-left: 20px; color: var(--txt);
     }
     .desejos-revelados li {
       padding: 6px 0; font-size: 15px;
       list-style: decimal; background: transparent;
-      display: list-item;
+      display: list-item; border: none;
     }
     .desejos-revelados .sem-lista {
-      list-style: none; color: #aaa; font-style: italic;
+      list-style: none; color: var(--txt-mute); font-style: italic;
       margin-left: 0;
     }
     .escondido { display: none; }
@@ -305,22 +429,25 @@
     .momento { transition: opacity 0.3s; }
     .momento.colapsado #conteudoMomento1 { display: none; }
     .btn-collapse {
-      background: transparent; color: #888; font-size: 16px;
-      padding: 2px 8px; border-radius: 6px; font-weight: 700;
+      background: transparent; color: var(--txt-soft);
+      font-size: 16px; padding: 2px 8px;
+      border-radius: 6px; font-weight: 700;
     }
-    .btn-collapse:hover { background: #f0f0f5; }
-    .momento.colapsado { opacity: 0.85; }
+    .btn-collapse:hover { background: rgba(255,255,255,0.08); }
+    .momento.colapsado { opacity: 0.7; }
 
     .progresso-m1 { margin-bottom: 12px; }
     .progresso-texto {
-      font-size: 13px; color: #666; margin-bottom: 6px;
+      font-size: 13px; color: var(--txt-soft); margin-bottom: 6px;
       font-weight: 600;
     }
     .progresso-barra {
-      height: 8px; background: #eee; border-radius: 4px; overflow: hidden;
+      height: 8px; background: rgba(0,0,0,0.35);
+      border-radius: 4px; overflow: hidden;
     }
     .progresso-fill {
-      height: 100%; background: linear-gradient(90deg, #667eea, #764ba2);
+      height: 100%;
+      background: linear-gradient(90deg, var(--sec-m1-accent), var(--sec-m1-border));
       transition: width 0.3s; border-radius: 4px;
     }
 
@@ -328,39 +455,45 @@
       font-size: 11px; padding: 3px 10px; border-radius: 20px;
       font-weight: 700;
     }
-    .badge-momento.ok { background: #d4f8d4; color: #1a7a1a; }
-    .badge-momento.pend { background: #fff3cd; color: #856404; }
-    .badge-momento.vazio { background: #eee; color: #888; }
+    .badge-momento.ok { background: var(--ok-bg); color: var(--ok-txt); }
+    .badge-momento.pend { background: var(--warn-bg); color: var(--warn-txt); }
+    .badge-momento.vazio { background: #2a2d4a; color: var(--txt-mute); }
 
     .status-box {
       padding: 12px 14px; border-radius: 10px; font-size: 13px;
       margin-bottom: 4px;
     }
-    .status-box.info { background: #e8f0fe; color: #1a4fba; }
-    .status-box.ok { background: #d4f8d4; color: #1a7a1a; }
-    .status-box.aviso { background: #fff3cd; color: #856404; }
+    .status-box.info {
+      background: rgba(139,124,255,0.15); color: var(--primary);
+    }
+    .status-box.ok { background: var(--ok-bg); color: var(--ok-txt); }
+    .status-box.aviso { background: var(--warn-bg); color: var(--warn-txt); }
 
     .btn-reenviar {
-      background: transparent; color: #667eea; font-size: 12px;
-      padding: 4px 8px; border-radius: 6px; font-weight: 600;
+      background: transparent; color: var(--sec-m1-accent);
+      font-size: 12px; padding: 4px 8px; border-radius: 6px;
+      font-weight: 600;
     }
-    .btn-reenviar:hover { background: #f0f4ff; }
+    .btn-reenviar:hover { background: rgba(79,209,197,0.15); }
 
     .config-sorteio {
       display: flex; align-items: center; gap: 10px;
-      padding: 12px 14px; background: #fafafa;
+      padding: 12px 14px; background: rgba(0,0,0,0.25);
       border-radius: 10px; margin-bottom: 12px;
     }
     .config-sorteio label {
-      font-size: 14px; color: #444; font-weight: 600;
+      font-size: 14px; color: var(--txt); font-weight: 600;
       flex: 1;
     }
     .config-sorteio select {
-      padding: 8px 12px; border: 2px solid #e0e0e0;
-      border-radius: 8px; font-size: 14px; background: #fff;
+      padding: 8px 12px;
+      border: 2px solid var(--sec-m2-border);
+      border-radius: 8px; font-size: 14px;
+      background: var(--bg-input); color: var(--txt);
       outline: none;
     }
-    .config-sorteio select:focus { border-color: #667eea; }
+    .config-sorteio select:focus { border-color: var(--sec-m2-accent); }
+    .config-sorteio select:disabled { opacity: 0.5; cursor: not-allowed; }
   </style>
 </head>
 <body>
@@ -406,7 +539,7 @@
     </div>
 
     <!-- Participantes -->
-    <div class="secao">
+    <div class="secao secao-participantes">
       <h3>👥 Participantes <span class="badge" id="badgeParticipantes">0</span></h3>
       <div class="input-group">
         <input type="text" id="nomeInput" placeholder="Nome do participante" autocomplete="off">
@@ -416,7 +549,7 @@
     </div>
 
     <!-- ========== MOMENTO 1: CADASTRO DE LISTAS ========== -->
-    <div class="secao momento" id="secaoMomento1">
+    <div class="secao momento momento1" id="secaoMomento1">
       <h3>
         <span>1️⃣ Cadastro de listas de desejos</span>
         <button class="btn-collapse" id="btnCollapseM1" onclick="toggleMomento1()" title="Recolher/expandir">▾</button>
@@ -438,7 +571,7 @@
         </div>
 
         <div id="areaColarCodigos" class="escondido" style="margin-top: 14px;">
-          <p style="font-size: 13px; color: #666; margin-bottom: 8px;">
+          <p style="font-size: 13px; color: var(--txt-soft); margin-bottom: 8px;">
             Cole um ou mais códigos (um por linha) e clique em Adicionar:
           </p>
           <textarea id="codigosInput" placeholder="eyJxIjoiSm9hw6NvIiwicCI6WyJGb25l...&#10;eyJxIjoiTWFyaWEiLCJwIjpbIkxpdnJv..."></textarea>
@@ -450,7 +583,7 @@
     </div>
 
     <!-- ========== MOMENTO 2: SORTEIO ========== -->
-    <div class="secao momento" id="secaoMomento2">
+    <div class="secao momento momento2" id="secaoMomento2">
       <h3>
         <span>2️⃣ Sorteio</span>
         <span class="badge-momento" id="badgeM2"></span>
@@ -491,8 +624,8 @@
       <h1>🎁 Lista de desejos</h1>
       <p class="subtitle" id="cadastroEventoNome"></p>
 
-      <p style="margin-bottom: 16px; color: #444;">
-        Olá, <strong id="cadastroNome"></strong>! Cadastre até 3 presentes que você gostaria de ganhar.
+      <p style="margin-bottom: 16px; color: var(--txt);">
+        Olá, <strong id="cadastroNome" style="color: var(--sec-m1-accent);"></strong>! Cadastre até 3 presentes que você gostaria de ganhar.
       </p>
 
       <div class="presente-input-group">
@@ -550,7 +683,7 @@
     let eventos = {};
     let eventoAtualId = null;
     let participantes = [];
-    let resultadoAtual = null;   // Agora: array de { quem, tirou: [nome1] ou [nome1, nome2] }
+    let resultadoAtual = null;
 
     const STORAGE_KEY = 'amigoOculto.eventos.v3';
 
@@ -601,7 +734,6 @@
       return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
     }
 
-    // Garante que o evento tenha os campos novos (compatibilidade)
     function normalizarEvento(ev) {
       if (!ev.listasDesejos) ev.listasDesejos = {};
       if (!ev.resultado) ev.resultado = null;
@@ -801,7 +933,6 @@
         aviso.classList.add('escondido');
       }
 
-      // Colapsar momento 1 após sorteio
       const secaoM1 = $('secaoMomento1');
       if (temResultado) {
         secaoM1.classList.add('colapsado');
@@ -811,17 +942,14 @@
         $('btnCollapseM1').textContent = '▾';
       }
 
-      // Config de sorteios (bloqueado após sortear)
       const selectConfig = $('configSorteios');
       selectConfig.value = String(qtdSort);
       selectConfig.disabled = temResultado;
 
-      // Status Momento 2
       const statusM2 = $('statusM2');
       const badgeM2 = $('badgeM2');
 
-      // Valida se dá para sortear com essa configuração
-      const minimo = qtdSort + 1; // precisa de pelo menos qtdSorteios + 1 para não repetir a si mesmo
+      const minimo = qtdSort + 1;
       const podeSortear = total >= minimo;
 
       if (total === 0) {
@@ -860,7 +988,6 @@
       const ev = eventos[eventoAtualId];
       if (!ev) return;
       if (ev.resultado && ev.resultado.length > 0) {
-        // Não deveria acontecer (select bloqueado), mas por segurança:
         alert('Não é possível mudar a configuração depois de sortear.');
         $('configSorteios').value = String(ev.qtdSorteios || 1);
         return;
@@ -972,7 +1099,7 @@
       $('resultado').innerHTML = `
         <div class="resultado">
           <h2>🔗 Links de cadastro de presentes</h2>
-          <p style="font-size:13px;color:#888;margin-bottom:14px;">
+          <p style="font-size:13px;color:var(--txt-mute);margin-bottom:14px;">
             Envie o link de cada pessoa. Depois de cadastrar, ela recebe um código
             que deve mandar para você colar abaixo.
           </p>
@@ -1051,9 +1178,6 @@
       return arr;
     }
 
-    // Verifica se um array `sorteado` (mesmo tamanho de `original`)
-    // atende a regra: para cada índice i, sorteado[i] não contém o próprio original[i]
-    // e os nomes dentro de cada sorteado[i] são distintos.
     function sorteioValido(original, sorteado, qtd) {
       for (let i = 0; i < original.length; i++) {
         const nomes = sorteado[i];
@@ -1065,28 +1189,22 @@
       return true;
     }
 
-    // Gera um sorteio válido tentando N vezes. Para qtd=2 com N>=3 sempre
-    // existe solução; usando Fisher-Yates em "rodadas" (uma por sorteio),
-    // a probabilidade de acerto é alta.
     function gerarSorteioValido(participantes, qtd) {
       const n = participantes.length;
       if (n < qtd + 1) return null;
 
       const maxTentativas = 5000;
       for (let t = 0; t < maxTentativas; t++) {
-        // Para cada "rodada" (1..qtd), faz um shuffle independente
         const rodadas = [];
         for (let r = 0; r < qtd; r++) {
           rodadas.push(shuffle(participantes));
         }
-        // Junta: sorteado[i] = [rodadas[0][i], rodadas[1][i], ...]
         const sorteado = participantes.map((_, i) => rodadas.map(rod => rod[i]));
-
         if (sorteioValido(participantes, sorteado, qtd)) {
           return sorteado;
         }
       }
-      return null; // improvável com N>=3
+      return null;
     }
 
     function sortear() {
@@ -1112,7 +1230,7 @@
 
       resultadoAtual = participantes.map((nome, i) => ({
         quem: nome,
-        tirou: sorteado[i]  // array (1 ou 2 nomes)
+        tirou: sorteado[i]
       }));
 
       eventos[eventoAtualId].resultado = resultadoAtual;
@@ -1134,7 +1252,6 @@
       const desejos = nomes.map(n => (ev.listasDesejos && ev.listasDesejos[n]) || null);
 
       const payload = { q: quem, t: nomes, e: ev.nome };
-      // Só inclui `d` se pelo menos um tiver lista
       if (desejos.some(d => d)) {
         payload.d = desejos;
       }
@@ -1162,7 +1279,7 @@
 
     function renderizarResultado(resultado) {
       let html = '<div class="resultado"><h2>✨ Resultado do sorteio</h2>';
-      html += '<p style="font-size:13px;color:#888;margin-bottom:14px;">Envie o link de cada pessoa. Cada link mostra o(s) resultado(s) e a(s) lista(s) de desejos de quem ela tirou.</p>';
+      html += '<p style="font-size:13px;color:var(--txt-mute);margin-bottom:14px;">Envie o link de cada pessoa. Cada link mostra o(s) resultado(s) e a(s) lista(s) de desejos de quem ela tirou.</p>';
 
       resultado.forEach((item, i) => {
         const link = montarLinkResultado(item.quem, item.tirou);
@@ -1239,9 +1356,6 @@
     }
 
     // ============ TELA: REVELAÇÃO ============
-    // Payload esperado:
-    // { q: "João", t: ["Maria"] ou ["Maria","Pedro"], e: "Natal 2026",
-    //   d: [ ["presente1","presente2","presente3"] , [...] ]  (opcional) }
     function abrirTelaRevelar(payload) {
       $('telaCards').classList.add('escondido');
       $('telaPainel').classList.add('escondido');
@@ -1253,12 +1367,11 @@
       const nomes = Array.isArray(payload.t) ? payload.t : [payload.t];
       const desejosArr = Array.isArray(payload.d) ? payload.d : [];
 
-      $('revelarIntro').textContent = nomes.length > 1 ? 'Você tirou:' : 'Você tirou:';
+      $('revelarIntro').textContent = 'Você tirou:';
       $('revelarInstrucao').textContent = nomes.length > 1
         ? 'Clique no botão abaixo para descobrir quem você tirou (2 nomes):'
         : 'Clique no botão abaixo para descobrir quem você tirou:';
 
-      // Monta os blocos
       const container = $('revelarPessoas');
       container.innerHTML = nomes.map((nome, i) => {
         const lista = desejosArr[i];
