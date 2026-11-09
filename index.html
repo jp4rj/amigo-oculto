@@ -9,78 +9,105 @@
     body {
       font-family: system-ui, -apple-system, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      padding: 20px;
-      color: #333;
+      min-height: 100vh; padding: 20px; color: #333;
     }
     .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 16px;
-      padding: 30px;
+      max-width: 700px; margin: 0 auto; background: #fff;
+      border-radius: 16px; padding: 30px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.2);
     }
     h1 { text-align: center; margin-bottom: 8px; }
     .subtitle { text-align: center; color: #888; margin-bottom: 24px; font-size: 14px; }
 
+    /* ===== CARDS DE EVENTOS ===== */
+    .cards-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px;
+    }
+    .cards-header h2 { font-size: 18px; }
+    .cards-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px; margin-bottom: 20px;
+    }
+    .evento-card {
+      background: #f7f7fb; border-radius: 14px; padding: 16px;
+      cursor: pointer; border: 2px solid transparent;
+      transition: all 0.2s; position: relative;
+    }
+    .evento-card:hover {
+      border-color: #667eea; transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(102,126,234,0.2);
+    }
+    .evento-card .card-nome {
+      font-weight: 700; font-size: 16px; margin-bottom: 8px;
+      color: #333; word-break: break-word;
+    }
+    .evento-card .card-info {
+      font-size: 13px; color: #666; margin-bottom: 4px;
+    }
+    .evento-card .card-status {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      padding: 3px 8px; border-radius: 20px; margin-top: 8px;
+    }
+    .status-sorteado { background: #d4f8d4; color: #1a7a1a; }
+    .status-pendente { background: #fff3cd; color: #856404; }
+    .status-vazio { background: #eee; color: #888; }
+    .evento-card .card-data {
+      font-size: 11px; color: #aaa; margin-top: 8px;
+    }
+    .evento-card .card-del {
+      position: absolute; top: 8px; right: 8px;
+      background: transparent; border: none; cursor: pointer;
+      font-size: 14px; color: #ccc; padding: 4px 6px;
+      border-radius: 6px; opacity: 0; transition: opacity 0.2s;
+    }
+    .evento-card:hover .card-del { opacity: 1; }
+    .evento-card .card-del:hover { color: #e74c3c; background: #ffe5e0; }
+
+    .btn-novo-evento {
+      background: #667eea; color: #fff; padding: 10px 18px;
+      font-size: 14px; border-radius: 10px;
+    }
+    .btn-novo-evento:hover { background: #5568d3; }
+
+    /* ===== PAINEL DO EVENTO ===== */
+    .voltar-bar {
+      margin-bottom: 16px;
+    }
+    .btn-voltar {
+      background: transparent; color: #667eea;
+      font-size: 14px; padding: 6px 10px;
+      border-radius: 8px;
+    }
+    .btn-voltar:hover { background: #f0f4ff; }
+
     .evento-bar {
-      background: #f7f7fb;
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      background: #f7f7fb; border-radius: 12px;
+      padding: 14px; margin-bottom: 20px;
+      display: flex; flex-direction: column; gap: 10px;
     }
-    .evento-bar label {
-      font-size: 13px;
-      color: #666;
-      font-weight: 600;
-    }
-    .evento-row { display: flex; gap: 8px; }
+    .evento-bar label { font-size: 13px; color: #666; font-weight: 600; }
+    .evento-row { display: flex; gap: 8px; flex-wrap: wrap; }
     .evento-row input, .evento-row select {
-      flex: 1;
-      padding: 10px 14px;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      font-size: 15px;
-      outline: none;
-      background: #fff;
+      flex: 1; min-width: 140px; padding: 10px 14px;
+      border: 2px solid #e0e0e0; border-radius: 10px;
+      font-size: 15px; outline: none; background: #fff;
     }
-    .evento-row input:focus, .evento-row select:focus { border-color: #667eea; }
+    .evento-row input:focus { border-color: #667eea; }
     .evento-row button { padding: 10px 16px; font-size: 14px; }
-    .btn-excluir-evento {
-      background: #fff;
-      color: #e74c3c;
-      border: 2px solid #ffd6d0;
-      padding: 10px 14px;
-      font-size: 14px;
-      border-radius: 10px;
-    }
-    .btn-excluir-evento:hover { background: #ffe5e0; border-color: #e74c3c; }
 
     .input-group { display: flex; gap: 8px; margin-bottom: 16px; }
     input[type="text"] {
-      flex: 1;
-      padding: 12px 16px;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      font-size: 16px;
-      outline: none;
-      transition: border 0.2s;
+      flex: 1; padding: 12px 16px;
+      border: 2px solid #e0e0e0; border-radius: 10px;
+      font-size: 16px; outline: none;
     }
     input[type="text"]:focus { border-color: #667eea; }
 
     button {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 10px;
-      background: #667eea;
-      color: #fff;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
+      padding: 12px 20px; border: none; border-radius: 10px;
+      background: #667eea; color: #fff; font-size: 16px;
+      font-weight: 600; cursor: pointer;
       transition: background 0.2s, transform 0.1s;
     }
     button:hover { background: #5568d3; }
@@ -93,13 +120,9 @@
 
     ul { list-style: none; margin-bottom: 20px; }
     li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      background: #f7f7fb;
-      border-radius: 10px;
-      margin-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 16px; background: #f7f7fb;
+      border-radius: 10px; margin-bottom: 8px;
       animation: slideIn 0.2s ease;
     }
     @keyframes slideIn {
@@ -107,10 +130,8 @@
       to { opacity: 1; transform: translateY(0); }
     }
     .remove-btn {
-      background: transparent;
-      color: #e74c3c;
-      font-size: 20px;
-      padding: 0 8px;
+      background: transparent; color: #e74c3c;
+      font-size: 20px; padding: 0 8px;
     }
     .remove-btn:hover { background: #ffe5e0; }
 
@@ -119,128 +140,287 @@
 
     .empty { text-align: center; color: #aaa; padding: 20px; font-style: italic; }
 
+    /* ===== SEÇÕES DO PAINEL ===== */
+    .secao {
+      border: 2px solid #e8e8f0; border-radius: 14px;
+      padding: 16px; margin-bottom: 20px;
+    }
+    .secao h3 {
+      font-size: 15px; margin-bottom: 12px; color: #444;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .secao h3 .badge {
+      font-size: 12px; background: #667eea; color: #fff;
+      padding: 3px 10px; border-radius: 20px; font-weight: 600;
+    }
+
+    .lista-desejos-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 12px; background: #fafafa;
+      border-radius: 8px; margin-bottom: 6px; font-size: 14px;
+    }
+    .lista-desejos-item .nome-d { font-weight: 600; }
+    .lista-desejos-item .status-d {
+      font-size: 12px; padding: 3px 10px; border-radius: 20px;
+    }
+    .st-ok { background: #d4f8d4; color: #1a7a1a; }
+    .st-falta { background: #fff3cd; color: #856404; }
+
+    .aviso-falta {
+      background: #fff8e1; border-left: 4px solid #ffb300;
+      padding: 10px 14px; border-radius: 8px;
+      font-size: 13px; color: #666; margin-bottom: 12px;
+    }
+
+    textarea {
+      width: 100%; min-height: 90px; padding: 12px;
+      border: 2px solid #e0e0e0; border-radius: 10px;
+      font-family: monospace; font-size: 12px;
+      resize: vertical; outline: none;
+    }
+    textarea:focus { border-color: #667eea; }
+
+    /* ===== RESULTADO ===== */
     .resultado {
-      margin-top: 20px;
-      padding: 20px;
-      background: #f0f4ff;
-      border-radius: 12px;
+      margin-top: 20px; padding: 20px;
+      background: #f0f4ff; border-radius: 12px;
       border: 2px dashed #667eea;
     }
     .resultado h2 { margin-bottom: 12px; font-size: 18px; }
     .resultado-item {
-      padding: 12px 14px;
-      background: #fff;
-      border-radius: 8px;
-      margin-bottom: 10px;
+      padding: 12px 14px; background: #fff;
+      border-radius: 8px; margin-bottom: 10px;
     }
     .resultado-item .linha-topo {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 8px;
     }
     .resultado-item .nome { font-weight: 600; color: #667eea; }
     .resultado-item .tirou { color: #555; font-size: 14px; }
     .resultado-item .tirou strong { color: #333; }
     .link-row { display: flex; gap: 6px; }
     .link-row input {
-      flex: 1;
-      font-size: 12px;
-      padding: 8px 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      color: #666;
-      background: #fafafa;
+      flex: 1; font-size: 12px; padding: 8px 10px;
+      border: 1px solid #ddd; border-radius: 8px;
+      color: #666; background: #fafafa;
     }
     .link-row button {
-      padding: 8px 12px;
-      font-size: 13px;
-      border-radius: 8px;
+      padding: 8px 12px; font-size: 13px; border-radius: 8px;
     }
     .btn-wpp { background: #25d366; }
     .btn-wpp:hover { background: #1ebe5a; }
 
     .aviso {
-      background: #fff8e1;
-      border-left: 4px solid #ffb300;
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      color: #666;
-      margin-top: 16px;
+      background: #fff8e1; border-left: 4px solid #ffb300;
+      padding: 12px 16px; border-radius: 8px;
+      font-size: 13px; color: #666; margin-top: 16px;
     }
 
-    .revelar-box { text-align: center; padding: 40px 20px; }
-    .revelar-box h2 { margin-bottom: 12px; }
+    /* ===== TELA DE CADASTRO DE PRESENTES ===== */
+    .cadastro-box { padding: 10px 0; }
+    .presente-input-group {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    }
+    .presente-input-group .num {
+      background: #667eea; color: #fff; width: 28px; height: 28px;
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-weight: 700; font-size: 14px;
+      flex-shrink: 0;
+    }
+    .presente-input-group input {
+      flex: 1; padding: 10px 14px;
+      border: 2px solid #e0e0e0; border-radius: 10px;
+      font-size: 15px; outline: none;
+    }
+    .presente-input-group input:focus { border-color: #667eea; }
+    .hint-auto {
+      font-size: 12px; color: #aaa; margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    .codigo-box {
+      background: #f0f4ff; border: 2px dashed #667eea;
+      border-radius: 12px; padding: 16px; margin-top: 20px;
+    }
+    .codigo-box p { font-size: 14px; margin-bottom: 10px; color: #444; }
+    .codigo-box textarea {
+      background: #fff; font-size: 11px;
+    }
+    .codigo-box .btn-row {
+      display: flex; gap: 8px; margin-top: 10px;
+    }
+    .codigo-box .btn-row button { flex: 1; }
+
+    /* ===== TELA DE REVELAÇÃO ===== */
+    .revelar-box { text-align: center; padding: 30px 10px; }
     .revelar-box .sua-vez { color: #888; margin-bottom: 20px; }
     .revelar-nome {
-      font-size: 32px;
-      font-weight: 700;
-      color: #667eea;
-      margin: 20px 0;
-      padding: 20px;
-      background: #f0f4ff;
-      border-radius: 16px;
-      border: 2px dashed #667eea;
+      font-size: 32px; font-weight: 700; color: #667eea;
+      margin: 20px 0; padding: 20px; background: #f0f4ff;
+      border-radius: 16px; border: 2px dashed #667eea;
       word-break: break-word;
     }
     .revelar-msg { color: #666; margin-bottom: 24px; }
     .btn-grande {
-      font-size: 18px;
-      padding: 16px 32px;
-      border-radius: 12px;
-      background: #667eea;
-      color: #fff;
+      font-size: 18px; padding: 16px 32px; border-radius: 12px;
+      background: #667eea; color: #fff;
     }
     .btn-grande:hover { background: #5568d3; }
+
+    .desejos-revelados {
+      background: #fff; border-radius: 14px;
+      padding: 20px; margin-top: 20px;
+      border: 2px solid #f0f4ff; text-align: left;
+    }
+    .desejos-revelados h3 {
+      font-size: 16px; margin-bottom: 12px; color: #667eea;
+      text-align: center;
+    }
+    .desejos-revelados ol {
+      margin-left: 20px; color: #333;
+    }
+    .desejos-revelados li {
+      padding: 8px 0; font-size: 15px;
+      list-style: decimal; background: transparent;
+      display: list-item;
+    }
     .escondido { display: none; }
   </style>
 </head>
 <body>
-  <div class="container" id="telaPrincipal">
+
+  <!-- ============================================
+       TELA 1: CARDS DE EVENTOS
+       ============================================ -->
+  <div class="container" id="telaCards">
     <h1>🎁 Amigo Oculto</h1>
-    <p class="subtitle">Gerencie eventos, sorteie e envie os links</p>
+    <p class="subtitle">Seus eventos salvos neste navegador</p>
+
+    <div class="cards-header">
+      <h2>Meus Eventos</h2>
+      <button class="btn-novo-evento" onclick="novoEvento()">+ Novo evento</button>
+    </div>
+
+    <div class="cards-grid" id="cardsGrid"></div>
+
+    <div class="evento-bar" style="margin-top: 20px;">
+      <div class="evento-row">
+        <button class="ghost" onclick="exportarEventos()" style="flex:1;">⬇️ Exportar backup</button>
+        <button class="ghost" onclick="document.getElementById('importInput').click()" style="flex:1;">⬆️ Importar backup</button>
+        <input type="file" id="importInput" accept=".json" style="display:none" onchange="importarEventos(event)">
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       TELA 2: PAINEL DO EVENTO (organizador)
+       ============================================ -->
+  <div class="container escondido" id="telaPainel">
+    <button class="btn-voltar" onclick="voltarParaCards()">← Voltar para meus eventos</button>
+
+    <h1 id="tituloEvento" style="margin-top: 12px;">🎁 Evento</h1>
+    <p class="subtitle" id="subtituloEvento"></p>
 
     <div class="evento-bar">
-      <label for="eventoInput">📅 Nome do evento</label>
+      <label>📅 Nome do evento</label>
       <div class="evento-row">
-        <input type="text" id="eventoInput" placeholder="Ex: Natal 2026" autocomplete="off">
+        <input type="text" id="eventoInput" placeholder="Ex: Natal 2026" onchange="salvarEvento()">
         <button onclick="salvarEvento()" id="btnSalvarEvento">Salvar</button>
       </div>
-      <div class="evento-row">
-        <select id="seletorEvento" onchange="carregarEvento(this.value)">
-          <option value="">— Eventos salvos —</option>
-        </select>
-        <button class="btn-excluir-evento" onclick="excluirEvento()" id="btnExcluirEvento" disabled>🗑️</button>
+    </div>
+
+    <!-- Participantes -->
+    <div class="secao">
+      <h3>👥 Participantes <span class="badge" id="badgeParticipantes">0</span></h3>
+      <div class="input-group">
+        <input type="text" id="nomeInput" placeholder="Nome do participante" autocomplete="off">
+        <button onclick="adicionar()">Adicionar</button>
       </div>
-      <div class="evento-row">
-        <button class="ghost" onclick="exportarEventos()" style="flex:1;">⬇️ Exportar</button>
-        <button class="ghost" onclick="document.getElementById('importInput').click()" style="flex:1;">⬆️ Importar</button>
-        <input type="file" id="importInput" accept=".json,application/json" style="display:none" onchange="importarEventos(event)">
+      <ul id="lista"></ul>
+    </div>
+
+    <!-- Lista de desejos -->
+    <div class="secao">
+      <h3>🎁 Lista de desejos <span class="badge" id="badgeDesejos">0/0</span></h3>
+
+      <div id="avisoFalta" class="aviso-falta escondido"></div>
+
+      <div id="listaDesejos"></div>
+
+      <div class="evento-row" style="margin-top: 12px;">
+        <button class="ghost" onclick="gerarLinksCadastro()" style="flex:1;">🔗 Gerar links de cadastro</button>
+        <button class="ghost" onclick="toggleColarCodigos()" style="flex:1;">📥 Colar códigos</button>
+      </div>
+
+      <div id="areaColarCodigos" class="escondido" style="margin-top: 14px;">
+        <p style="font-size: 13px; color: #666; margin-bottom: 8px;">
+          Cole um ou mais códigos (um por linha) e clique em Adicionar:
+        </p>
+        <textarea id="codigosInput" placeholder="eyJxIjoiSm9hw6NvIiwicCI6WyJGb25l...&#10;eyJxIjoiTWFyaWEiLCJwIjpbIkxpdnJv..."></textarea>
+        <div class="evento-row" style="margin-top: 8px;">
+          <button onclick="adicionarCodigos()" style="flex:1;">Adicionar códigos</button>
+        </div>
       </div>
     </div>
 
-    <div class="input-group">
-      <input type="text" id="nomeInput" placeholder="Nome do participante" autocomplete="off">
-      <button onclick="adicionar()">Adicionar</button>
-    </div>
-
-    <ul id="lista"></ul>
-
+    <!-- Sorteio -->
     <div class="actions">
       <button id="btnSortear" onclick="sortear()" disabled>🎲 Sortear</button>
-      <button class="danger" onclick="limpar()">Limpar participantes</button>
+      <button class="danger" onclick="limparParticipantes()">Limpar participantes</button>
     </div>
 
     <div id="resultado"></div>
 
     <div class="aviso">
-      🔒 <strong>Como funciona:</strong> cada participante recebe um link único que mostra
-      <em>apenas</em> o nome que ele tirou. Os eventos ficam salvos neste navegador —
-      use <strong>Exportar</strong> para fazer backup.
+      🔒 Cada participante recebe um link que mostra <em>apenas</em> o resultado dele
+      e a lista de desejos de quem ele tirou.
     </div>
   </div>
 
+  <!-- ============================================
+       TELA 3: CADASTRO DE PRESENTES (participante)
+       ============================================ -->
+  <div class="container escondido" id="telaCadastro">
+    <div class="cadastro-box">
+      <h1>🎁 Lista de desejos</h1>
+      <p class="subtitle" id="cadastroEventoNome"></p>
+
+      <p style="margin-bottom: 16px; color: #444;">
+        Olá, <strong id="cadastroNome"></strong>! Cadastre até 3 presentes que você gostaria de ganhar.
+      </p>
+
+      <div class="presente-input-group">
+        <div class="num">1</div>
+        <input type="text" id="presente1" placeholder="Primeiro presente" maxlength="80">
+      </div>
+      <div class="presente-input-group">
+        <div class="num">2</div>
+        <input type="text" id="presente2" placeholder="Segundo presente (opcional)" maxlength="80">
+      </div>
+      <div class="presente-input-group">
+        <div class="num">3</div>
+        <input type="text" id="presente3" placeholder="Terceiro presente (opcional)" maxlength="80">
+      </div>
+      <p class="hint-auto">💡 Posições vazias serão preenchidas com "Me Surpreenda".</p>
+
+      <button class="btn-grande" style="width: 100%;" onclick="gerarCodigoParticipante()">
+        Salvar e gerar código
+      </button>
+
+      <div id="codigoGerado" class="codigo-box escondido">
+        <p>✅ Pronto! Copie o código abaixo e <strong>envie para o organizador</strong> (WhatsApp, email...):</p>
+        <textarea id="codigoTexto" readonly onclick="this.select()"></textarea>
+        <div class="btn-row">
+          <button class="ghost" onclick="copiarCodigo()">📋 Copiar código</button>
+          <button class="btn-wpp" onclick="enviarCodigoWhatsApp()">📱 Enviar por WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       TELA 4: REVELAÇÃO DO RESULTADO
+       ============================================ -->
   <div class="container escondido" id="telaRevelar">
     <div class="revelar-box">
       <h1>🎁 Amigo Oculto</h1>
@@ -254,26 +434,44 @@
       <div id="blocoRevelado" class="escondido">
         <p class="revelar-msg">Você tirou:</p>
         <div class="revelar-nome" id="revelarNome"></div>
-        <p class="revelar-msg">🤫 Guarde segredo! Não mostre para ninguém.</p>
+
+        <div class="desejos-revelados">
+          <h3>🎁 Lista de desejos</h3>
+          <ol id="revelarDesejos"></ol>
+        </div>
+
+        <p class="revelar-msg" style="margin-top: 24px;">🤫 Guarde segredo! Não mostre para ninguém.</p>
       </div>
     </div>
   </div>
 
   <script>
+    // ============ ESTADO GLOBAL ============
+    let eventos = {};            // { id: { nome, participantes, listasDesejos, resultado, criadoEm, atualizadoEm } }
+    let eventoAtualId = null;
     let participantes = [];
     let resultadoAtual = null;
-    let eventoAtualId = null;
 
-    const STORAGE_KEY = 'amigoOculto.eventos.v1';
+    const STORAGE_KEY = 'amigoOculto.eventos.v2';
 
-    const nomeInput = document.getElementById('nomeInput');
-    const eventoInput = document.getElementById('eventoInput');
-    const seletorEvento = document.getElementById('seletorEvento');
-    const btnExcluirEvento = document.getElementById('btnExcluirEvento');
-    const lista = document.getElementById('lista');
-    const btnSortear = document.getElementById('btnSortear');
-    const resultadoDiv = document.getElementById('resultado');
+    // ============ ELEMENTOS ============
+    const $ = id => document.getElementById(id);
 
+    // ============ STORAGE ============
+    function carregarEventos() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        eventos = raw ? JSON.parse(raw) : {};
+      } catch (e) { eventos = {}; }
+    }
+    function salvarEventos() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(eventos));
+    }
+    function gerarId() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    }
+
+    // ============ UTIL ============
     function escapeHtml(text) {
       const div = document.createElement('div');
       div.textContent = text;
@@ -298,75 +496,141 @@
       } catch (e) { return null; }
     }
 
-    function carregarTodosEventos() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : {};
-      } catch (e) { return {}; }
+    function formatarData(ts) {
+      if (!ts) return '—';
+      const d = new Date(ts);
+      return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
     }
 
-    function salvarTodosEventos(obj) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
-    }
-
-    function gerarId() {
-      return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    }
-
-    function checarLinkResultado() {
+    // ============ ROTEADOR (hash) ============
+    function rotear() {
       const hash = window.location.hash;
-      if (!hash.startsWith('#r=')) return false;
-      const payload = decodePayload(hash.slice(3));
-      if (!payload || !payload.q || !payload.t) return false;
 
-      document.getElementById('telaPrincipal').classList.add('escondido');
-      document.getElementById('telaRevelar').classList.remove('escondido');
-      document.getElementById('revelarQuem').textContent =
-        (payload.e ? payload.e + ' — ' : '') + 'Olá, ' + payload.q + '!';
-      document.getElementById('revelarNome').textContent = payload.t;
-      return true;
+      // Link de cadastro: #w=<payload>
+      if (hash.startsWith('#w=')) {
+        const p = decodePayload(hash.slice(3));
+        if (p && p.e && p.q) {
+          abrirTelaCadastro(p);
+          return;
+        }
+      }
+
+      // Link de resultado: #r=<payload>
+      if (hash.startsWith('#r=')) {
+        const p = decodePayload(hash.slice(3));
+        if (p && p.q && p.t) {
+          abrirTelaRevelar(p);
+          return;
+        }
+      }
+
+      // Padrão: tela de cards
+      abrirTelaCards();
     }
 
-    function revelar() {
-      document.getElementById('blocoOculto').classList.add('escondido');
-      document.getElementById('blocoRevelado').classList.remove('escondido');
+    // ============ TELA: CARDS ============
+    function abrirTelaCards() {
+      $('telaCards').classList.remove('escondido');
+      $('telaPainel').classList.add('escondido');
+      $('telaCadastro').classList.add('escondido');
+      $('telaRevelar').classList.add('escondido');
+      renderizarCards();
     }
 
-    nomeInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') adicionar();
-    });
+    function renderizarCards() {
+      const grid = $('cardsGrid');
+      const ids = Object.keys(eventos);
 
-    function adicionar() {
-      const nome = nomeInput.value.trim();
-      if (!nome) return;
-      if (participantes.some(p => p.toLowerCase() === nome.toLowerCase())) {
-        alert('Esse nome já foi adicionado!');
+      if (ids.length === 0) {
+        grid.innerHTML = '<div class="empty" style="grid-column: 1/-1;">Nenhum evento ainda. Clique em "+ Novo evento".</div>';
         return;
       }
-      participantes.push(nome);
-      nomeInput.value = '';
-      nomeInput.focus();
-      renderizar();
-      autoSalvar();
+
+      const ordenados = ids.sort((a, b) =>
+        (eventos[b].atualizadoEm || 0) - (eventos[a].atualizadoEm || 0)
+      );
+
+      grid.innerHTML = ordenados.map(id => {
+        const ev = eventos[id];
+        const qtd = (ev.participantes || []).length;
+        const sort = ev.resultado && ev.resultado.length > 0;
+
+        let statusHtml;
+        if (sort) {
+          statusHtml = '<span class="card-status status-sorteado">✅ Sorteado</span>';
+        } else if (qtd > 0) {
+          statusHtml = '<span class="card-status status-pendente">⏳ Não sorteado</span>';
+        } else {
+          statusHtml = '<span class="card-status status-vazio">📝 Vazio</span>';
+        }
+
+        return `
+          <div class="evento-card" onclick="abrirEvento('${id}')">
+            <button class="card-del" onclick="event.stopPropagation(); excluirEvento('${id}')" title="Excluir">🗑️</button>
+            <div class="card-nome">${escapeHtml(ev.nome)}</div>
+            <div class="card-info">👥 ${qtd} participante${qtd !== 1 ? 's' : ''}</div>
+            ${statusHtml}
+            <div class="card-data">Atualizado: ${formatarData(ev.atualizadoEm)}</div>
+          </div>
+        `;
+      }).join('');
     }
 
-    function remover(index) {
-      participantes.splice(index, 1);
-      renderizar();
-      autoSalvar();
+    function novoEvento() {
+      const nome = prompt('Nome do novo evento:', 'Natal ' + new Date().getFullYear());
+      if (!nome || !nome.trim()) return;
+      const id = gerarId();
+      eventos[id] = {
+        nome: nome.trim(),
+        participantes: [],
+        listasDesejos: {},
+        resultado: null,
+        criadoEm: Date.now(),
+        atualizadoEm: Date.now()
+      };
+      salvarEventos();
+      abrirEvento(id);
     }
 
-    function limpar() {
-      if (participantes.length === 0 && !resultadoAtual) return;
-      if (!confirm('Apagar todos os participantes e o sorteio atual?')) return;
+    function excluirEvento(id) {
+      if (!eventos[id]) return;
+      if (!confirm(`Excluir o evento "${eventos[id].nome}"?`)) return;
+      delete eventos[id];
+      salvarEventos();
+      renderizarCards();
+    }
+
+    function abrirEvento(id) {
+      if (!eventos[id]) return;
+      eventoAtualId = id;
+      const ev = eventos[id];
+      participantes = [...(ev.participantes || [])];
+      resultadoAtual = ev.resultado || null;
+
+      $('tituloEvento').textContent = '🎁 ' + ev.nome;
+      $('subtituloEvento').textContent = 'Painel do organizador';
+      $('eventoInput').value = ev.nome;
+
+      $('telaCards').classList.add('escondido');
+      $('telaPainel').classList.remove('escondido');
+      $('telaCadastro').classList.add('escondido');
+      $('telaRevelar').classList.add('escondido');
+
+      renderizarPainel();
+    }
+
+    function voltarParaCards() {
+      eventoAtualId = null;
       participantes = [];
       resultadoAtual = null;
-      resultadoDiv.innerHTML = '';
-      renderizar();
-      autoSalvar();
+      window.location.hash = '';
+      abrirTelaCards();
     }
 
-    function renderizar() {
+    // ============ PAINEL DO EVENTO ============
+    function renderizarPainel() {
+      // Participantes
+      const lista = $('lista');
       lista.innerHTML = '';
       if (participantes.length === 0) {
         lista.innerHTML = '<div class="empty">Nenhum participante ainda...</div>';
@@ -375,16 +639,198 @@
           const li = document.createElement('li');
           li.innerHTML = `
             <span>${escapeHtml(nome)}</span>
-            <button class="remove-btn" onclick="remover(${i})">✕</button>
+            <button class="remove-btn" onclick="removerParticipante(${i})">✕</button>
           `;
           lista.appendChild(li);
         });
       }
-      btnSortear.disabled = participantes.length < 2;
-      if (resultadoAtual) renderizarResultado(resultadoAtual);
-      else resultadoDiv.innerHTML = '';
+      $('badgeParticipantes').textContent = participantes.length;
+
+      // Lista de desejos
+      const ev = eventos[eventoAtualId];
+      const listas = ev.listasDesejos || {};
+      const total = participantes.length;
+      const cadastrados = participantes.filter(p => listas[p]).length;
+
+      $('badgeDesejos').textContent = `${cadastrados}/${total}`;
+
+      const cont = $('listaDesejos');
+      if (participantes.length === 0) {
+        cont.innerHTML = '<div class="empty">Adicione participantes primeiro.</div>';
+      } else {
+        cont.innerHTML = participantes.map(p => {
+          const tem = !!listas[p];
+          return `
+            <div class="lista-desejos-item">
+              <span class="nome-d">${escapeHtml(p)}</span>
+              <span class="status-d ${tem ? 'st-ok' : 'st-falta'}">
+                ${tem ? '✅ Cadastrado' : '⏳ Aguardando'}
+              </span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Aviso de faltantes
+      const faltam = total - cadastrados;
+      const aviso = $('avisoFalta');
+      if (total > 0 && faltam > 0) {
+        aviso.classList.remove('escondido');
+        aviso.textContent = `⚠️ Faltam ${faltam} participante${faltam !== 1 ? 's' : ''} cadastrarem a lista de desejos. Você ainda pode sortear, mas essas pessoas não terão lista no resultado.`;
+      } else {
+        aviso.classList.add('escondido');
+      }
+
+      // Botão sortear
+      $('btnSortear').disabled = participantes.length < 2;
+
+      // Resultado
+      if (resultadoAtual) {
+        renderizarResultado(resultadoAtual);
+      } else {
+        $('resultado').innerHTML = '';
+      }
     }
 
+    function adicionar() {
+      const nome = $('nomeInput').value.trim();
+      if (!nome) return;
+      if (participantes.some(p => p.toLowerCase() === nome.toLowerCase())) {
+        alert('Esse nome já foi adicionado!');
+        return;
+      }
+      participantes.push(nome);
+      $('nomeInput').value = '';
+      $('nomeInput').focus();
+      salvarEstadoAtual();
+      renderizarPainel();
+    }
+
+    function removerParticipante(index) {
+      const nome = participantes[index];
+      participantes.splice(index, 1);
+      const ev = eventos[eventoAtualId];
+      if (ev.listasDesejos && ev.listasDesejos[nome]) {
+        delete ev.listasDesejos[nome];
+      }
+      salvarEstadoAtual();
+      renderizarPainel();
+    }
+
+    function limparParticipantes() {
+      if (participantes.length === 0 && !resultadoAtual) return;
+      if (!confirm('Apagar todos os participantes, listas de desejos e sorteio?')) return;
+      participantes = [];
+      resultadoAtual = null;
+      eventos[eventoAtualId].listasDesejos = {};
+      eventos[eventoAtualId].resultado = null;
+      salvarEstadoAtual();
+      renderizarPainel();
+    }
+
+    function salvarEvento() {
+      const nome = $('eventoInput').value.trim();
+      if (!nome) { alert('Dê um nome ao evento.'); return; }
+      eventos[eventoAtualId].nome = nome;
+      salvarEstadoAtual();
+      $('tituloEvento').textContent = '🎁 ' + nome;
+      const btn = $('btnSalvarEvento');
+      const t = btn.textContent;
+      btn.textContent = '✓ Salvo!';
+      setTimeout(() => btn.textContent = t, 1200);
+    }
+
+    function salvarEstadoAtual() {
+      const ev = eventos[eventoAtualId];
+      if (!ev) return;
+      ev.participantes = [...participantes];
+      ev.resultado = resultadoAtual;
+      ev.atualizadoEm = Date.now();
+      salvarEventos();
+    }
+
+    // ============ GERAR LINKS DE CADASTRO ============
+    function gerarLinksCadastro() {
+      if (participantes.length === 0) {
+        alert('Adicione participantes primeiro.');
+        return;
+      }
+      const ev = eventos[eventoAtualId];
+      const base = window.location.origin + window.location.pathname;
+
+      const html = participantes.map(p => {
+        const payload = { e: ev.nome, q: p };
+        const link = base + '#w=' + encodePayload(payload);
+        return `
+          <div class="resultado-item">
+            <div class="linha-topo">
+              <span class="nome">${escapeHtml(p)}</span>
+            </div>
+            <div class="link-row">
+              <input type="text" value="${escapeHtml(link)}" readonly onclick="this.select()">
+              <button class="ghost" onclick="copiarTexto(this.previousElementSibling)">📋</button>
+              <button class="btn-wpp" onclick="compartilharLinkCadastro('${escapeHtml(p)}', '${escapeHtml(link)}')">WhatsApp</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      $('resultado').innerHTML = `
+        <div class="resultado">
+          <h2>🔗 Links de cadastro de presentes</h2>
+          <p style="font-size:13px;color:#888;margin-bottom:14px;">
+            Envie o link de cada pessoa. Depois de cadastrar, ela recebe um código
+            que deve mandar para você.
+          </p>
+          ${html}
+        </div>
+      `;
+    }
+
+    function compartilharLinkCadastro(nome, link) {
+      const ev = eventos[eventoAtualId];
+      const msg = `🎁 *${ev.nome}*\n\nOlá, ${nome}! Cadastre seus presentes no link abaixo:\n${link}\n\nDepois de cadastrar, copie o código gerado e me envie.`;
+      window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+    }
+
+    // ============ COLAR CÓDIGOS ============
+    function toggleColarCodigos() {
+      $('areaColarCodigos').classList.toggle('escondido');
+    }
+
+    function adicionarCodigos() {
+      const raw = $('codigosInput').value.trim();
+      if (!raw) return;
+
+      const linhas = raw.split('\n').map(l => l.trim()).filter(l => l);
+      const ev = eventos[eventoAtualId];
+      if (!ev.listasDesejos) ev.listasDesejos = {};
+
+      let ok = 0, erro = 0;
+      const nomesAdicionados = [];
+
+      linhas.forEach(linha => {
+        const p = decodePayload(linha);
+        if (!p || !p.q || !Array.isArray(p.p)) { erro++; return; }
+        // Verifica se o nome existe no evento
+        if (!participantes.includes(p.q)) { erro++; return; }
+        ev.listasDesejos[p.q] = p.p;
+        ok++;
+        nomesAdicionados.push(p.q);
+      });
+
+      salvarEstadoAtual();
+      $('codigosInput').value = '';
+      renderizarPainel();
+
+      if (ok > 0) {
+        alert(`✅ ${ok} lista(s) adicionada(s): ${nomesAdicionados.join(', ')}${erro > 0 ? `\n⚠️ ${erro} código(s) inválido(s) ignorado(s).` : ''}`);
+      } else {
+        alert('Nenhum código válido. Verifique se copiou corretamente e se o nome está no evento.');
+      }
+    }
+
+    // ============ SORTEIO ============
     function shuffle(array) {
       const arr = [...array];
       for (let i = arr.length - 1; i > 0; i--) {
@@ -405,10 +851,7 @@
         do {
           embaralhado = shuffle(participantes);
           tentativas++;
-          if (tentativas > 1000) {
-            alert('Não foi possível sortear. Tente novamente.');
-            return;
-          }
+          if (tentativas > 1000) { alert('Não foi possível sortear.'); return; }
         } while (embaralhado.some((nome, i) => nome === participantes[i]));
       }
 
@@ -417,43 +860,40 @@
         tirou: embaralhado[i]
       }));
 
+      eventos[eventoAtualId].resultado = resultadoAtual;
+      salvarEstadoAtual();
       renderizarResultado(resultadoAtual);
-      autoSalvar();
     }
 
     function montarLinkResultado(quem, tirou) {
-      const nomeEvento = eventoInput.value.trim();
-      const payload = { q: quem, t: tirou };
-      if (nomeEvento) payload.e = nomeEvento;
+      const ev = eventos[eventoAtualId];
+      const desejos = (ev.listasDesejos && ev.listasDesejos[tirou]) || null;
+      const payload = { q: quem, t: tirou, e: ev.nome };
+      if (desejos) payload.d = desejos;
       const base = window.location.origin + window.location.pathname;
       return base + '#r=' + encodePayload(payload);
     }
 
-    function copiarLink(idInput) {
-      const input = document.getElementById(idInput);
+    function copiarTexto(input) {
       input.select();
       input.setSelectionRange(0, 99999);
       navigator.clipboard.writeText(input.value).then(() => {
         const btn = input.nextElementSibling;
-        const txtAntigo = btn.textContent;
-        btn.textContent = '✓ Copiado!';
-        setTimeout(() => btn.textContent = txtAntigo, 1500);
-      }).catch(() => {
-        document.execCommand('copy');
-        alert('Link copiado!');
-      });
+        const t = btn.textContent;
+        btn.textContent = '✓';
+        setTimeout(() => btn.textContent = t, 1200);
+      }).catch(() => { document.execCommand('copy'); alert('Copiado!'); });
     }
 
     function enviarWhatsApp(quem, link) {
-      const nomeEvento = eventoInput.value.trim();
-      const titulo = nomeEvento ? `*${nomeEvento}* 🎁` : '*Amigo Oculto* 🎁';
-      const msg = `${titulo}\n\nOlá, ${quem}! Aqui está o seu resultado:\n${link}\n\n🤫 Abra o link e clique em "Revelar". Não conte para ninguém!`;
+      const ev = eventos[eventoAtualId];
+      const msg = `🎁 *${ev.nome}*\n\nOlá, ${quem}! Aqui está o seu resultado:\n${link}\n\n🤫 Abra o link e clique em "Revelar". Não conte para ninguém!`;
       window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
     }
 
     function renderizarResultado(resultado) {
       let html = '<div class="resultado"><h2>✨ Resultado do sorteio</h2>';
-      html += '<p style="font-size:13px;color:#888;margin-bottom:14px;">Copie e envie o link de cada pessoa. Cada link mostra apenas o resultado dela.</p>';
+      html += '<p style="font-size:13px;color:#888;margin-bottom:14px;">Envie o link de cada pessoa. Cada link mostra apenas o resultado e a lista de desejos de quem ela tirou.</p>';
 
       resultado.forEach((item, i) => {
         const link = montarLinkResultado(item.quem, item.tirou);
@@ -466,7 +906,7 @@
             </div>
             <div class="link-row">
               <input type="text" id="${inputId}" value="${escapeHtml(link)}" readonly onclick="this.select()">
-              <button class="ghost" onclick="copiarLink('${inputId}')">Copiar</button>
+              <button class="ghost" onclick="copiarTexto(this.previousElementSibling)">📋</button>
               <button class="btn-wpp" onclick="enviarWhatsApp('${escapeHtml(item.quem)}', '${escapeHtml(link)}')">WhatsApp</button>
             </div>
           </div>
@@ -474,140 +914,108 @@
       });
 
       html += '</div>';
-      resultadoDiv.innerHTML = html;
+      $('resultado').innerHTML = html;
     }
 
-    function salvarEvento() {
-      const nome = eventoInput.value.trim();
-      if (!nome) {
-        alert('Dê um nome ao evento (ex: Natal 2026)');
-        eventoInput.focus();
-        return;
-      }
-      if (participantes.length === 0) {
-        alert('Adicione pelo menos um participante antes de salvar.');
+    // ============ TELA: CADASTRO DE PRESENTES ============
+    function abrirTelaCadastro(payload) {
+      $('telaCards').classList.add('escondido');
+      $('telaPainel').classList.add('escondido');
+      $('telaCadastro').classList.remove('escondido');
+      $('telaRevelar').classList.add('escondido');
+
+      $('cadastroEventoNome').textContent = '📅 ' + (payload.e || 'Evento');
+      $('cadastroNome').textContent = payload.q;
+      window._cadastroPayload = payload;
+
+      // Limpa campos
+      $('presente1').value = '';
+      $('presente2').value = '';
+      $('presente3').value = '';
+      $('codigoGerado').classList.add('escondido');
+    }
+
+    function gerarCodigoParticipante() {
+      const p1 = $('presente1').value.trim();
+      const p2 = $('presente2').value.trim();
+      const p3 = $('presente3').value.trim();
+
+      if (!p1 && !p2 && !p3) {
+        alert('Cadastre pelo menos o primeiro presente (ou deixe tudo vazio para "Me Surpreenda").');
         return;
       }
 
-      const eventos = carregarTodosEventos();
+      const lista = [p1, p2, p3].map(p => p || 'Me Surpreenda');
+      const payload = { q: window._cadastroPayload.q, p: lista };
+      const codigo = encodePayload(payload);
 
-      if (eventoAtualId && eventos[eventoAtualId]) {
-        eventos[eventoAtualId] = {
-          ...eventos[eventoAtualId],
-          nome,
-          participantes: [...participantes],
-          resultado: resultadoAtual,
-          atualizadoEm: Date.now()
-        };
+      $('codigoTexto').value = codigo;
+      $('codigoGerado').classList.remove('escondido');
+      $('codigoGerado').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function copiarCodigo() {
+      const ta = $('codigoTexto');
+      ta.select();
+      navigator.clipboard.writeText(ta.value).then(() => {
+        alert('✅ Código copiado! Envie para o organizador.');
+      }).catch(() => { document.execCommand('copy'); alert('✅ Copiado!'); });
+    }
+
+    function enviarCodigoWhatsApp() {
+      const p = window._cadastroPayload;
+      const codigo = $('codigoTexto').value;
+      const msg = `🎁 *${p.e}*\n\nAqui está meu código da lista de desejos (${p.q}):\n\n${codigo}`;
+      window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+    }
+
+    // ============ TELA: REVELAÇÃO ============
+    function abrirTelaRevelar(payload) {
+      $('telaCards').classList.add('escondido');
+      $('telaPainel').classList.add('escondido');
+      $('telaCadastro').classList.add('escondido');
+      $('telaRevelar').classList.remove('escondido');
+
+      $('revelarQuem').textContent = (payload.e ? payload.e + ' — ' : '') + 'Olá, ' + payload.q + '!';
+      $('revelarNome').textContent = payload.t;
+
+      // Lista de desejos
+      const ol = $('revelarDesejos');
+      ol.innerHTML = '';
+      if (payload.d && Array.isArray(payload.d) && payload.d.length > 0) {
+        payload.d.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          ol.appendChild(li);
+        });
       } else {
-        const novoId = gerarId();
-        eventos[novoId] = {
-          nome,
-          participantes: [...participantes],
-          resultado: resultadoAtual,
-          criadoEm: Date.now(),
-          atualizadoEm: Date.now()
-        };
-        eventoAtualId = novoId;
+        ol.innerHTML = '<li style="list-style:none;color:#aaa;">(sem lista de desejos cadastrada)</li>';
       }
 
-      salvarTodosEventos(eventos);
-      atualizarSeletor();
-      seletorEvento.value = eventoAtualId;
-      btnExcluirEvento.disabled = false;
-
-      const btn = document.getElementById('btnSalvarEvento');
-      const txt = btn.textContent;
-      btn.textContent = '✓ Salvo!';
-      setTimeout(() => btn.textContent = txt, 1500);
+      $('blocoOculto').classList.remove('escondido');
+      $('blocoRevelado').classList.add('escondido');
     }
 
-    function autoSalvar() {
-      if (!eventoAtualId) return;
-      const eventos = carregarTodosEventos();
-      if (!eventos[eventoAtualId]) return;
-      eventos[eventoAtualId].participantes = [...participantes];
-      eventos[eventoAtualId].resultado = resultadoAtual;
-      eventos[eventoAtualId].atualizadoEm = Date.now();
-      salvarTodosEventos(eventos);
+    function revelar() {
+      $('blocoOculto').classList.add('escondido');
+      $('blocoRevelado').classList.remove('escondido');
     }
 
-    function carregarEvento(id) {
-      if (!id) {
-        eventoAtualId = null;
-        btnExcluirEvento.disabled = true;
-        return;
-      }
-      const eventos = carregarTodosEventos();
-      const ev = eventos[id];
-      if (!ev) return;
-
-      eventoAtualId = id;
-      eventoInput.value = ev.nome;
-      participantes = [...(ev.participantes || [])];
-      resultadoAtual = ev.resultado || null;
-      btnExcluirEvento.disabled = false;
-      renderizar();
-    }
-
-    function excluirEvento() {
-      if (!eventoAtualId) return;
-      const eventos = carregarTodosEventos();
-      const ev = eventos[eventoAtualId];
-      if (!ev) return;
-      if (!confirm(`Excluir o evento "${ev.nome}"? Isso apaga participantes e sorteio salvos.`)) return;
-
-      delete eventos[eventoAtualId];
-      salvarTodosEventos(eventos);
-
-      eventoAtualId = null;
-      eventoInput.value = '';
-      participantes = [];
-      resultadoAtual = null;
-      btnExcluirEvento.disabled = true;
-      atualizarSeletor();
-      renderizar();
-    }
-
-    function atualizarSeletor() {
-      const eventos = carregarTodosEventos();
-      const atual = seletorEvento.value;
-      seletorEvento.innerHTML = '<option value="">— Eventos salvos —</option>';
-
-      const listaOrdenada = Object.entries(eventos)
-        .sort((a, b) => (b[1].atualizadoEm || 0) - (a[1].atualizadoEm || 0));
-
-      listaOrdenada.forEach(([id, ev]) => {
-        const opt = document.createElement('option');
-        opt.value = id;
-        opt.textContent = ev.nome;
-        seletorEvento.appendChild(opt);
-      });
-
-      if (atual && eventos[atual]) seletorEvento.value = atual;
-      else if (eventoAtualId && eventos[eventoAtualId]) seletorEvento.value = eventoAtualId;
-    }
-
-    // ---------- EXPORTAR / IMPORTAR ----------
+    // ============ EXPORTAR / IMPORTAR ============
     function exportarEventos() {
-      const eventos = carregarTodosEventos();
-      const ids = Object.keys(eventos);
-      if (ids.length === 0) {
-        alert('Não há eventos salvos para exportar.');
+      if (Object.keys(eventos).length === 0) {
+        alert('Não há eventos para exportar.');
         return;
       }
-
       const pacote = {
         app: 'amigo-oculto',
-        versao: 1,
+        versao: 2,
         exportadoEm: new Date().toISOString(),
         eventos
       };
-
       const json = JSON.stringify(pacote, null, 2);
       const blob = new Blob([json], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
-
       const data = new Date().toISOString().slice(0, 10);
       const a = document.createElement('a');
       a.href = url;
@@ -621,73 +1029,52 @@
     function importarEventos(event) {
       const file = event.target.files[0];
       if (!file) return;
-
       const reader = new FileReader();
       reader.onload = (e) => {
         let pacote;
-        try {
-          pacote = JSON.parse(e.target.result);
-        } catch (err) {
-          alert('Arquivo inválido: não é um JSON válido.');
-          event.target.value = '';
-          return;
-        }
+        try { pacote = JSON.parse(e.target.result); }
+        catch { alert('Arquivo inválido.'); event.target.value = ''; return; }
 
         if (!pacote || pacote.app !== 'amigo-oculto' || !pacote.eventos) {
-          alert('Esse arquivo não parece ser um backup do Amigo Oculto.');
+          alert('Esse arquivo não é um backup do Amigo Oculto.');
           event.target.value = '';
           return;
         }
 
-        const novosIds = Object.keys(pacote.eventos);
-        const eventosAtuais = carregarTodosEventos();
-        const existentes = Object.keys(eventosAtuais).length;
-
-        const confirmMsg =
-          `Importar ${novosIds.length} evento(s)?\n\n` +
-          `Eventos atuais: ${existentes}\n` +
-          `Os eventos importados serão adicionados (não apagam os existentes).`;
-
-        if (!confirm(confirmMsg)) {
+        const ids = Object.keys(pacote.eventos);
+        if (!confirm(`Importar ${ids.length} evento(s)? Os existentes serão mantidos.`)) {
           event.target.value = '';
           return;
         }
 
-        let importados = 0;
-        novosIds.forEach(id => {
+        ids.forEach(id => {
           let idFinal = id;
-          if (eventosAtuais[idFinal]) idFinal = gerarId();
+          if (eventos[idFinal]) idFinal = gerarId();
           const ev = pacote.eventos[id];
-          eventosAtuais[idFinal] = {
+          eventos[idFinal] = {
             nome: ev.nome || 'Evento importado',
             participantes: Array.isArray(ev.participantes) ? ev.participantes : [],
+            listasDesejos: ev.listasDesejos || {},
             resultado: ev.resultado || null,
             criadoEm: ev.criadoEm || Date.now(),
             atualizadoEm: ev.atualizadoEm || Date.now()
           };
-          importados++;
         });
 
-        salvarTodosEventos(eventosAtuais);
-        atualizarSeletor();
+        salvarEventos();
+        renderizarCards();
         event.target.value = '';
-
-        alert(`✅ ${importados} evento(s) importado(s) com sucesso!`);
+        alert(`✅ ${ids.length} evento(s) importado(s).`);
       };
-
-      reader.onerror = () => {
-        alert('Erro ao ler o arquivo.');
-        event.target.value = '';
-      };
-
       reader.readAsText(file);
     }
 
-    // ---------- INICIALIZAÇÃO ----------
-    if (!checarLinkResultado()) {
-      renderizar();
-      atualizarSeletor();
-    }
+    // ============ INICIALIZAÇÃO ============
+    window.addEventListener('hashchange', rotear);
+    window.addEventListener('load', () => {
+      carregarEventos();
+      rotear();
+    });
   </script>
 </body>
 </html>
