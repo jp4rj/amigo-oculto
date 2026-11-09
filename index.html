@@ -71,9 +71,7 @@
     .btn-novo-evento:hover { background: #5568d3; }
 
     /* ===== PAINEL DO EVENTO ===== */
-    .voltar-bar {
-      margin-bottom: 16px;
-    }
+    .voltar-bar { margin-bottom: 16px; }
     .btn-voltar {
       background: transparent; color: #667eea;
       font-size: 14px; padding: 6px 10px;
@@ -285,6 +283,51 @@
       display: list-item;
     }
     .escondido { display: none; }
+
+    /* ===== MOMENTOS (painel) ===== */
+    .momento { transition: opacity 0.3s; }
+    .momento.colapsado #conteudoMomento1 { display: none; }
+    .btn-collapse {
+      background: transparent; color: #888; font-size: 16px;
+      padding: 2px 8px; border-radius: 6px; font-weight: 700;
+    }
+    .btn-collapse:hover { background: #f0f0f5; }
+    .momento.colapsado { opacity: 0.85; }
+
+    .progresso-m1 { margin-bottom: 12px; }
+    .progresso-texto {
+      font-size: 13px; color: #666; margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .progresso-barra {
+      height: 8px; background: #eee; border-radius: 4px; overflow: hidden;
+    }
+    .progresso-fill {
+      height: 100%; background: linear-gradient(90deg, #667eea, #764ba2);
+      transition: width 0.3s; border-radius: 4px;
+    }
+
+    .badge-momento {
+      font-size: 11px; padding: 3px 10px; border-radius: 20px;
+      font-weight: 700;
+    }
+    .badge-momento.ok { background: #d4f8d4; color: #1a7a1a; }
+    .badge-momento.pend { background: #fff3cd; color: #856404; }
+    .badge-momento.vazio { background: #eee; color: #888; }
+
+    .status-box {
+      padding: 12px 14px; border-radius: 10px; font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .status-box.info { background: #e8f0fe; color: #1a4fba; }
+    .status-box.ok { background: #d4f8d4; color: #1a7a1a; }
+    .status-box.aviso { background: #fff3cd; color: #856404; }
+
+    .btn-reenviar {
+      background: transparent; color: #667eea; font-size: 12px;
+      padding: 4px 8px; border-radius: 6px; font-weight: 600;
+    }
+    .btn-reenviar:hover { background: #f0f4ff; }
   </style>
 </head>
 <body>
@@ -339,34 +382,56 @@
       <ul id="lista"></ul>
     </div>
 
-    <!-- Lista de desejos -->
-    <div class="secao">
-      <h3>🎁 Lista de desejos <span class="badge" id="badgeDesejos">0/0</span></h3>
+    <!-- ========== MOMENTO 1: CADASTRO DE LISTAS ========== -->
+    <div class="secao momento" id="secaoMomento1">
+      <h3>
+        <span>1️⃣ Cadastro de listas de desejos</span>
+        <button class="btn-collapse" id="btnCollapseM1" onclick="toggleMomento1()" title="Recolher/expandir">▾</button>
+      </h3>
 
-      <div id="avisoFalta" class="aviso-falta escondido"></div>
+      <div id="conteudoMomento1">
+        <div class="progresso-m1">
+          <div class="progresso-texto" id="progressoTextoM1">0 de 0 cadastraram</div>
+          <div class="progresso-barra"><div class="progresso-fill" id="progressoFillM1" style="width: 0%"></div></div>
+        </div>
 
-      <div id="listaDesejos"></div>
+        <div id="avisoFalta" class="aviso-falta escondido"></div>
 
-      <div class="evento-row" style="margin-top: 12px;">
-        <button class="ghost" onclick="gerarLinksCadastro()" style="flex:1;">🔗 Gerar links de cadastro</button>
-        <button class="ghost" onclick="toggleColarCodigos()" style="flex:1;">📥 Colar códigos</button>
-      </div>
+        <div id="listaDesejos"></div>
 
-      <div id="areaColarCodigos" class="escondido" style="margin-top: 14px;">
-        <p style="font-size: 13px; color: #666; margin-bottom: 8px;">
-          Cole um ou mais códigos (um por linha) e clique em Adicionar:
-        </p>
-        <textarea id="codigosInput" placeholder="eyJxIjoiSm9hw6NvIiwicCI6WyJGb25l...&#10;eyJxIjoiTWFyaWEiLCJwIjpbIkxpdnJv..."></textarea>
-        <div class="evento-row" style="margin-top: 8px;">
-          <button onclick="adicionarCodigos()" style="flex:1;">Adicionar códigos</button>
+        <div class="evento-row" style="margin-top: 12px;">
+          <button class="ghost" onclick="gerarLinksCadastro()" style="flex:1;">🔗 Gerar links de cadastro</button>
+          <button class="ghost" onclick="toggleColarCodigos()" style="flex:1;">📥 Colar códigos</button>
+        </div>
+
+        <div id="areaColarCodigos" class="escondido" style="margin-top: 14px;">
+          <p style="font-size: 13px; color: #666; margin-bottom: 8px;">
+            Cole um ou mais códigos (um por linha) e clique em Adicionar:
+          </p>
+          <textarea id="codigosInput" placeholder="eyJxIjoiSm9hw6NvIiwicCI6WyJGb25l...&#10;eyJxIjoiTWFyaWEiLCJwIjpbIkxpdnJv..."></textarea>
+          <div class="evento-row" style="margin-top: 8px;">
+            <button onclick="adicionarCodigos()" style="flex:1;">Adicionar códigos</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Sorteio -->
-    <div class="actions">
-      <button id="btnSortear" onclick="sortear()" disabled>🎲 Sortear</button>
-      <button class="danger" onclick="limparParticipantes()">Limpar participantes</button>
+    <!-- ========== MOMENTO 2: SORTEIO ========== -->
+    <div class="secao momento" id="secaoMomento2">
+      <h3>
+        <span>2️⃣ Sorteio</span>
+        <span class="badge-momento" id="badgeM2"></span>
+      </h3>
+
+      <div id="conteudoMomento2">
+        <div id="statusM2"></div>
+
+        <div class="evento-row" style="margin-top: 12px;">
+          <button id="btnSortear" onclick="sortear()" disabled>🎲 Sortear</button>
+          <button id="btnVerLinks" class="ghost" onclick="verLinksSorteio()" disabled>🔗 Ver links do sorteio</button>
+          <button class="danger" onclick="limparParticipantes()">Limpar</button>
+        </div>
+      </div>
     </div>
 
     <div id="resultado"></div>
@@ -447,7 +512,7 @@
 
   <script>
     // ============ ESTADO GLOBAL ============
-    let eventos = {};            // { id: { nome, participantes, listasDesejos, resultado, criadoEm, atualizadoEm } }
+    let eventos = {};
     let eventoAtualId = null;
     let participantes = [];
     let resultadoAtual = null;
@@ -506,25 +571,16 @@
     function rotear() {
       const hash = window.location.hash;
 
-      // Link de cadastro: #w=<payload>
       if (hash.startsWith('#w=')) {
         const p = decodePayload(hash.slice(3));
-        if (p && p.e && p.q) {
-          abrirTelaCadastro(p);
-          return;
-        }
+        if (p && p.e && p.q) { abrirTelaCadastro(p); return; }
       }
 
-      // Link de resultado: #r=<payload>
       if (hash.startsWith('#r=')) {
         const p = decodePayload(hash.slice(3));
-        if (p && p.q && p.t) {
-          abrirTelaRevelar(p);
-          return;
-        }
+        if (p && p.q && p.t) { abrirTelaRevelar(p); return; }
       }
 
-      // Padrão: tela de cards
       abrirTelaCards();
     }
 
@@ -553,15 +609,26 @@
       grid.innerHTML = ordenados.map(id => {
         const ev = eventos[id];
         const qtd = (ev.participantes || []).length;
+        const listas = ev.listasDesejos || {};
+        const cadastrados = (ev.participantes || []).filter(p => listas[p]).length;
         const sort = ev.resultado && ev.resultado.length > 0;
 
-        let statusHtml;
-        if (sort) {
-          statusHtml = '<span class="card-status status-sorteado">✅ Sorteado</span>';
-        } else if (qtd > 0) {
-          statusHtml = '<span class="card-status status-pendente">⏳ Não sorteado</span>';
+        let m1Html;
+        if (qtd === 0) {
+          m1Html = '<span class="card-status status-vazio">📝 Vazio</span>';
+        } else if (cadastrados === qtd) {
+          m1Html = `<span class="card-status status-sorteado">1️⃣ ${cadastrados}/${qtd} cadastros</span>`;
         } else {
-          statusHtml = '<span class="card-status status-vazio">📝 Vazio</span>';
+          m1Html = `<span class="card-status status-pendente">1️⃣ ${cadastrados}/${qtd} cadastros</span>`;
+        }
+
+        let m2Html;
+        if (sort) {
+          m2Html = '<span class="card-status status-sorteado">2️⃣ ✅ Sorteado</span>';
+        } else if (qtd > 0) {
+          m2Html = '<span class="card-status status-pendente">2️⃣ ⏳ Não sorteado</span>';
+        } else {
+          m2Html = '<span class="card-status status-vazio">2️⃣ —</span>';
         }
 
         return `
@@ -569,7 +636,10 @@
             <button class="card-del" onclick="event.stopPropagation(); excluirEvento('${id}')" title="Excluir">🗑️</button>
             <div class="card-nome">${escapeHtml(ev.nome)}</div>
             <div class="card-info">👥 ${qtd} participante${qtd !== 1 ? 's' : ''}</div>
-            ${statusHtml}
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+              ${m1Html}
+              ${m2Html}
+            </div>
             <div class="card-data">Atualizado: ${formatarData(ev.atualizadoEm)}</div>
           </div>
         `;
@@ -629,7 +699,12 @@
 
     // ============ PAINEL DO EVENTO ============
     function renderizarPainel() {
-      // Participantes
+      const ev = eventos[eventoAtualId];
+      const listas = ev.listasDesejos || {};
+      const total = participantes.length;
+      const cadastrados = participantes.filter(p => listas[p]).length;
+      const temResultado = resultadoAtual && resultadoAtual.length > 0;
+
       const lista = $('lista');
       lista.innerHTML = '';
       if (participantes.length === 0) {
@@ -646,13 +721,9 @@
       }
       $('badgeParticipantes').textContent = participantes.length;
 
-      // Lista de desejos
-      const ev = eventos[eventoAtualId];
-      const listas = ev.listasDesejos || {};
-      const total = participantes.length;
-      const cadastrados = participantes.filter(p => listas[p]).length;
-
-      $('badgeDesejos').textContent = `${cadastrados}/${total}`;
+      $('progressoTextoM1').textContent = `${cadastrados} de ${total} cadastraram`;
+      const pct = total > 0 ? Math.round((cadastrados / total) * 100) : 0;
+      $('progressoFillM1').style.width = pct + '%';
 
       const cont = $('listaDesejos');
       if (participantes.length === 0) {
@@ -663,29 +734,60 @@
           return `
             <div class="lista-desejos-item">
               <span class="nome-d">${escapeHtml(p)}</span>
-              <span class="status-d ${tem ? 'st-ok' : 'st-falta'}">
-                ${tem ? '✅ Cadastrado' : '⏳ Aguardando'}
+              <span style="display:flex;align-items:center;gap:6px;">
+                ${!tem ? `<button class="btn-reenviar" onclick="reenviarLinkCadastro('${escapeHtml(p)}')">reenviar link</button>` : ''}
+                <span class="status-d ${tem ? 'st-ok' : 'st-falta'}">
+                  ${tem ? '✅ Cadastrado' : '⏳ Aguardando'}
+                </span>
               </span>
             </div>
           `;
         }).join('');
       }
 
-      // Aviso de faltantes
       const faltam = total - cadastrados;
       const aviso = $('avisoFalta');
       if (total > 0 && faltam > 0) {
         aviso.classList.remove('escondido');
-        aviso.textContent = `⚠️ Faltam ${faltam} participante${faltam !== 1 ? 's' : ''} cadastrarem a lista de desejos. Você ainda pode sortear, mas essas pessoas não terão lista no resultado.`;
+        aviso.textContent = `⚠️ Faltam ${faltam} participante${faltam !== 1 ? 's' : ''} cadastrarem. Você pode sortear mesmo assim, mas essas pessoas aparecerão sem lista no resultado.`;
       } else {
         aviso.classList.add('escondido');
       }
 
-      // Botão sortear
-      $('btnSortear').disabled = participantes.length < 2;
+      const secaoM1 = $('secaoMomento1');
+      if (temResultado) {
+        secaoM1.classList.add('colapsado');
+        $('btnCollapseM1').textContent = '▸';
+      } else {
+        secaoM1.classList.remove('colapsado');
+        $('btnCollapseM1').textContent = '▾';
+      }
 
-      // Resultado
-      if (resultadoAtual) {
+      const statusM2 = $('statusM2');
+      const badgeM2 = $('badgeM2');
+
+      if (total === 0) {
+        statusM2.innerHTML = '<div class="status-box info">Adicione participantes para começar.</div>';
+        badgeM2.className = 'badge-momento vazio';
+        badgeM2.textContent = '—';
+      } else if (temResultado) {
+        statusM2.innerHTML = `<div class="status-box ok">✅ Sorteio realizado. Envie os links individuais para cada participante.</div>`;
+        badgeM2.className = 'badge-momento ok';
+        badgeM2.textContent = '✅ Feito';
+      } else if (faltam > 0) {
+        statusM2.innerHTML = `<div class="status-box aviso">⏳ Aguardando cadastros (${cadastrados}/${total}). Você pode sortear mesmo assim.</div>`;
+        badgeM2.className = 'badge-momento pend';
+        badgeM2.textContent = '⏳ Pendente';
+      } else {
+        statusM2.innerHTML = `<div class="status-box info">🎉 Todos cadastraram! Pode sortear.</div>`;
+        badgeM2.className = 'badge-momento ok';
+        badgeM2.textContent = '🎉 Pronto';
+      }
+
+      $('btnSortear').disabled = participantes.length < 2;
+      $('btnVerLinks').disabled = !temResultado;
+
+      if (temResultado) {
         renderizarResultado(resultadoAtual);
       } else {
         $('resultado').innerHTML = '';
@@ -749,6 +851,20 @@
       salvarEventos();
     }
 
+    // ============ MOMENTO 1: helpers ============
+    function toggleMomento1() {
+      const secao = $('secaoMomento1');
+      secao.classList.toggle('colapsado');
+      $('btnCollapseM1').textContent = secao.classList.contains('colapsado') ? '▸' : '▾';
+    }
+
+    function reenviarLinkCadastro(nome) {
+      const ev = eventos[eventoAtualId];
+      const payload = { e: ev.nome, q: nome };
+      const link = window.location.origin + window.location.pathname + '#w=' + encodePayload(payload);
+      compartilharLinkCadastro(nome, link);
+    }
+
     // ============ GERAR LINKS DE CADASTRO ============
     function gerarLinksCadastro() {
       if (participantes.length === 0) {
@@ -758,33 +874,52 @@
       const ev = eventos[eventoAtualId];
       const base = window.location.origin + window.location.pathname;
 
-      const html = participantes.map(p => {
+      const links = participantes.map(p => {
         const payload = { e: ev.nome, q: p };
-        const link = base + '#w=' + encodePayload(payload);
-        return `
-          <div class="resultado-item">
-            <div class="linha-topo">
-              <span class="nome">${escapeHtml(p)}</span>
-            </div>
-            <div class="link-row">
-              <input type="text" value="${escapeHtml(link)}" readonly onclick="this.select()">
-              <button class="ghost" onclick="copiarTexto(this.previousElementSibling)">📋</button>
-              <button class="btn-wpp" onclick="compartilharLinkCadastro('${escapeHtml(p)}', '${escapeHtml(link)}')">WhatsApp</button>
-            </div>
+        return { nome: p, link: base + '#w=' + encodePayload(payload) };
+      });
+
+      const html = links.map(item => `
+        <div class="resultado-item">
+          <div class="linha-topo">
+            <span class="nome">${escapeHtml(item.nome)}</span>
           </div>
-        `;
-      }).join('');
+          <div class="link-row">
+            <input type="text" value="${escapeHtml(item.link)}" readonly onclick="this.select()">
+            <button class="ghost" onclick="copiarTexto(this.previousElementSibling)" title="Copiar">📋</button>
+            <button class="btn-wpp" onclick="compartilharLinkCadastro('${escapeHtml(item.nome)}', '${escapeHtml(item.link)}')">WhatsApp</button>
+          </div>
+        </div>
+      `).join('');
 
       $('resultado').innerHTML = `
         <div class="resultado">
           <h2>🔗 Links de cadastro de presentes</h2>
           <p style="font-size:13px;color:#888;margin-bottom:14px;">
             Envie o link de cada pessoa. Depois de cadastrar, ela recebe um código
-            que deve mandar para você.
+            que deve mandar para você colar abaixo.
           </p>
+          <div class="evento-row" style="margin-bottom:14px;">
+            <button class="ghost" onclick="copiarTodosLinks()" style="flex:1;">📋 Copiar todos os links</button>
+          </div>
           ${html}
         </div>
       `;
+
+      window._linksCadastro = links;
+      $('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function copiarTodosLinks() {
+      if (!window._linksCadastro) return;
+      const texto = window._linksCadastro
+        .map(l => `${l.nome}: ${l.link}`)
+        .join('\n');
+      navigator.clipboard.writeText(texto).then(() => {
+        alert('✅ Todos os links copiados! Cole no bloco de notas para ir mandando um por um.');
+      }).catch(() => {
+        alert('Não foi possível copiar automaticamente. Selecione os links manualmente.');
+      });
     }
 
     function compartilharLinkCadastro(nome, link) {
@@ -812,7 +947,6 @@
       linhas.forEach(linha => {
         const p = decodePayload(linha);
         if (!p || !p.q || !Array.isArray(p.p)) { erro++; return; }
-        // Verifica se o nome existe no evento
         if (!participantes.includes(p.q)) { erro++; return; }
         ev.listasDesejos[p.q] = p.p;
         ok++;
@@ -843,6 +977,12 @@
     function sortear() {
       if (participantes.length < 2) return;
 
+      if (resultadoAtual && resultadoAtual.length > 0) {
+        if (!confirm('⚠️ Já existe um sorteio para este evento.\n\nSe sortear de novo, os resultados antigos serão substituídos. Os LINKS ANTIGOS continuarão funcionando (mas ninguém deveria usar).\n\nDeseja sortear novamente?')) {
+          return;
+        }
+      }
+
       let embaralhado;
       if (participantes.length === 2) {
         embaralhado = [participantes[1], participantes[0]];
@@ -862,7 +1002,15 @@
 
       eventos[eventoAtualId].resultado = resultadoAtual;
       salvarEstadoAtual();
+      renderizarPainel();
+      $('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ============ MOMENTO 2: ver links ============
+    function verLinksSorteio() {
+      if (!resultadoAtual) return;
       renderizarResultado(resultadoAtual);
+      $('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function montarLinkResultado(quem, tirou) {
@@ -897,7 +1045,6 @@
 
       resultado.forEach((item, i) => {
         const link = montarLinkResultado(item.quem, item.tirou);
-        const inputId = 'link' + i;
         html += `
           <div class="resultado-item">
             <div class="linha-topo">
@@ -905,7 +1052,7 @@
               <span class="tirou">tirou <strong>${escapeHtml(item.tirou)}</strong></span>
             </div>
             <div class="link-row">
-              <input type="text" id="${inputId}" value="${escapeHtml(link)}" readonly onclick="this.select()">
+              <input type="text" value="${escapeHtml(link)}" readonly onclick="this.select()">
               <button class="ghost" onclick="copiarTexto(this.previousElementSibling)">📋</button>
               <button class="btn-wpp" onclick="enviarWhatsApp('${escapeHtml(item.quem)}', '${escapeHtml(link)}')">WhatsApp</button>
             </div>
@@ -928,7 +1075,6 @@
       $('cadastroNome').textContent = payload.q;
       window._cadastroPayload = payload;
 
-      // Limpa campos
       $('presente1').value = '';
       $('presente2').value = '';
       $('presente3').value = '';
@@ -979,7 +1125,6 @@
       $('revelarQuem').textContent = (payload.e ? payload.e + ' — ' : '') + 'Olá, ' + payload.q + '!';
       $('revelarNome').textContent = payload.t;
 
-      // Lista de desejos
       const ol = $('revelarDesejos');
       ol.innerHTML = '';
       if (payload.d && Array.isArray(payload.d) && payload.d.length > 0) {
