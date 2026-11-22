@@ -9,7 +9,6 @@
 
     /* ============ TEMA NOITE — variáveis ============ */
     :root {
-      /* fundo geral */
       --bg-body-1: #0f1226;
       --bg-body-2: #1a1a3a;
       --bg-card: #171a2e;
@@ -17,35 +16,33 @@
       --bg-input: #22253f;
       --bg-input-focus: #2a2d4a;
 
-      /* textos */
       --txt: #e8eaf6;
       --txt-soft: #b0b4d0;
       --txt-mute: #7a7f9a;
 
-      /* bordas */
       --border: #2a2d4a;
       --border-soft: #232640;
 
-      /* primária (roxo) */
       --primary: #8b7cff;
       --primary-hover: #a394ff;
 
-      /* seção Participantes — azul-arroxeado */
       --sec-part-bg: #1c1d3d;
       --sec-part-border: #4b4ba8;
       --sec-part-accent: #8b7cff;
 
-      /* seção 1 (cadastro) — verde-água */
       --sec-m1-bg: #142e2c;
       --sec-m1-border: #2f8b7f;
       --sec-m1-accent: #4fd1c5;
 
-      /* seção 2 (sorteio) — âmbar/dourado */
       --sec-m2-bg: #2c2415;
       --sec-m2-border: #b8862e;
       --sec-m2-accent: #f6c76a;
 
-      /* estados */
+      /* seção 3 (confirmação) — rosa/magenta */
+      --sec-m3-bg: #2a1830;
+      --sec-m3-border: #a83d8a;
+      --sec-m3-accent: #f08acb;
+
       --ok-bg: #173d2a;
       --ok-txt: #7be7a3;
       --warn-bg: #3d3116;
@@ -69,7 +66,6 @@
     h1 { text-align: center; margin-bottom: 8px; color: var(--txt); }
     .subtitle { text-align: center; color: var(--txt-mute); margin-bottom: 24px; font-size: 14px; }
 
-    /* ===== CARDS DE EVENTOS ===== */
     .cards-header {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 16px;
@@ -123,7 +119,6 @@
     }
     .btn-novo-evento:hover { background: var(--primary-hover); }
 
-    /* ===== PAINEL DO EVENTO ===== */
     .voltar-bar { margin-bottom: 16px; }
     .btn-voltar {
       background: transparent; color: var(--primary);
@@ -206,7 +201,6 @@
       padding: 20px; font-style: italic;
     }
 
-    /* ===== SEÇÕES DO PAINEL — cada uma com sua cor ===== */
     .secao {
       border-radius: 14px;
       padding: 16px; margin-bottom: 20px;
@@ -225,7 +219,6 @@
       font-weight: 700;
     }
 
-    /* Participantes — azul-arroxeado */
     .secao.secao-participantes {
       background: var(--sec-part-bg);
       border-color: var(--sec-part-border);
@@ -234,7 +227,6 @@
       background: var(--sec-part-accent); color: #0f1226;
     }
 
-    /* Momento 1 — verde-água */
     .secao.momento1 {
       background: var(--sec-m1-bg);
       border-color: var(--sec-m1-border);
@@ -243,7 +235,6 @@
     .secao.momento1 h3 .badge,
     .secao.momento1 .badge-momento.ok { background: var(--sec-m1-accent); color: #0f1226; }
 
-    /* Momento 2 — âmbar/dourado */
     .secao.momento2 {
       background: var(--sec-m2-bg);
       border-color: var(--sec-m2-border);
@@ -251,7 +242,26 @@
     .secao.momento2 h3 { color: var(--sec-m2-accent); }
     .secao.momento2 .badge-momento.ok { background: var(--sec-m2-accent); color: #0f1226; }
 
-    /* Botões dentro das seções — combinar com a cor */
+    .secao.momento3 {
+      background: var(--sec-m3-bg);
+      border-color: var(--sec-m3-border);
+    }
+    .secao.momento3 h3 { color: var(--sec-m3-accent); }
+    .secao.momento3 .badge-momento.ok { background: var(--sec-m3-accent); color: #2a1830; }
+    .secao.momento3 .progresso-fill {
+      background: linear-gradient(90deg, var(--sec-m3-accent), var(--sec-m3-border));
+    }
+    .secao.momento3 .evento-row button {
+      background: var(--sec-m3-accent);
+      color: #2a1830;
+    }
+    .secao.momento3 .evento-row button:hover {
+      background: #ffa8dc;
+    }
+    .secao.momento3 .evento-row input:focus {
+      border-color: var(--sec-m3-accent);
+    }
+
     .secao.momento1 .ghost {
       background: #1b3d3a; color: var(--sec-m1-accent);
     }
@@ -262,7 +272,6 @@
     }
     .secao.momento2 .ghost:hover { background: #4d3d1c; }
 
-    /* ===== LISTA DE DESEJOS ===== */
     .lista-desejos-item {
       display: flex; justify-content: space-between; align-items: center;
       padding: 10px 12px;
@@ -294,7 +303,6 @@
     textarea:focus { border-color: var(--primary); background: var(--bg-input-focus); }
     textarea::placeholder { color: var(--txt-mute); }
 
-    /* ===== RESULTADO ===== */
     .resultado {
       margin-top: 20px; padding: 20px;
       background: var(--sec-m2-bg); border-radius: 12px;
@@ -335,7 +343,6 @@
       font-size: 13px; color: var(--txt-soft); margin-top: 16px;
     }
 
-    /* ===== TELA DE CADASTRO DE PRESENTES ===== */
     .cadastro-box { padding: 10px 0; }
     .presente-input-group {
       display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
@@ -375,7 +382,6 @@
     .codigo-box .ghost { background: #1b3d3a; color: var(--sec-m1-accent); }
     .codigo-box .ghost:hover { background: #224c48; }
 
-    /* ===== TELA DE REVELAÇÃO ===== */
     .revelar-box { text-align: center; padding: 30px 10px; }
     .revelar-box .sua-vez { color: var(--txt-soft); margin-bottom: 20px; }
     .revelar-msg { color: var(--txt-soft); margin-bottom: 24px; }
@@ -385,7 +391,6 @@
     }
     .btn-grande:hover { background: var(--primary-hover); }
 
-    /* Bloco de cada pessoa revelada — tom verde-água (presente) */
     .pessoa-revelada {
       background: var(--sec-m1-bg);
       border-radius: 16px; padding: 20px; margin: 20px 0;
@@ -425,7 +430,6 @@
     }
     .escondido { display: none; }
 
-    /* ===== MOMENTOS (painel) ===== */
     .momento { transition: opacity 0.3s; }
     .momento.colapsado #conteudoMomento1 { display: none; }
     .btn-collapse {
@@ -494,6 +498,116 @@
     }
     .config-sorteio select:focus { border-color: var(--sec-m2-accent); }
     .config-sorteio select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ===== CONFIRMAÇÃO DE VISUALIZAÇÃO (tela do participante) ===== */
+    .bloco-confirmacao {
+      background: linear-gradient(135deg, #1a2d4a 0%, #1a1a3a 100%);
+      border: 2px dashed var(--primary);
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 24px;
+      text-align: center;
+    }
+    .bloco-confirmacao h4 {
+      color: var(--primary);
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .bloco-confirmacao p {
+      color: var(--txt-soft);
+      font-size: 13px;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+    .bloco-confirmacao .btn-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .bloco-confirmacao .btn-confirmar {
+      background: var(--primary);
+      color: #0f1226;
+      font-size: 15px;
+      padding: 12px 20px;
+    }
+    .bloco-confirmacao .btn-confirmar:hover {
+      background: var(--primary-hover);
+    }
+    .bloco-confirmacao .btn-copiar {
+      background: #252840;
+      color: var(--txt);
+      font-size: 15px;
+      padding: 12px 20px;
+    }
+    .bloco-confirmacao .btn-copiar:hover {
+      background: #2f3352;
+    }
+    .confirmado-estado {
+      display: inline-block;
+      background: var(--ok-bg);
+      color: var(--ok-txt);
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    .recibo-preview {
+      margin-top: 14px;
+      text-align: left;
+      background: rgba(0,0,0,0.4);
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 12px;
+      color: var(--txt-soft);
+      white-space: pre-wrap;
+      word-break: break-all;
+      border: 1px solid var(--border-soft);
+      font-family: monospace;
+      display: none;
+    }
+    .recibo-preview.visivel { display: block; }
+    .recibo-preview .btn-wpp-recibo {
+      display: inline-block;
+      margin-top: 10px;
+      background: #25d366;
+      color: #0f1226;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      width: 100%;
+      text-align: center;
+    }
+    .recibo-preview .btn-wpp-recibo:hover {
+      background: #3ae67a;
+    }
+
+    /* ===== ITENS DE CONFIRMAÇÃO NO PAINEL ===== */
+    .conf-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.28);
+      border-radius: 8px; margin-bottom: 6px; font-size: 14px;
+      color: var(--txt); gap: 8px; flex-wrap: wrap;
+    }
+    .conf-item .conf-nome { font-weight: 600; flex: 1; min-width: 120px; }
+    .conf-item .conf-status {
+      font-size: 12px; padding: 3px 10px; border-radius: 20px;
+      white-space: nowrap;
+    }
+    .conf-item .conf-acoes { display: flex; align-items: center; gap: 6px; }
+    .conf-item .chk-manual {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 11px; color: var(--txt-mute);
+      cursor: pointer; user-select: none;
+    }
+    .conf-item .chk-manual input {
+      accent-color: var(--sec-m3-accent);
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -604,6 +718,34 @@
           <button id="btnSortear" onclick="sortear()" disabled>🎲 Sortear</button>
           <button id="btnVerLinks" class="ghost" onclick="verLinksSorteio()" disabled>🔗 Ver links do sorteio</button>
           <button class="danger" onclick="limparParticipantes()">Limpar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== MOMENTO 3: CONFIRMAÇÕES DE VISUALIZAÇÃO ========== -->
+    <div class="secao momento momento3" id="secaoMomento3">
+      <h3>
+        <span>3️⃣ Confirmações de visualização</span>
+        <span class="badge-momento" id="badgeM3"></span>
+      </h3>
+
+      <div id="conteudoMomento3">
+        <p style="font-size: 13px; color: var(--txt-soft); margin-bottom: 12px;">
+          Depois que o participante vê o amigo sorteado, ele gera um recibo com código
+          <code style="background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px;">AMG-VIS-...</code>
+          e envia no grupo do WhatsApp. Cole o código aqui para registrar a confirmação.
+        </p>
+
+        <div class="evento-row" style="margin-bottom: 14px;">
+          <input type="text" id="inputCodigoVis" placeholder="Colar código AMG-VIS-..." autocomplete="off">
+          <button onclick="registrarConfirmacaoVis()">Registrar</button>
+        </div>
+
+        <div id="listaConfirmacoes"></div>
+
+        <div class="progresso-m1" style="margin-top: 14px;">
+          <div class="progresso-texto" id="progressoTextoM3">0 de 0 confirmaram</div>
+          <div class="progresso-barra"><div class="progresso-fill" id="progressoFillM3" style="width: 0%"></div></div>
         </div>
       </div>
     </div>
@@ -738,7 +880,13 @@
       if (!ev.listasDesejos) ev.listasDesejos = {};
       if (!ev.resultado) ev.resultado = null;
       if (!ev.qtdSorteios) ev.qtdSorteios = 1;
+      if (!ev.confirmacoesVis) ev.confirmacoesVis = {};
       return ev;
+    }
+
+    function normalizarConfirmacoes(ev) {
+      if (!ev.confirmacoesVis) ev.confirmacoesVis = {};
+      return ev.confirmacoesVis;
     }
 
     // ============ ROTEADOR (hash) ============
@@ -831,6 +979,7 @@
         listasDesejos: {},
         resultado: null,
         qtdSorteios: 1,
+        confirmacoesVis: {},
         criadoEm: Date.now(),
         atualizadoEm: Date.now()
       };
@@ -977,6 +1126,8 @@
       $('btnSortear').disabled = !podeSortear;
       $('btnVerLinks').disabled = !temResultado;
 
+      renderizarMomento3(ev);
+
       if (temResultado) {
         renderizarResultado(resultadoAtual);
       } else {
@@ -984,6 +1135,143 @@
       }
     }
 
+    // ============ MOMENTO 3: CONFIRMAÇÕES DE VISUALIZAÇÃO ============
+    function registrarConfirmacaoVis() {
+      const input = $('inputCodigoVis');
+      const codigo = input.value.trim();
+      if (!codigo) return;
+
+      if (!codigo.startsWith('AMG-VIS-')) {
+        alert('❌ Código inválido. Deve começar com AMG-VIS-');
+        return;
+      }
+
+      const payload = decodePayload(codigo.slice(8));
+      if (!payload || payload.tipo !== 'vis' || !payload.q) {
+        alert('❌ Código corrompido ou incompatível.');
+        return;
+      }
+
+      const ev = normalizarEvento(eventos[eventoAtualId]);
+      const confs = normalizarConfirmacoes(ev);
+
+      if (!participantes.includes(payload.q)) {
+        alert(`⚠️ O participante "${payload.q}" não está neste evento. Verifique se colou o código certo.`);
+        return;
+      }
+
+      if (payload.e && payload.e !== ev.nome) {
+        if (!confirm(`⚠️ Este código é do evento "${payload.e}", mas o evento atual é "${ev.nome}". Registrar mesmo assim?`)) {
+          return;
+        }
+      }
+
+      const ts = payload.d || Date.now();
+      const dataStr = new Date(ts).toLocaleString('pt-BR', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+
+      confs[payload.q] = { ts, dataFormatada: dataStr, origem: 'codigo' };
+      ev.confirmacoesVis = confs;
+      ev.atualizadoEm = Date.now();
+      salvarEventos();
+
+      input.value = '';
+      renderizarPainel();
+
+      alert(`✅ Confirmação registrada: ${payload.q} viu em ${dataStr}`);
+    }
+
+    function marcarConfirmacaoManual(nome, marcado) {
+      const ev = normalizarEvento(eventos[eventoAtualId]);
+      const confs = normalizarConfirmacoes(ev);
+      if (marcado) {
+        const ts = Date.now();
+        confs[nome] = {
+          ts,
+          dataFormatada: new Date(ts).toLocaleString('pt-BR', {
+            day: '2-digit', month: '2-digit', year: 'numeric',
+            hour: '2-digit', minute: '2-digit'
+          }),
+          origem: 'manual'
+        };
+      } else {
+        delete confs[nome];
+      }
+      ev.confirmacoesVis = confs;
+      ev.atualizadoEm = Date.now();
+      salvarEventos();
+      renderizarPainel();
+    }
+
+    function renderizarMomento3(ev) {
+      const confs = ev.confirmacoesVis || {};
+      const total = participantes.length;
+      const confirmados = participantes.filter(p => confs[p]).length;
+      const temResultado = resultadoAtual && resultadoAtual.length > 0;
+
+      const badge = $('badgeM3');
+      const lista = $('listaConfirmacoes');
+      const inputArea = $('inputCodigoVis');
+
+      if (!temResultado) {
+        badge.className = 'badge-momento vazio';
+        badge.textContent = 'Sem sorteio';
+        inputArea.disabled = true;
+        inputArea.parentElement.style.opacity = '0.5';
+        lista.innerHTML = '<div class="empty">Faça o sorteio primeiro para habilitar as confirmações.</div>';
+        $('progressoTextoM3').textContent = '0 de 0 confirmaram';
+        $('progressoFillM3').style.width = '0%';
+        return;
+      }
+
+      inputArea.disabled = false;
+      inputArea.parentElement.style.opacity = '1';
+
+      $('progressoTextoM3').textContent = `${confirmados} de ${total} confirmaram`;
+      const pct = total > 0 ? Math.round((confirmados / total) * 100) : 0;
+      $('progressoFillM3').style.width = pct + '%';
+
+      if (confirmados === total && total > 0) {
+        badge.className = 'badge-momento ok';
+        badge.textContent = '✅ Todos';
+      } else if (confirmados > 0) {
+        badge.className = 'badge-momento pend';
+        badge.textContent = `${confirmados}/${total}`;
+      } else {
+        badge.className = 'badge-momento pend';
+        badge.textContent = 'Aguardando';
+      }
+
+      if (participantes.length === 0) {
+        lista.innerHTML = '<div class="empty">Nenhum participante.</div>';
+        return;
+      }
+
+      lista.innerHTML = participantes.map(p => {
+        const c = confs[p];
+        const confirmado = !!c;
+        const dataStr = confirmado ? (c.dataFormatada || '—') : '';
+        return `
+          <div class="conf-item">
+            <span class="conf-nome">${escapeHtml(p)}</span>
+            <span class="conf-status ${confirmado ? 'st-ok' : 'st-falta'}">
+              ${confirmado ? '✅ ' + dataStr : '⏳ Pendente'}
+            </span>
+            <div class="conf-acoes">
+              <label class="chk-manual" title="Marcar manualmente se o participante confirmou por outro meio">
+                <input type="checkbox" ${confirmado ? 'checked' : ''}
+                       onchange="marcarConfirmacaoManual('${escapeHtml(p)}', this.checked)">
+                manual
+              </label>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ============ AÇÕES DO PAINEL ============
     function mudarConfigSorteios(valor) {
       const ev = eventos[eventoAtualId];
       if (!ev) return;
@@ -1019,6 +1307,9 @@
       if (ev.listasDesejos && ev.listasDesejos[nome]) {
         delete ev.listasDesejos[nome];
       }
+      if (ev.confirmacoesVis && ev.confirmacoesVis[nome]) {
+        delete ev.confirmacoesVis[nome];
+      }
       salvarEstadoAtual();
       renderizarPainel();
     }
@@ -1030,6 +1321,7 @@
       resultadoAtual = null;
       eventos[eventoAtualId].listasDesejos = {};
       eventos[eventoAtualId].resultado = null;
+      eventos[eventoAtualId].confirmacoesVis = {};
       salvarEstadoAtual();
       renderizarPainel();
     }
@@ -1069,7 +1361,6 @@
       compartilharLinkCadastro(nome, link);
     }
 
-    // ============ GERAR LINKS DE CADASTRO ============
     function gerarLinksCadastro() {
       if (participantes.length === 0) {
         alert('Adicione participantes primeiro.');
@@ -1234,6 +1525,7 @@
       }));
 
       eventos[eventoAtualId].resultado = resultadoAtual;
+      eventos[eventoAtualId].confirmacoesVis = {};
       salvarEstadoAtual();
       renderizarPainel();
       $('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1372,8 +1664,7 @@
         ? 'Clique no botão abaixo para descobrir quem você tirou (2 nomes):'
         : 'Clique no botão abaixo para descobrir quem você tirou:';
 
-      const container = $('revelarPessoas');
-      container.innerHTML = nomes.map((nome, i) => {
+      const htmlPessoas = nomes.map((nome, i) => {
         const lista = desejosArr[i];
         let listaHtml = '<li class="sem-lista">(sem lista de desejos cadastrada)</li>';
         if (lista && Array.isArray(lista) && lista.length > 0) {
@@ -1392,8 +1683,132 @@
         `;
       }).join('');
 
+      // Bloco de confirmação
+      const chaveConf = 'amigoOculto.confirmacao.' + (payload.e || '') + '.' + (payload.q || '');
+      let confirmacaoSalva = null;
+      try {
+        const raw = localStorage.getItem(chaveConf);
+        if (raw) confirmacaoSalva = JSON.parse(raw);
+      } catch (e) { /* ignora */ }
+
+      const blocoConfirmacao = `
+        <div class="bloco-confirmacao">
+          <h4>✅ Já viu seu amigo?</h4>
+          <p>Sua confirmação deve ser enviada ao grupo de WhatsApp.</p>
+          <div id="confirmacaoConteudo"></div>
+          <div class="recibo-preview" id="reciboPreview"></div>
+        </div>
+      `;
+
+      $('revelarPessoas').innerHTML = htmlPessoas + blocoConfirmacao;
+      window._payloadRevelacao = payload;
+
+      renderizarBlocoConfirmacao(confirmacaoSalva);
+
       $('blocoOculto').classList.remove('escondido');
       $('blocoRevelado').classList.add('escondido');
+    }
+
+    function renderizarBlocoConfirmacao(confirmacaoSalva) {
+      const div = document.getElementById('confirmacaoConteudo');
+      if (!div) return;
+
+      if (confirmacaoSalva && confirmacaoSalva.confirmado) {
+        const dataStr = confirmacaoSalva.dataFormatada || '—';
+        div.innerHTML = `
+          <div class="confirmado-estado">✅ Confirmado em ${dataStr}</div>
+          <div class="btn-row">
+            <button class="btn-copiar" onclick="mostrarReciboConfirmado()">📋 Copiar recibo novamente</button>
+          </div>
+        `;
+      } else {
+        div.innerHTML = `
+          <div class="btn-row">
+            <button class="btn-confirmar" onclick="confirmarVisualizacao()">✅ Confirmar que vi</button>
+            <button class="btn-copiar" onclick="copiarReciboAtual()">📋 Copiar recibo</button>
+          </div>
+        `;
+      }
+    }
+
+    function gerarTextoRecibo(confirmado, dataTs) {
+      const p = window._payloadRevelacao;
+      if (!p) return '';
+      const data = new Date(dataTs || Date.now());
+      const dataStr = data.toLocaleString('pt-BR', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+      const codigo = encodePayload({
+        tipo: 'vis',
+        e: p.e || '',
+        q: p.q || '',
+        d: data.getTime()
+      });
+      return (
+        `✅ Confirmação de visualização — Amigo Oculto\n\n` +
+        `Evento: ${p.e || '—'}\n` +
+        `Participante: ${p.q || '—'}\n` +
+        `Data: ${dataStr}\n` +
+        `Código: AMG-VIS-${codigo}`
+      );
+    }
+
+    function confirmarVisualizacao() {
+      const p = window._payloadRevelacao;
+      if (!p) return;
+      const chaveConf = 'amigoOculto.confirmacao.' + (p.e || '') + '.' + (p.q || '');
+      const dataTs = Date.now();
+      const dataStr = new Date(dataTs).toLocaleString('pt-BR', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+      const dados = { confirmado: true, dataTs, dataFormatada: dataStr };
+      try { localStorage.setItem(chaveConf, JSON.stringify(dados)); } catch (e) { /* ignora */ }
+
+      renderizarBlocoConfirmacao(dados);
+      mostrarReciboConfirmado();
+    }
+
+    function mostrarReciboConfirmado() {
+      const p = window._payloadRevelacao;
+      if (!p) return;
+      const chaveConf = 'amigoOculto.confirmacao.' + (p.e || '') + '.' + (p.q || '');
+      let dados = null;
+      try {
+        const raw = localStorage.getItem(chaveConf);
+        if (raw) dados = JSON.parse(raw);
+      } catch (e) { /* ignora */ }
+
+      const dataTs = (dados && dados.dataTs) ? dados.dataTs : Date.now();
+      const texto = gerarTextoRecibo(true, dataTs);
+
+      const preview = document.getElementById('reciboPreview');
+      if (preview) {
+        const textoEsc = escapeHtml(texto);
+        const textoWpp = encodeURIComponent(texto);
+        preview.innerHTML =
+          textoEsc +
+          `<a class="btn-wpp-recibo" href="https://wa.me/?text=${textoWpp}" target="_blank" rel="noopener">📱 Enviar para o grupo (WhatsApp)</a>`;
+        preview.classList.add('visivel');
+      }
+
+      navigator.clipboard.writeText(texto).catch(() => { /* silencioso */ });
+    }
+
+    function copiarReciboAtual() {
+      const texto = gerarTextoRecibo(false, Date.now());
+      navigator.clipboard.writeText(texto).then(() => {
+        const preview = document.getElementById('reciboPreview');
+        if (preview) {
+          const textoWpp = encodeURIComponent(texto);
+          preview.innerHTML =
+            escapeHtml(texto) +
+            `<a class="btn-wpp-recibo" href="https://wa.me/?text=${textoWpp}" target="_blank" rel="noopener">📱 Enviar para o grupo (WhatsApp)</a>`;
+          preview.classList.add('visivel');
+        }
+        alert('✅ Recibo copiado! Cole no grupo do WhatsApp.');
+      }).catch(() => alert('Não foi possível copiar. Selecione o texto manualmente.'));
     }
 
     function revelar() {
@@ -1457,6 +1872,7 @@
             listasDesejos: ev.listasDesejos || {},
             resultado: ev.resultado || null,
             qtdSorteios: ev.qtdSorteios || 1,
+            confirmacoesVis: ev.confirmacoesVis || {},
             criadoEm: ev.criadoEm || Date.now(),
             atualizadoEm: ev.atualizadoEm || Date.now()
           };
