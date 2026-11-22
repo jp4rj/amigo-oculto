@@ -37,7 +37,6 @@
       --sec-m2-border: #b8862e;
       --sec-m2-accent: #f6c76a;
 
-      /* NOVO: seção de confirmação — rosa/magenta */
       --sec-conf-bg: #2a1830;
       --sec-conf-border: #a83d8a;
       --sec-conf-accent: #f08acb;
@@ -144,10 +143,6 @@
       border-color: var(--primary); background: var(--bg-input-focus);
     }
     .evento-row button { padding: 10px 16px; font-size: 14px; }
-    .evento-row .label-inline {
-      font-size: 13px; color: var(--txt-soft); font-weight: 600;
-      min-width: auto; flex: 0 0 auto;
-    }
 
     .input-group { display: flex; gap: 8px; margin-bottom: 16px; }
     input[type="text"] {
@@ -205,7 +200,6 @@
       padding: 16px; margin-bottom: 20px;
       border: 2px solid var(--border);
       background: var(--bg-card-soft);
-      transition: background 0.3s, border-color 0.3s;
     }
     .secao h3 {
       font-size: 15px; margin-bottom: 12px;
@@ -213,8 +207,7 @@
       color: var(--txt);
     }
     .secao h3 .badge {
-      font-size: 12px;
-      padding: 3px 10px; border-radius: 20px;
+      font-size: 12px; padding: 3px 10px; border-radius: 20px;
       font-weight: 700;
     }
 
@@ -231,52 +224,35 @@
       border-color: var(--sec-m1-border);
     }
     .secao.momento1 h3 { color: var(--sec-m1-accent); }
-    .secao.momento1 h3 .badge,
-    .secao.momento1 .badge-momento.ok { background: var(--sec-m1-accent); color: #0f1226; }
+    .secao.momento1 h3 .badge { background: var(--sec-m1-accent); color: #0f1226; }
 
     .secao.momento2 {
       background: var(--sec-m2-bg);
       border-color: var(--sec-m2-border);
     }
     .secao.momento2 h3 { color: var(--sec-m2-accent); }
-    .secao.momento2 .badge-momento.ok { background: var(--sec-m2-accent); color: #0f1226; }
 
-    /* NOVO: seção de confirmação */
     .secao.secao-confirmacao {
       background: var(--sec-conf-bg);
       border-color: var(--sec-conf-border);
     }
     .secao.secao-confirmacao h3 { color: var(--sec-conf-accent); }
-    .secao.secao-confirmacao h3 .badge-momento.ok { background: var(--sec-conf-accent); color: #0f1226; }
-
-    .secao.momento1 .ghost {
-      background: #1b3d3a; color: var(--sec-m1-accent);
-    }
-    .secao.momento1 .ghost:hover { background: #224c48; }
-
-    .secao.momento2 .ghost {
-      background: #3d3116; color: var(--sec-m2-accent);
-    }
-    .secao.momento2 .ghost:hover { background: #4d3d1c; }
-
-    .secao.secao-confirmacao .ghost {
-      background: #3a1f38; color: var(--sec-conf-accent);
-    }
-    .secao.secao-confirmacao .ghost:hover { background: #4d2948; }
 
     .lista-desejos-item {
       display: flex; justify-content: space-between; align-items: center;
       padding: 10px 12px;
       background: rgba(0,0,0,0.25);
       border-radius: 8px; margin-bottom: 6px; font-size: 14px;
-      color: var(--txt);
+      color: var(--txt); gap: 8px; flex-wrap: wrap;
     }
-    .lista-desejos-item .nome-d { font-weight: 600; }
+    .lista-desejos-item .nome-d { font-weight: 600; flex: 1; min-width: 100px; }
     .lista-desejos-item .status-d {
       font-size: 12px; padding: 3px 10px; border-radius: 20px;
+      white-space: nowrap;
     }
     .st-ok { background: var(--ok-bg); color: var(--ok-txt); }
     .st-falta { background: var(--warn-bg); color: var(--warn-txt); }
+    .st-cod { background: rgba(139,124,255,0.25); color: var(--primary); }
 
     .aviso-falta {
       background: rgba(246,199,106,0.12);
@@ -422,7 +398,6 @@
     }
     .escondido { display: none; }
 
-    .momento { transition: opacity 0.3s; }
     .momento.colapsado #conteudoMomento1 { display: none; }
     .btn-collapse {
       background: transparent; color: var(--txt-soft);
@@ -430,7 +405,6 @@
       border-radius: 6px; font-weight: 700;
     }
     .btn-collapse:hover { background: rgba(255,255,255,0.08); }
-    .momento.colapsado { opacity: 0.7; }
 
     .progresso-m1 { margin-bottom: 12px; }
     .progresso-texto {
@@ -446,7 +420,6 @@
       background: linear-gradient(90deg, var(--sec-m1-accent), var(--sec-m1-border));
       transition: width 0.3s; border-radius: 4px;
     }
-    /* NOVO: barra de progresso da confirmação em rosa */
     .progresso-fill-conf {
       height: 100%;
       background: linear-gradient(90deg, var(--sec-conf-accent), var(--sec-conf-border));
@@ -465,9 +438,7 @@
       padding: 12px 14px; border-radius: 10px; font-size: 13px;
       margin-bottom: 4px;
     }
-    .status-box.info {
-      background: rgba(139,124,255,0.15); color: var(--primary);
-    }
+    .status-box.info { background: rgba(139,124,255,0.15); color: var(--primary); }
     .status-box.ok { background: var(--ok-bg); color: var(--ok-txt); }
     .status-box.aviso { background: var(--warn-bg); color: var(--warn-txt); }
 
@@ -497,7 +468,6 @@
     .config-sorteio select:focus { border-color: var(--sec-m2-accent); }
     .config-sorteio select:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* ===== NOVO: estilos da seção de confirmação ===== */
     .conf-item {
       display: flex; justify-content: space-between; align-items: center;
       padding: 10px 12px;
@@ -523,7 +493,6 @@
       cursor: pointer;
     }
 
-    /* NOVO: bloco de confirmação na tela de revelação */
     .confirmacao-box {
       background: var(--sec-conf-bg);
       border: 2px dashed var(--sec-conf-border);
@@ -564,6 +533,37 @@
       display: none;
     }
     .recibo-preview.visivel { display: block; }
+
+    /* ===== NOVO: caixa de código gerado no cadastro ===== */
+    .codigo-gerado-box {
+      background: rgba(79,209,197,0.12);
+      border: 2px solid var(--sec-m1-accent);
+      border-radius: 12px; padding: 16px; margin-top: 16px;
+      text-align: center;
+    }
+    .codigo-gerado-box .codigo-valor {
+      font-family: monospace; font-size: 18px; font-weight: 700;
+      color: var(--sec-m1-accent); letter-spacing: 1px;
+      background: rgba(0,0,0,0.4);
+      padding: 10px; border-radius: 8px; margin: 10px 0;
+      word-break: break-all;
+    }
+    .codigo-gerado-box p { font-size: 13px; color: var(--txt-soft); margin-bottom: 6px; }
+    .codigo-gerado-box .btn-row { display: flex; gap: 8px; margin-top: 10px; }
+    .codigo-gerado-box .btn-row button { flex: 1; font-size: 13px; padding: 10px; }
+
+    /* ===== NOVO: campo de colar código no painel ===== */
+    .colar-codigo-row {
+      display: flex; gap: 8px; margin-bottom: 12px;
+    }
+    .colar-codigo-row input {
+      flex: 1; padding: 10px 14px;
+      border: 2px solid var(--sec-m1-border); border-radius: 10px;
+      font-size: 14px; outline: none; font-family: monospace;
+      background: var(--bg-input); color: var(--txt);
+    }
+    .colar-codigo-row input:focus { border-color: var(--sec-m1-accent); }
+    .colar-codigo-row button { padding: 10px 16px; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -627,9 +627,19 @@
             <div class="progresso-fill" id="progressoFill" style="width:0%"></div>
           </div>
         </div>
+
+        <!-- NOVO: colar código da lista -->
+        <div class="colar-codigo-row">
+          <input type="text" id="inputColarCodigoLista" placeholder="Colar código da lista (AMG-LST-...)">
+          <button onclick="colarCodigoLista()">Registrar</button>
+        </div>
+        <div class="hint-auto" style="margin-bottom:12px;">
+          O participante preenche a lista no celular dele, gera um código e te envia. Cole aqui para registrar.
+        </div>
+
         <div id="listaDesejosStatus"></div>
         <div class="status-box info" style="margin-top:12px;">
-          Cada participante acessa o próprio link e cadastra até 5 presentes que deseja ganhar.
+          Cada participante acessa o próprio link e cadastra 3 presentes (vazios viram "Me Surpreenda").
         </div>
       </div>
     </div>
@@ -643,7 +653,8 @@
       <div class="config-sorteio">
         <label for="selectModo">Modo do sorteio:</label>
         <select id="selectModo" onchange="alterarModo()">
-          <option value="classico">🎲 Clássico (todos tiram)</option>
+          <option value="classico">🎲 Clássico (todos tiram 1)</option>
+          <option value="duplo">🎲🎲 Duplo (todos tiram 2)</option>
           <option value="sorteio_unico">🎯 Sorteio único (só 1 tira todos)</option>
           <option value="compra_conjunta">🛍️ Compra conjunta (grupos)</option>
         </select>
@@ -656,14 +667,14 @@
       <div id="resultadoSorteio"></div>
     </div>
 
-    <!-- ===== NOVO: MOMENTO 3 — CONFIRMAÇÃO DE VISUALIZAÇÃO ===== -->
+    <!-- MOMENTO 3: CONFIRMAÇÃO DE VISUALIZAÇÃO -->
     <div class="secao secao-confirmacao">
       <h3>
         <span>3️⃣ Confirmação de visualização</span>
         <span class="badge-momento vazio" id="badgeConfirmacao">Sem dados</span>
       </h3>
       <div id="avisoConfirmacao" class="status-box info" style="margin-bottom:12px;">
-        Após o sorteio, cada participante pode confirmar que viu seu amigo. O status aparece aqui.
+        Após o sorteio, cada participante pode confirmar que viu seu amigo.
       </div>
       <div class="progresso-m1">
         <div class="progresso-texto" id="progressoConfTexto">0 de 0 confirmaram</div>
@@ -674,9 +685,6 @@
       <div id="listaConfirmacao"></div>
       <div class="actions" style="margin-top:12px;">
         <button class="ghost" onclick="renderizarPainel()" style="flex:1;">🔄 Atualizar status</button>
-      </div>
-      <div class="status-box info" style="margin-top:12px;font-size:12px;">
-        💡 <strong>Como funciona:</strong> o participante clica em "Confirmar que vi" na tela de revelação, o app gera um <strong>link de confirmação</strong> e um <strong>texto de recibo</strong>. Quando você abre o link de confirmação neste navegador, o status é registrado automaticamente. Você também pode marcar manualmente pelo checkbox.
       </div>
     </div>
 
@@ -691,11 +699,12 @@
     <p class="subtitle" id="subtituloCadastro"></p>
     <div class="cadastro-box">
       <div id="presentesContainer"></div>
-      <div class="hint-auto">Digite até 5 presentes. Os campos vazios serão ignorados.</div>
+      <div class="hint-auto">Preencha até 3 presentes. Campos vazios serão preenchidos com "Me Surpreenda".</div>
       <div class="actions">
-        <button onclick="salvarListaDesejos()">💾 Salvar minha lista</button>
+        <button onclick="salvarListaDesejos()" id="btnSalvarLista">💾 Salvar e gerar código</button>
       </div>
       <div id="msgCadastro" style="margin-top:12px;"></div>
+      <div id="codigoGeradoBox"></div>
     </div>
   </div>
 
@@ -709,23 +718,21 @@
     // ===================== ESTADO =====================
     let eventos = [];
     let eventoAtual = null;
-    let modoTela = null;
     let participanteAtual = null;
     let tokenAtual = null;
 
     const STORAGE_KEY = 'amigoOculto_eventos';
+    const MAX_PRESENTES = 3;
+    const TEXTO_SURPREENDA = 'Me Surpreenda';
 
     // ===================== PERSISTÊNCIA =====================
     function carregarEventos() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         eventos = raw ? JSON.parse(raw) : [];
-      } catch (e) {
-        eventos = [];
-      }
+      } catch (e) { eventos = []; }
       if (!Array.isArray(eventos)) eventos = [];
     }
-
     function salvarEventosStorage() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(eventos));
     }
@@ -739,9 +746,9 @@
     }
     function escaparHtml(str) {
       if (str === undefined || str === null) return '';
-      return String(str).replace(/[&<>"']/g, function(m) {
-        return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m];
-      });
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+      }[m]));
     }
     function pegarUrlBase() {
       return window.location.href.split('#')[0].split('?')[0];
@@ -756,15 +763,65 @@
       return `${dia}/${mes}/${ano} ${h}:${m}`;
     }
 
+    // Base64 URL-safe com UTF-8
+    function encodePayload(obj) {
+      const json = JSON.stringify(obj);
+      const bytes = new TextEncoder().encode(json);
+      let bin = '';
+      bytes.forEach(b => bin += String.fromCharCode(b));
+      return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    }
+    function decodePayload(str) {
+      try {
+        let b64 = str.replace(/-/g, '+').replace(/_/g, '/');
+        while (b64.length % 4) b64 += '=';
+        const bin = atob(b64);
+        const bytes = new Uint8Array([...bin].map(c => c.charCodeAt(0)));
+        return JSON.parse(new TextDecoder().decode(bytes));
+      } catch (e) { return null; }
+    }
+
+    // Código da lista: AMG-LST-<base64>
+    function gerarCodigoLista(eventoId, participanteId) {
+      const ev = eventos.find(e => e.id === eventoId);
+      if (!ev) return null;
+      const p = ev.participantes.find(x => x.id === participanteId);
+      if (!p) return null;
+      const payload = {
+        tipo: 'lista',
+        ev: eventoId,
+        pid: participanteId,
+        nome: p.nome,
+        lista: p.listaDesejos,
+        eventoNome: ev.nome
+      };
+      return 'AMG-LST-' + encodePayload(payload);
+    }
+
+    // Processa código da lista: valida e grava
+    function processarCodigoLista(codigo) {
+      if (!codigo || !codigo.startsWith('AMG-LST-')) return { ok: false, msg: 'Código inválido (deve começar com AMG-LST-)' };
+      const payload = decodePayload(codigo.slice(8));
+      if (!payload || payload.tipo !== 'lista') return { ok: false, msg: 'Código corrompido ou incompatível' };
+
+      const ev = eventos.find(e => e.id === payload.ev);
+      if (!ev) return { ok: false, msg: 'Evento não encontrado neste navegador' };
+      const p = ev.participantes.find(x => x.id === payload.pid);
+      if (!p) return { ok: false, msg: 'Participante não encontrado no evento' };
+
+      // Grava lista
+      p.listaDesejos = Array.isArray(payload.lista) ? payload.lista : [];
+      p.listaConfirmadaViaCodigo = true;
+      p.listaConfirmadaEm = Date.now();
+      salvarEventosStorage();
+      return { ok: true, msg: `✅ Lista de ${p.nome} registrada!`, eventoId: ev.id };
+    }
+
     function mostrarTela(nome) {
-      document.getElementById('telaCards').classList.add('escondido');
-      document.getElementById('telaPainel').classList.add('escondido');
-      document.getElementById('telaCadastro').classList.add('escondido');
-      document.getElementById('telaRevelar').classList.add('escondido');
-      if (nome === 'cards') document.getElementById('telaCards').classList.remove('escondido');
-      if (nome === 'painel') document.getElementById('telaPainel').classList.remove('escondido');
-      if (nome === 'cadastro') document.getElementById('telaCadastro').classList.remove('escondido');
-      if (nome === 'revelar') document.getElementById('telaRevelar').classList.remove('escondido');
+      ['telaCards','telaPainel','telaCadastro','telaRevelar'].forEach(id => {
+        document.getElementById(id).classList.add('escondido');
+      });
+      document.getElementById('tela' + nome.charAt(0).toUpperCase() + nome.slice(1)).classList.remove('escondido');
     }
 
     // ===================== ROTEAMENTO =====================
@@ -777,7 +834,6 @@
       const eventoId = partes[1];
       const token = partes[2];
 
-      // ===== NOVO: rota de confirmação =====
       if (acao === 'confirmar' && eventoId && token) {
         processarConfirmacao(eventoId, token);
         return;
@@ -788,66 +844,42 @@
         if (!ev) { mostrarTela('cards'); renderizarCards(); return; }
         const part = ev.participantes.find(p => p.token === token);
         if (!part) { mostrarTela('cards'); renderizarCards(); return; }
-
         eventoAtual = ev;
         participanteAtual = part;
         tokenAtual = token;
-
-        if (acao === 'cadastro') {
-          abrirCadastro(ev, part);
-        } else {
-          abrirRevelacao(ev, part);
-        }
-      } else {
-        mostrarTela('cards'); renderizarCards();
+        if (acao === 'cadastro') abrirCadastro(ev, part);
+        else abrirRevelacao(ev, part);
+        return;
       }
+      mostrarTela('cards'); renderizarCards();
     }
-
     window.addEventListener('hashchange', processarHash);
 
-    // ===== NOVO: processa link de confirmação =====
     function processarConfirmacao(eventoId, token) {
-      // precisa haver evento correspondente NESTE navegador
       const ev = eventos.find(e => e.id === eventoId);
       if (!ev) {
-        // Cenário comum: participante abriu o próprio link em outro dispositivo.
-        // Este navegador não tem os dados → mostramos instruções.
-        mostrarTela('cards');
-        renderizarCards();
-        setTimeout(() => {
-          alert(
-            '⚠️ Este link de confirmação precisa ser aberto no navegador do ORGANIZADOR.\n\n' +
-            'Como este navegador não tem os dados do evento, nada foi registrado aqui.\n\n' +
-            'Se você é o organizador, abra este link no computador onde criou o evento.'
-          );
-        }, 100);
-        // limpa o hash para não confundir
+        mostrarTela('cards'); renderizarCards();
+        setTimeout(() => alert('⚠️ Este link precisa ser aberto no navegador do ORGANIZADOR.'), 100);
         history.replaceState(null, '', window.location.pathname);
         return;
       }
       const part = ev.participantes.find(p => p.token === token);
       if (!part) {
-        alert('❌ Participante não encontrado neste evento.');
+        alert('❌ Participante não encontrado.');
         history.replaceState(null, '', window.location.pathname);
-        mostrarTela('cards');
-        renderizarCards();
+        mostrarTela('cards'); renderizarCards();
         return;
       }
-
-      const jaConfirmado = part.revelacaoConfirmada && part.revelacaoConfirmada.confirmado;
-      if (jaConfirmado) {
+      if (part.revelacaoConfirmada && part.revelacaoConfirmada.confirmado) {
         alert(`ℹ️ ${part.nome} já havia confirmado em ${formatarData(part.revelacaoConfirmada.dataConfirmacao)}.`);
       } else {
         part.revelacaoConfirmada = { confirmado: true, dataConfirmacao: Date.now(), origem: 'link' };
         salvarEventosStorage();
         alert(`✅ Confirmação registrada para ${part.nome}!`);
       }
-
-      // abre o painel do evento
       eventoAtual = ev;
       history.replaceState(null, '', window.location.pathname);
-      mostrarTela('painel');
-      renderizarPainel();
+      mostrarTela('painel'); renderizarPainel();
     }
 
     // ===================== CARDS =====================
@@ -864,14 +896,13 @@
         if (total === 0) statusHtml = '<span class="card-status status-vazio">Sem participantes</span>';
         else if (sort) statusHtml = '<span class="card-status status-sorteado">✅ Sorteado</span>';
         else statusHtml = '<span class="card-status status-pendente">⏳ Pendente</span>';
-
         return `
           <div class="evento-card" onclick="abrirEvento('${ev.id}')">
             <div class="card-nome">${escaparHtml(ev.nome)}</div>
             <div class="card-info">👥 ${total} participante${total !== 1 ? 's' : ''}</div>
             ${statusHtml}
             <div class="card-data">Criado em ${new Date(ev.criadoEm).toLocaleDateString('pt-BR')}</div>
-            <button class="card-del" onclick="event.stopPropagation(); excluirEvento('${ev.id}')" title="Excluir evento">🗑️</button>
+            <button class="card-del" onclick="event.stopPropagation(); excluirEvento('${ev.id}')" title="Excluir">🗑️</button>
           </div>
         `;
       }).join('');
@@ -879,25 +910,19 @@
 
     function novoEvento() {
       const ev = {
-        id: gerarId(),
-        nome: 'Novo evento',
-        criadoEm: Date.now(),
-        participantes: [],
-        sorteio: null,
-        modoSorteio: 'classico'
+        id: gerarId(), nome: 'Novo evento', criadoEm: Date.now(),
+        participantes: [], sorteio: null, modoSorteio: 'classico'
       };
       eventos.push(ev);
       salvarEventosStorage();
       abrirEvento(ev.id);
     }
-
     function excluirEvento(id) {
       if (!confirm('Excluir este evento?')) return;
       eventos = eventos.filter(e => e.id !== id);
       salvarEventosStorage();
       renderizarCards();
     }
-
     function abrirEvento(id) {
       const ev = eventos.find(e => e.id === id);
       if (!ev) return;
@@ -905,7 +930,6 @@
       mostrarTela('painel');
       renderizarPainel();
     }
-
     function voltarParaCards() {
       eventoAtual = null;
       if (window.location.hash) history.replaceState(null, '', window.location.pathname);
@@ -918,25 +942,30 @@
       if (!eventoAtual) return;
       const ev = eventoAtual;
       document.getElementById('tituloEvento').textContent = '🎁 ' + (ev.nome || 'Evento');
-      document.getElementById('subtituloEvento').textContent = `${ev.participantes.length} participante(s) · ${ev.sorteio ? 'Sorteado' : 'Não sorteado'}`;
+      document.getElementById('subtituloEvento').textContent =
+        `${ev.participantes.length} participante(s) · ${ev.sorteio ? 'Sorteado' : 'Não sorteado'}`;
       document.getElementById('eventoInput').value = ev.nome || '';
       document.getElementById('badgeParticipantes').textContent = ev.participantes.length;
       document.getElementById('selectModo').value = ev.modoSorteio || 'classico';
 
-      // lista de participantes
+      // Lista de participantes
       const lista = document.getElementById('lista');
       if (!ev.participantes.length) {
         lista.innerHTML = '<div class="empty">Nenhum participante ainda.</div>';
       } else {
-        lista.innerHTML = ev.participantes.map((p, i) => `
-          <li>
-            <span>${escaparHtml(p.nome)} ${p.listaDesejos && p.listaDesejos.length ? '✅' : '⏳'}</span>
-            <button class="remove-btn" onclick="removerParticipante(${i})" title="Remover">×</button>
-          </li>
-        `).join('');
+        lista.innerHTML = ev.participantes.map((p, i) => {
+          const temLista = p.listaDesejos && p.listaDesejos.length > 0;
+          const viaCodigo = p.listaConfirmadaViaCodigo;
+          return `
+            <li>
+              <span>${escaparHtml(p.nome)} ${temLista ? (viaCodigo ? '📨' : '✅') : '⏳'}</span>
+              <button class="remove-btn" onclick="removerParticipante(${i})" title="Remover">×</button>
+            </li>
+          `;
+        }).join('');
       }
 
-      // momento 1
+      // Momento 1 - status das listas
       const listaStatus = document.getElementById('listaDesejosStatus');
       const totalP = ev.participantes.length;
       const comLista = ev.participantes.filter(p => p.listaDesejos && p.listaDesejos.length > 0).length;
@@ -947,20 +976,24 @@
       } else {
         listaStatus.innerHTML = ev.participantes.map(p => {
           const tem = p.listaDesejos && p.listaDesejos.length > 0;
+          const viaCodigo = p.listaConfirmadaViaCodigo;
           const link = pegarUrlBase() + '#cadastro/' + ev.id + '/' + p.token;
           return `
             <div class="lista-desejos-item">
               <span class="nome-d">${escaparHtml(p.nome)}</span>
               <div style="display:flex;align-items:center;gap:8px;">
-                <span class="status-d ${tem ? 'st-ok' : 'st-falta'}">${tem ? '✅ ' + p.listaDesejos.length + ' presentes' : '⏳ Falta'}</span>
-                <button class="btn-reenviar" onclick="copiarLink('${link}')" title="Copiar link">📋</button>
+                <span class="status-d ${tem ? 'st-ok' : 'st-falta'}">
+                  ${tem ? '✅ ' + p.listaDesejos.length + ' itens' : '⏳ Falta'}
+                  ${viaCodigo ? ' 📨' : ''}
+                </span>
+                <button class="btn-reenviar" onclick="copiarLink('${link}')" title="Copiar link de cadastro">📋</button>
               </div>
             </div>
           `;
         }).join('');
       }
 
-      // momento 2
+      // Momento 2 - sorteio
       const badgeSorteio = document.getElementById('badgeSorteio');
       const resultadoDiv = document.getElementById('resultadoSorteio');
       const btnLimpar = document.getElementById('btnLimparSorteio');
@@ -978,11 +1011,9 @@
       }
 
       atualizarAvisoModo();
-      // ===== NOVO: renderiza seção de confirmação =====
       renderizarConfirmacao(ev);
     }
 
-    // ===== NOVO: renderiza seção de confirmação =====
     function renderizarConfirmacao(ev) {
       const badge = document.getElementById('badgeConfirmacao');
       const aviso = document.getElementById('avisoConfirmacao');
@@ -993,7 +1024,6 @@
       if (!sort) {
         badge.className = 'badge-momento vazio';
         badge.textContent = 'Sem sorteio';
-        aviso.style.display = 'block';
         aviso.className = 'status-box aviso';
         aviso.textContent = 'Realize o sorteio primeiro para habilitar a confirmação.';
         document.getElementById('progressoConfTexto').textContent = '0 de 0 confirmaram';
@@ -1002,9 +1032,8 @@
         return;
       }
 
-      aviso.style.display = 'block';
       aviso.className = 'status-box info';
-      aviso.textContent = 'Cada participante pode confirmar que viu seu amigo. Status atualizado abaixo.';
+      aviso.textContent = 'Cada participante pode confirmar que viu seu amigo.';
 
       const confirmados = ev.participantes.filter(p => p.revelacaoConfirmada && p.revelacaoConfirmada.confirmado).length;
       document.getElementById('progressoConfTexto').textContent = `${confirmados} de ${total} confirmaram`;
@@ -1015,16 +1044,13 @@
         badge.textContent = '✅ Todos confirmaram';
       } else if (confirmados > 0) {
         badge.className = 'badge-momento pend';
-        badge.textContent = `${confirmados}/${total} confirmaram`;
+        badge.textContent = `${confirmados}/${total}`;
       } else {
         badge.className = 'badge-momento pend';
         badge.textContent = 'Aguardando';
       }
 
-      if (!total) {
-        lista.innerHTML = '<div class="empty">Nenhum participante.</div>';
-        return;
-      }
+      if (!total) { lista.innerHTML = '<div class="empty">Nenhum participante.</div>'; return; }
 
       lista.innerHTML = ev.participantes.map(p => {
         const conf = p.revelacaoConfirmada && p.revelacaoConfirmada.confirmado;
@@ -1048,16 +1074,12 @@
       }).join('');
     }
 
-    // ===== NOVO: marca/desmarca manualmente =====
     function marcarManual(participanteId, marcado) {
       if (!eventoAtual) return;
       const p = eventoAtual.participantes.find(x => x.id === participanteId);
       if (!p) return;
-      if (marcado) {
-        p.revelacaoConfirmada = { confirmado: true, dataConfirmacao: Date.now(), origem: 'manual' };
-      } else {
-        p.revelacaoConfirmada = null;
-      }
+      if (marcado) p.revelacaoConfirmada = { confirmado: true, dataConfirmacao: Date.now(), origem: 'manual' };
+      else p.revelacaoConfirmada = null;
       salvarEventosStorage();
       renderizarConfirmacao(eventoAtual);
     }
@@ -1068,7 +1090,8 @@
       eventoAtual.nome = novoNome;
       salvarEventosStorage();
       document.getElementById('tituloEvento').textContent = '🎁 ' + novoNome;
-      document.getElementById('subtituloEvento').textContent = `${eventoAtual.participantes.length} participante(s) · ${eventoAtual.sorteio ? 'Sorteado' : 'Não sorteado'}`;
+      document.getElementById('subtituloEvento').textContent =
+        `${eventoAtual.participantes.length} participante(s) · ${eventoAtual.sorteio ? 'Sorteado' : 'Não sorteado'}`;
     }
 
     // ===================== PARTICIPANTES =====================
@@ -1078,21 +1101,17 @@
       const nome = input.value.trim();
       if (!nome) return;
       if (eventoAtual.participantes.some(p => p.nome.toLowerCase() === nome.toLowerCase())) {
-        alert('Já existe um participante com esse nome.');
-        return;
+        alert('Já existe um participante com esse nome.'); return;
       }
       eventoAtual.participantes.push({
-        id: gerarId(),
-        nome: nome,
-        token: gerarToken(),
-        listaDesejos: [],
-        revelacaoConfirmada: null
+        id: gerarId(), nome, token: gerarToken(),
+        listaDesejos: [], revelacaoConfirmada: null,
+        listaConfirmadaViaCodigo: false
       });
       input.value = '';
       salvarEventosStorage();
       renderizarPainel();
     }
-
     function removerParticipante(index) {
       if (!eventoAtual) return;
       if (!confirm('Remover este participante?')) return;
@@ -1101,8 +1120,7 @@
       salvarEventosStorage();
       renderizarPainel();
     }
-
-    document.getElementById('nomeInput').addEventListener('keypress', function(e) {
+    document.getElementById('nomeInput').addEventListener('keypress', e => {
       if (e.key === 'Enter') adicionar();
     });
 
@@ -1113,32 +1131,29 @@
       btn.textContent = secao.classList.contains('colapsado') ? '+' : '−';
     }
 
-    // ===================== MODO DE SORTEIO =====================
+    // ===================== MODO =====================
     function alterarModo() {
       if (!eventoAtual) return;
       eventoAtual.modoSorteio = document.getElementById('selectModo').value;
       eventoAtual.sorteio = null;
-      // ao trocar o modo, invalida confirmações
       eventoAtual.participantes.forEach(p => { p.revelacaoConfirmada = null; });
       salvarEventosStorage();
       atualizarAvisoModo();
-      document.getElementById('badgeSorteio').className = 'badge-momento pend';
-      document.getElementById('badgeSorteio').textContent = 'Pendente';
-      document.getElementById('resultadoSorteio').innerHTML = '';
-      document.getElementById('btnLimparSorteio').style.display = 'none';
-      renderizarConfirmacao(eventoAtual);
+      renderizarPainel();
     }
-
     function atualizarAvisoModo() {
       if (!eventoAtual) return;
       const aviso = document.getElementById('avisoModo');
       const modo = eventoAtual.modoSorteio || 'classico';
-      if (modo === 'sorteio_unico') {
+      if (modo === 'duplo') {
         aviso.style.display = 'block';
-        aviso.innerHTML = '⚠️ <strong>Sorteio único:</strong> apenas <u>um participante</u> será sorteado e ficará responsável por tirar todos os outros. O resultado mostrará quem foi o "amigo secreto geral".';
+        aviso.innerHTML = '⚠️ <strong>Duplo:</strong> cada participante tira <u>2 amigos</u> diferentes. Todos aparecem na revelação com as listas de desejos.';
+      } else if (modo === 'sorteio_unico') {
+        aviso.style.display = 'block';
+        aviso.innerHTML = '⚠️ <strong>Sorteio único:</strong> apenas <u>um participante</u> será sorteado e tirará todos os outros.';
       } else if (modo === 'compra_conjunta') {
         aviso.style.display = 'block';
-        aviso.innerHTML = '⚠️ <strong>Compra conjunta:</strong> os participantes serão divididos em grupos de até 3 pessoas. Cada grupo compra para outro grupo. O resultado mostrará os grupos e os presentes desejados.';
+        aviso.innerHTML = '⚠️ <strong>Compra conjunta:</strong> grupos de até 3 pessoas; cada grupo compra para outro grupo.';
       } else {
         aviso.style.display = 'none';
       }
@@ -1149,79 +1164,112 @@
       if (!eventoAtual) return;
       const ev = eventoAtual;
       const parts = ev.participantes;
+      if (parts.length < 2) { alert('Adicione pelo menos 2 participantes.'); return; }
 
-      if (parts.length < 2) {
-        alert('Adicione pelo menos 2 participantes para sortear.');
-        return;
-      }
       const semLista = parts.filter(p => !p.listaDesejos || !p.listaDesejos.length);
-      if (semLista.length > 0 && !confirm('Alguns participantes não cadastraram lista de desejos. Continuar mesmo assim?')) {
-        return;
-      }
+      if (semLista.length > 0 && !confirm(`${semLista.length} participante(s) ainda não cadastraram lista. Continuar?`)) return;
 
       const modo = ev.modoSorteio || 'classico';
       let resultado = {};
 
       if (modo === 'classico') {
-        const indices = parts.map((_, i) => i);
-        let tentativas = 0;
-        let perm;
-        do {
-          perm = embaralhar([...indices]);
-          tentativas++;
-        } while (perm.some((v, i) => v === i) && tentativas < 1000);
-        if (perm.some((v, i) => v === i)) {
-          for (let i = 0; i < parts.length; i++) {
-            if (perm[i] === i) {
-              const j = (i + 1) % parts.length;
-              [perm[i], perm[j]] = [perm[j], perm[i]];
-            }
-          }
-        }
-        parts.forEach((p, i) => {
-          resultado[p.id] = parts[perm[i]].id;
-        });
+        resultado = sortearClassico(parts);
+      } else if (modo === 'duplo') {
+        resultado = sortearDuplo(parts);
       } else if (modo === 'sorteio_unico') {
-        const idxSorteado = Math.floor(Math.random() * parts.length);
-        const sortudo = parts[idxSorteado];
-        const outros = parts.filter((_, i) => i !== idxSorteado);
+        const idx = Math.floor(Math.random() * parts.length);
+        const sortudo = parts[idx];
+        const outros = parts.filter((_, i) => i !== idx);
         resultado[sortudo.id] = outros.map(o => o.id);
       } else if (modo === 'compra_conjunta') {
-        const grupos = [];
-        const copia = [...parts];
-        embaralhar(copia);
-        while (copia.length) {
-          grupos.push(copia.splice(0, 3));
-        }
-        const indicesG = grupos.map((_, i) => i);
-        let permG;
-        let tent = 0;
-        do {
-          permG = embaralhar([...indicesG]);
-          tent++;
-        } while (permG.some((v, i) => v === i) && tent < 1000);
-        if (permG.some((v, i) => v === i)) {
-          for (let i = 0; i < grupos.length; i++) {
-            if (permG[i] === i) {
-              const j = (i + 1) % grupos.length;
-              [permG[i], permG[j]] = [permG[j], permG[i]];
-            }
-          }
-        }
-        grupos.forEach((g, i) => {
-          const grupoDestino = grupos[permG[i]];
-          g.forEach(p => {
-            resultado[p.id] = grupoDestino.map(d => d.id);
-          });
-        });
+        resultado = sortearCompraConjunta(parts);
       }
 
-      ev.sorteio = { resultado: resultado, modo: modo, data: Date.now() };
-      // ao sortear, limpa confirmações anteriores
+      ev.sorteio = { resultado, modo, data: Date.now() };
       ev.participantes.forEach(p => { p.revelacaoConfirmada = null; });
       salvarEventosStorage();
       renderizarPainel();
       document.getElementById('resultadoSorteio').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function sortearClassico(parts) {
+      const indices = parts.map((_, i) => i);
+      let tentativas = 0, perm;
+      do {
+        perm = embaralhar([...indices]);
+        tentativas++;
+      } while (perm.some((v, i) => v === i) && tentativas < 1000);
+      if (perm.some((v, i) => v === i)) {
+        for (let i = 0; i < parts.length; i++) {
+          if (perm[i] === i) {
+            const j = (i + 1) % parts.length;
+            [perm[i], perm[j]] = [perm[j], perm[i]];
+          }
+        }
+      }
+      const res = {};
+      parts.forEach((p, i) => { res[p.id] = parts[perm[i]].id; });
+      return res;
+    }
+
+    // Sorteio duplo: cada um tira 2 diferentes (não a si mesmo, sem repetir)
+    function sortearDuplo(parts) {
+      const n = parts.length;
+      if (n < 3) {
+        alert('O modo duplo precisa de pelo menos 3 participantes.');
+        return null;
+      }
+      // Para cada i, escolhe 2 índices diferentes de i
+      let tentativas = 0;
+      while (tentativas < 2000) {
+        tentativas++;
+        const res = {};
+        let ok = true;
+        for (let i = 0; i < n; i++) {
+          const candidatos = [];
+          for (let j = 0; j < n; j++) if (j !== i) candidatos.push(j);
+          embaralhar(candidatos);
+          const dois = candidatos.slice(0, 2);
+          if (dois.length < 2) { ok = false; break; }
+          res[parts[i].id] = dois.map(k => parts[k].id);
+        }
+        if (!ok) continue;
+        // Verifica distribuição equilibrada: cada pessoa deve ser tirada ~2 vezes
+        const contagem = {};
+        parts.forEach(p => contagem[p.id] = 0);
+        Object.values(res).forEach(arr => arr.forEach(id => contagem[id]++));
+        const todosOk = Object.values(contagem).every(c => c >= 1 && c <= 3);
+        if (todosOk) return res;
+      }
+      alert('Não foi possível gerar um sorteio duplo balanceado. Tente novamente.');
+      return null;
+    }
+
+    function sortearCompraConjunta(parts) {
+      const grupos = [];
+      const copia = [...parts];
+      embaralhar(copia);
+      while (copia.length) grupos.push(copia.splice(0, 3));
+      const indicesG = grupos.map((_, i) => i);
+      let permG, tent = 0;
+      do {
+        permG = embaralhar([...indicesG]);
+        tent++;
+      } while (permG.some((v, i) => v === i) && tent < 1000);
+      if (permG.some((v, i) => v === i)) {
+        for (let i = 0; i < grupos.length; i++) {
+          if (permG[i] === i) {
+            const j = (i + 1) % grupos.length;
+            [permG[i], permG[j]] = [permG[j], permG[i]];
+          }
+        }
+      }
+      const res = {};
+      grupos.forEach((g, i) => {
+        const grupoDestino = grupos[permG[i]];
+        g.forEach(p => { res[p.id] = grupoDestino.map(d => d.id); });
+      });
+      return res;
     }
 
     function embaralhar(arr) {
@@ -1249,17 +1297,17 @@
       const modo = ev.sorteio.modo || 'classico';
       let html = '<div class="resultado"><h2>🎉 Resultado do sorteio</h2>';
 
-      if (modo === 'classico') {
+      if (modo === 'classico' || modo === 'duplo') {
         html += partes.map(p => {
-          const tiradoId = ev.sorteio.resultado[p.id];
-          const tirado = partes.find(x => x.id === tiradoId);
-          if (!tirado) return '';
+          const arrIds = modo === 'classico' ? [ev.sorteio.resultado[p.id]] : ev.sorteio.resultado[p.id];
+          const tirados = (arrIds || []).map(id => partes.find(x => x.id === id)).filter(Boolean);
+          if (!tirados.length) return '';
           const link = pegarUrlBase() + '#revelar/' + ev.id + '/' + p.token;
           return `
             <div class="resultado-item">
               <div class="linha-topo">
                 <span class="nome">${escaparHtml(p.nome)}</span>
-                <span class="tirou">tirou → <strong>${escaparHtml(tirado.nome)}</strong></span>
+                <span class="tirou">tirou → <strong>${tirados.map(t => escaparHtml(t.nome)).join(' e ')}</strong></span>
               </div>
               <div class="link-row">
                 <input type="text" value="${link}" readonly onclick="this.select()">
@@ -1271,12 +1319,11 @@
       } else if (modo === 'sorteio_unico') {
         const sortudoId = Object.keys(ev.sorteio.resultado)[0];
         const sortudo = partes.find(p => p.id === sortudoId);
-        const sorteadosIds = ev.sorteio.resultado[sortudoId];
-        const sorteados = sorteadosIds.map(id => partes.find(p => p.id === id)).filter(Boolean);
+        const sorteados = (ev.sorteio.resultado[sortudoId] || []).map(id => partes.find(p => p.id === id)).filter(Boolean);
         const link = pegarUrlBase() + '#revelar/' + ev.id + '/' + sortudo.token;
         html += `
           <div class="status-box info" style="margin-bottom:12px;">
-            🎯 <strong>${escaparHtml(sortudo.nome)}</strong> foi sorteado(a) para tirar todos!
+            🎯 <strong>${escaparHtml(sortudo.nome)}</strong> foi sorteado para tirar todos!
           </div>
           <div class="resultado-item">
             <div class="linha-topo">
@@ -1285,7 +1332,7 @@
             </div>
             <div class="link-row">
               <input type="text" value="${link}" readonly onclick="this.select()">
-              <button class="btn-wpp" onclick="copiarLink('${link}')" title="Copiar link">📋</button>
+              <button class="btn-wpp" onclick="copiarLink('${link}')">📋</button>
             </div>
           </div>
         `;
@@ -1317,99 +1364,142 @@
 
     // ===================== COPIAR =====================
     function copiarLink(link) {
-      navigator.clipboard.writeText(link).then(() => {
-        alert('Link copiado!');
-      }).catch(() => {
-        const ta = document.createElement('textarea');
-        ta.value = link;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        alert('Link copiado!');
-      });
+      navigator.clipboard.writeText(link).then(() => alert('Link copiado!'))
+        .catch(() => {
+          const ta = document.createElement('textarea');
+          ta.value = link; document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); document.body.removeChild(ta);
+          alert('Link copiado!');
+        });
     }
 
     // ===================== CADASTRO =====================
     function abrirCadastro(ev, part) {
-      eventoAtual = ev;
-      participanteAtual = part;
+      eventoAtual = ev; participanteAtual = part;
       document.getElementById('subtituloCadastro').textContent = `${part.nome} · ${ev.nome}`;
       const container = document.getElementById('presentesContainer');
       const desejos = part.listaDesejos || [];
       container.innerHTML = '';
-      for (let i = 0; i < 5; i++) {
-        const valor = desejos[i] || '';
+      for (let i = 0; i < MAX_PRESENTES; i++) {
+        const valor = desejos[i] && desejos[i] !== TEXTO_SURPREENDA ? desejos[i] : '';
         container.innerHTML += `
           <div class="presente-input-group">
             <span class="num">${i + 1}</span>
-            <input type="text" id="presente${i}" placeholder="Presente ${i + 1}" value="${escaparHtml(valor)}" autocomplete="off">
+            <input type="text" id="presente${i}" placeholder="Presente ${i + 1} (opcional)" value="${escaparHtml(valor)}" autocomplete="off">
           </div>
         `;
       }
       document.getElementById('msgCadastro').innerHTML = '';
+      document.getElementById('codigoGeradoBox').innerHTML = '';
       mostrarTela('cadastro');
     }
 
     function salvarListaDesejos() {
       if (!eventoAtual || !participanteAtual) return;
       const desejos = [];
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < MAX_PRESENTES; i++) {
         const val = document.getElementById('presente' + i).value.trim();
-        if (val) desejos.push(val);
+        desejos.push(val || TEXTO_SURPREENDA);
       }
       participanteAtual.listaDesejos = desejos;
+      participanteAtual.listaConfirmadaViaCodigo = false;
       salvarEventosStorage();
-      document.getElementById('msgCadastro').innerHTML = '<div class="status-box ok">✅ Lista salva com sucesso!</div>';
-      setTimeout(() => {
-        document.getElementById('msgCadastro').innerHTML = '';
-      }, 3000);
+
+      // Gera código e recibo
+      const codigo = gerarCodigoLista(eventoAtual.id, participanteAtual.id);
+      const recibo =
+        `✅ Lista de desejos cadastrada\n` +
+        `Evento: ${eventoAtual.nome}\n` +
+        `Participante: ${participanteAtual.nome}\n` +
+        `Código: ${codigo}`;
+
+      document.getElementById('msgCadastro').innerHTML =
+        '<div class="status-box ok">✅ Lista salva! Copie o código abaixo e envie ao organizador.</div>';
+
+      document.getElementById('codigoGeradoBox').innerHTML = `
+        <div class="codigo-gerado-box">
+          <p><strong>📨 Código de confirmação</strong></p>
+          <p style="font-size:12px;">Envie este código ao organizador (WhatsApp, e-mail etc.)</p>
+          <div class="codigo-valor">${escaparHtml(codigo)}</div>
+          <div class="btn-row">
+            <button class="ghost" onclick="copiarTexto(${JSON.stringify(codigo).replace(/"/g,'&quot;')})">📋 Copiar código</button>
+            <button onclick="copiarTexto(${JSON.stringify(recibo).replace(/"/g,'&quot;')})">📋 Copiar recibo completo</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function copiarTexto(txt) {
+      navigator.clipboard.writeText(txt).then(() => alert('Copiado!'))
+        .catch(() => {
+          const ta = document.createElement('textarea');
+          ta.value = txt; document.body.appendChild(ta); ta.select();
+          document.execCommand('copy'); document.body.removeChild(ta);
+          alert('Copiado!');
+        });
+    }
+
+    function colarCodigoLista() {
+      const input = document.getElementById('inputColarCodigoLista');
+      const codigo = input.value.trim();
+      if (!codigo) return;
+      const res = processarCodigoLista(codigo);
+      if (!res.ok) { alert('❌ ' + res.msg); return; }
+      input.value = '';
+      // Se o evento atual bate, recarrega painel
+      if (eventoAtual && eventoAtual.id === res.eventoId) {
+        // recarrega do storage (pode ter sido alterado)
+        const ev = eventos.find(e => e.id === res.eventoId);
+        eventoAtual = ev;
+        renderizarPainel();
+      }
+      alert(res.msg);
     }
 
     // ===================== REVELAÇÃO =====================
     function abrirRevelacao(ev, part) {
-      eventoAtual = ev;
-      participanteAtual = part;
+      eventoAtual = ev; participanteAtual = part;
       const box = document.getElementById('revelarBox');
       const modo = ev.sorteio && ev.sorteio.modo ? ev.sorteio.modo : 'classico';
       const resultado = ev.sorteio && ev.sorteio.resultado ? ev.sorteio.resultado[part.id] : null;
 
       if (!resultado) {
-        box.innerHTML = '<div class="aviso">O sorteio ainda não foi realizado. Volte mais tarde.</div>';
-        mostrarTela('revelar');
-        return;
+        box.innerHTML = '<div class="aviso">O sorteio ainda não foi realizado.</div>';
+        mostrarTela('revelar'); return;
       }
 
       let htmlConteudo = '';
-      if (modo === 'classico') {
-        const tiradoId = resultado;
-        const tirado = ev.participantes.find(p => p.id === tiradoId);
-        if (!tirado) { box.innerHTML = '<div class="aviso">Erro ao encontrar amigo sorteado.</div>'; mostrarTela('revelar'); return; }
-        const lista = tirado.listaDesejos || [];
+      if (modo === 'classico' || modo === 'duplo') {
+        const ids = modo === 'classico' ? [resultado] : resultado;
+        const tirados = ids.map(id => ev.participantes.find(p => p.id === id)).filter(Boolean);
         htmlConteudo = `
           <p class="sua-vez">Olá, <strong>${escaparHtml(part.nome)}</strong>!</p>
-          <div class="pessoa-revelada">
-            <div class="pessoa-titulo">Seu amigo oculto é</div>
-            <div class="pessoa-nome">${escaparHtml(tirado.nome)}</div>
-            <div class="desejos-revelados">
-              <h4>🎁 Lista de desejos de ${escaparHtml(tirado.nome)}</h4>
-              ${lista.length ? `<ol>${lista.map(d => `<li>${escaparHtml(d)}</li>`).join('')}</ol>` : '<div class="sem-lista">Ainda não cadastrou presentes.</div>'}
-            </div>
-          </div>
+          ${tirados.map(t => {
+            const lista = t.listaDesejos || [];
+            return `
+              <div class="pessoa-revelada">
+                <div class="pessoa-titulo">Seu amigo oculto é</div>
+                <div class="pessoa-nome">${escaparHtml(t.nome)}</div>
+                <div class="desejos-revelados">
+                  <h4>🎁 Lista de desejos</h4>
+                  ${lista.length ? `<ol>${lista.map(d => `<li>${escaparHtml(d)}</li>`).join('')}</ol>` : '<div class="sem-lista">Sem lista cadastrada.</div>'}
+                </div>
+              </div>
+            `;
+          }).join('')}
         `;
       } else if (modo === 'sorteio_unico') {
         const sortudoId = Object.keys(ev.sorteio.resultado)[0];
         const sortudo = ev.participantes.find(p => p.id === sortudoId);
         if (part.id === sortudoId) {
-          const ids = ev.sorteio.resultado[part.id];
-          const sorteados = ids.map(id => ev.participantes.find(p => p.id === id)).filter(Boolean);
+          const sorteados = (ev.sorteio.resultado[part.id] || []).map(id => ev.participantes.find(p => p.id === id)).filter(Boolean);
           htmlConteudo = `
             <p class="sua-vez">Você é o <strong>amigo secreto geral</strong>!</p>
             <div class="pessoa-revelada">
               <div class="pessoa-titulo">Você tira todos:</div>
               <div class="pessoa-nome">${sorteados.map(s => escaparHtml(s.nome)).join(' · ')}</div>
               <div class="desejos-revelados">
-                <h4>🎁 Listas de desejos</h4>
+                <h4>🎁 Listas</h4>
                 ${sorteados.map(s => {
                   const l = s.listaDesejos || [];
                   return `<div style="margin-bottom:12px;"><strong>${escaparHtml(s.nome)}</strong>${l.length ? `<ol>${l.map(d => `<li>${escaparHtml(d)}</li>`).join('')}</ol>` : '<div class="sem-lista">Sem lista.</div>'}</div>`;
@@ -1423,13 +1513,11 @@
             <div class="pessoa-revelada">
               <div class="pessoa-titulo">O amigo secreto geral é</div>
               <div class="pessoa-nome">${escaparHtml(sortudo.nome)}</div>
-              <div class="status-box info">Você não precisa comprar presente neste modo. ${escaparHtml(sortudo.nome)} cuidará de todos.</div>
             </div>
           `;
         }
       } else if (modo === 'compra_conjunta') {
-        const destinosIds = resultado;
-        const destinos = destinosIds.map(id => ev.participantes.find(p => p.id === id)).filter(Boolean);
+        const destinos = (resultado || []).map(id => ev.participantes.find(p => p.id === id)).filter(Boolean);
         htmlConteudo = `
           <p class="sua-vez">Olá, <strong>${escaparHtml(part.nome)}</strong>!</p>
           <div class="pessoa-revelada">
@@ -1446,25 +1534,15 @@
         `;
       }
 
-      // ===== NOVO: bloco de confirmação =====
+      // Bloco de confirmação (recibo de visualização)
       const confirmado = part.revelacaoConfirmada && part.revelacaoConfirmada.confirmado;
       const dataConf = confirmado ? formatarData(part.revelacaoConfirmada.dataConfirmacao) : '';
       const linkConf = pegarUrlBase() + '#confirmar/' + ev.id + '/' + part.token;
 
-      const reciboTexto = confirmado
-        ? `✅ ${part.nome} confirmou que viu seu amigo oculto\n` +
-          `Evento: ${ev.nome}\n` +
-          `Data: ${dataConf}\n` +
-          `Link para o organizador: ${linkConf}`
-        : `✅ ${part.nome} confirmou que viu seu amigo oculto\n` +
-          `Evento: ${ev.nome}\n` +
-          `Data: ${formatarData(Date.now())}\n` +
-          `Link para o organizador: ${linkConf}`;
-
       const blocoConfirmacao = `
         <div class="confirmacao-box">
           <h4>✅ Já viu seu amigo?</h4>
-          <p>Sua confirmação é enviada ao organizador. Você pode colar o recibo no grupo ou mandar o link.</p>
+          <p>Confirme para o organizador saber. Você pode colar o recibo no grupo.</p>
           <div id="estadoConfirmacao">
             ${confirmado
               ? `<span class="confirmado-estado">✅ Confirmado em ${dataConf}</span>`
@@ -1482,26 +1560,17 @@
       mostrarTela('revelar');
     }
 
-    // ===== NOVO: confirma visualização (grava local + mostra recibo) =====
     function confirmarVisualizacao(participanteId) {
       if (!eventoAtual) return;
       const p = eventoAtual.participantes.find(x => x.id === participanteId);
       if (!p) return;
-
-      if (p.revelacaoConfirmada && p.revelacaoConfirmada.confirmado) {
-        alert('Você já confirmou.');
-        return;
-      }
+      if (p.revelacaoConfirmada && p.revelacaoConfirmada.confirmado) { alert('Você já confirmou.'); return; }
       p.revelacaoConfirmada = { confirmado: true, dataConfirmacao: Date.now(), origem: 'participante' };
       salvarEventosStorage();
-
-      // atualiza a tela (re-render)
       abrirRevelacao(eventoAtual, p);
-      // mostra o recibo
       setTimeout(() => copiarRecibo(eventoAtual.id, p.token, true), 100);
     }
 
-    // ===== NOVO: copia recibo (texto pronto para WhatsApp) =====
     function copiarRecibo(eventoId, token, mostrarPreview) {
       const ev = eventos.find(e => e.id === eventoId);
       if (!ev) return;
@@ -1520,37 +1589,23 @@
       navigator.clipboard.writeText(texto).then(() => {
         if (mostrarPreview) {
           const preview = document.getElementById('reciboPreview');
-          if (preview) {
-            preview.textContent = texto + '\n\n(Copiado! Cole no grupo do WhatsApp.)';
-            preview.classList.add('visivel');
-          }
-        } else {
-          alert('Recibo copiado! Cole no grupo do WhatsApp.');
-        }
+          if (preview) { preview.textContent = texto + '\n\n(Copiado!)'; preview.classList.add('visivel'); }
+        } else alert('Recibo copiado!');
       }).catch(() => {
         const ta = document.createElement('textarea');
-        ta.value = texto;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
+        ta.value = texto; document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); document.body.removeChild(ta);
         if (mostrarPreview) {
           const preview = document.getElementById('reciboPreview');
-          if (preview) {
-            preview.textContent = texto + '\n\n(Copiado! Cole no grupo do WhatsApp.)';
-            preview.classList.add('visivel');
-          }
-        } else {
-          alert('Recibo copiado! Cole no grupo do WhatsApp.');
-        }
+          if (preview) { preview.textContent = texto + '\n\n(Copiado!)'; preview.classList.add('visivel'); }
+        } else alert('Recibo copiado!');
       });
     }
 
     // ===================== EXPORTAR / IMPORTAR =====================
     function exportarEventos() {
       if (!eventos.length) { alert('Nenhum evento para exportar.'); return; }
-      const dataStr = JSON.stringify(eventos, null, 2);
-      const blob = new Blob([dataStr], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify(eventos, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -1558,23 +1613,18 @@
       a.click();
       URL.revokeObjectURL(url);
     }
-
     function importarEventos(event) {
       const file = event.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = e => {
         try {
           const data = JSON.parse(e.target.result);
           if (!Array.isArray(data)) throw new Error('Formato inválido');
           if (!confirm('Substituir todos os eventos atuais pelos importados?')) return;
-          eventos = data;
-          salvarEventosStorage();
-          renderizarCards();
+          eventos = data; salvarEventosStorage(); renderizarCards();
           alert('Backup importado com sucesso!');
-        } catch (err) {
-          alert('Erro ao importar: ' + err.message);
-        }
+        } catch (err) { alert('Erro ao importar: ' + err.message); }
         event.target.value = '';
       };
       reader.readAsText(file);
