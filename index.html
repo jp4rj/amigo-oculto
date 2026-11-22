@@ -38,7 +38,6 @@
       --sec-m2-border: #b8862e;
       --sec-m2-accent: #f6c76a;
 
-      /* seção 3 (confirmação) — rosa/magenta */
       --sec-m3-bg: #2a1830;
       --sec-m3-border: #a83d8a;
       --sec-m3-accent: #f08acb;
@@ -149,6 +148,11 @@
       font-size: 13px; color: var(--txt-soft); font-weight: 600;
       min-width: auto; flex: 0 0 auto;
     }
+    .hint-wpp {
+      font-size: 12px; color: var(--txt-mute);
+      font-style: italic; margin-top: 2px;
+    }
+    .hint-wpp.ok { color: var(--ok-txt); font-style: normal; }
 
     .input-group { display: flex; gap: 8px; margin-bottom: 16px; }
     input[type="text"] {
@@ -335,6 +339,8 @@
     }
     .btn-wpp { background: #25d366; color: #0f1226; }
     .btn-wpp:hover { background: #3ae67a; }
+    .btn-wpp-grupo { background: #128c7e; color: #fff; }
+    .btn-wpp-grupo:hover { background: #1ba098; }
 
     .aviso {
       background: rgba(246,199,106,0.1);
@@ -376,9 +382,9 @@
     .codigo-box p { font-size: 14px; margin-bottom: 10px; color: var(--txt); }
     .codigo-box textarea { background: rgba(0,0,0,0.4); font-size: 11px; }
     .codigo-box .btn-row {
-      display: flex; gap: 8px; margin-top: 10px;
+      display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;
     }
-    .codigo-box .btn-row button { flex: 1; }
+    .codigo-box .btn-row button { flex: 1; min-width: 140px; }
     .codigo-box .ghost { background: #1b3d3a; color: var(--sec-m1-accent); }
     .codigo-box .ghost:hover { background: #224c48; }
 
@@ -568,9 +574,11 @@
       display: none;
     }
     .recibo-preview.visivel { display: block; }
+    .recibo-preview .btn-row {
+      display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;
+    }
     .recibo-preview .btn-wpp-recibo {
       display: inline-block;
-      margin-top: 10px;
       background: #25d366;
       color: #0f1226;
       padding: 10px 16px;
@@ -578,11 +586,28 @@
       font-size: 13px;
       font-weight: 700;
       text-decoration: none;
-      width: 100%;
+      flex: 1;
+      min-width: 160px;
       text-align: center;
     }
     .recibo-preview .btn-wpp-recibo:hover {
       background: #3ae67a;
+    }
+    .recibo-preview .btn-wpp-grupo-recibo {
+      display: inline-block;
+      background: #128c7e;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      flex: 1;
+      min-width: 160px;
+      text-align: center;
+    }
+    .recibo-preview .btn-wpp-grupo-recibo:hover {
+      background: #1ba098;
     }
 
     /* ===== ITENS DE CONFIRMAÇÃO NO PAINEL ===== */
@@ -612,9 +637,7 @@
 </head>
 <body>
 
-  <!-- ============================================
-       TELA 1: CARDS DE EVENTOS
-       ============================================ -->
+  <!-- TELA 1: CARDS -->
   <div class="container" id="telaCards">
     <h1>🎁 Amigo Oculto</h1>
     <p class="subtitle">Seus eventos salvos neste navegador</p>
@@ -635,9 +658,7 @@
     </div>
   </div>
 
-  <!-- ============================================
-       TELA 2: PAINEL DO EVENTO (organizador)
-       ============================================ -->
+  <!-- TELA 2: PAINEL -->
   <div class="container escondido" id="telaPainel">
     <button class="btn-voltar" onclick="voltarParaCards()">← Voltar para meus eventos</button>
 
@@ -652,6 +673,18 @@
       </div>
     </div>
 
+    <!-- NOVO: WhatsApp do organizador -->
+    <div class="evento-bar">
+      <label>📱 WhatsApp do organizador (opcional)</label>
+      <div class="evento-row">
+        <input type="text" id="whatsappOrganizadorInput" placeholder="Ex: (11) 99999-8888 ou 5511999998888" autocomplete="off" oninput="atualizarHintWhatsapp()">
+        <button onclick="salvarWhatsappOrganizador()" id="btnSalvarWhatsapp">Salvar</button>
+      </div>
+      <div class="hint-wpp" id="hintWhatsapp">
+        Se preenchido, o participante envia o código e o recibo <strong>direto para você</strong> pelo WhatsApp.
+      </div>
+    </div>
+
     <!-- Participantes -->
     <div class="secao secao-participantes">
       <h3>👥 Participantes <span class="badge" id="badgeParticipantes">0</span></h3>
@@ -662,7 +695,7 @@
       <ul id="lista"></ul>
     </div>
 
-    <!-- ========== MOMENTO 1: CADASTRO DE LISTAS ========== -->
+    <!-- MOMENTO 1 -->
     <div class="secao momento momento1" id="secaoMomento1">
       <h3>
         <span>1️⃣ Cadastro de listas de desejos</span>
@@ -696,7 +729,7 @@
       </div>
     </div>
 
-    <!-- ========== MOMENTO 2: SORTEIO ========== -->
+    <!-- MOMENTO 2 -->
     <div class="secao momento momento2" id="secaoMomento2">
       <h3>
         <span>2️⃣ Sorteio</span>
@@ -722,7 +755,7 @@
       </div>
     </div>
 
-    <!-- ========== MOMENTO 3: CONFIRMAÇÕES DE VISUALIZAÇÃO ========== -->
+    <!-- MOMENTO 3 -->
     <div class="secao momento momento3" id="secaoMomento3">
       <h3>
         <span>3️⃣ Confirmações de visualização</span>
@@ -758,9 +791,7 @@
     </div>
   </div>
 
-  <!-- ============================================
-       TELA 3: CADASTRO DE PRESENTES (participante)
-       ============================================ -->
+  <!-- TELA 3: CADASTRO -->
   <div class="container escondido" id="telaCadastro">
     <div class="cadastro-box">
       <h1>🎁 Lista de desejos</h1>
@@ -799,9 +830,7 @@
     </div>
   </div>
 
-  <!-- ============================================
-       TELA 4: REVELAÇÃO DO RESULTADO
-       ============================================ -->
+  <!-- TELA 4: REVELAR -->
   <div class="container escondido" id="telaRevelar">
     <div class="revelar-box">
       <h1>🎁 Amigo Oculto</h1>
@@ -828,7 +857,6 @@
     let resultadoAtual = null;
 
     const STORAGE_KEY = 'amigoOculto.eventos.v3';
-
     const $ = id => document.getElementById(id);
 
     // ============ STORAGE ============
@@ -876,11 +904,43 @@
       return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
     }
 
+    // NOVO: normaliza número de WhatsApp para formato internacional (só dígitos)
+    function normalizarNumeroWhatsapp(raw) {
+      if (!raw) return '';
+      let digits = String(raw).replace(/\D/g, '');
+      if (!digits) return '';
+      // 11 dígitos = DDD + 9 dígitos (celular) → prefixa 55
+      if (digits.length === 11) digits = '55' + digits;
+      // 10 dígitos = DDD + 8 dígitos (fixo) → prefixa 55
+      else if (digits.length === 10) digits = '55' + digits;
+      // 12 ou 13 dígitos começando com 55 → já está ok
+      return digits;
+    }
+
+    function formatarNumeroExibicao(digits) {
+      if (!digits) return '';
+      // 5511999998888 → +55 (11) 99999-8888
+      if (digits.length === 13 && digits.startsWith('55')) {
+        const ddd = digits.slice(2, 4);
+        const p1 = digits.slice(4, 9);
+        const p2 = digits.slice(9);
+        return `+55 (${ddd}) ${p1}-${p2}`;
+      }
+      if (digits.length === 12 && digits.startsWith('55')) {
+        const ddd = digits.slice(2, 4);
+        const p1 = digits.slice(4, 8);
+        const p2 = digits.slice(8);
+        return `+55 (${ddd}) ${p1}-${p2}`;
+      }
+      return '+' + digits;
+    }
+
     function normalizarEvento(ev) {
       if (!ev.listasDesejos) ev.listasDesejos = {};
       if (!ev.resultado) ev.resultado = null;
       if (!ev.qtdSorteios) ev.qtdSorteios = 1;
       if (!ev.confirmacoesVis) ev.confirmacoesVis = {};
+      if (typeof ev.whatsapp !== 'string') ev.whatsapp = '';
       return ev;
     }
 
@@ -980,6 +1040,7 @@
         resultado: null,
         qtdSorteios: 1,
         confirmacoesVis: {},
+        whatsapp: '',
         criadoEm: Date.now(),
         atualizadoEm: Date.now()
       };
@@ -1005,6 +1066,7 @@
       $('tituloEvento').textContent = '🎁 ' + ev.nome;
       $('subtituloEvento').textContent = 'Painel do organizador';
       $('eventoInput').value = ev.nome;
+      $('whatsappOrganizadorInput').value = formatarNumeroExibicao(ev.whatsapp || '');
 
       $('telaCards').classList.add('escondido');
       $('telaPainel').classList.remove('escondido');
@@ -1012,6 +1074,7 @@
       $('telaRevelar').classList.add('escondido');
 
       renderizarPainel();
+      atualizarHintWhatsapp();
     }
 
     function voltarParaCards() {
@@ -1048,7 +1111,7 @@
       }
       $('badgeParticipantes').textContent = participantes.length;
 
-      // Momento 1: progresso
+      // Momento 1
       $('progressoTextoM1').textContent = `${cadastrados} de ${total} cadastraram`;
       const pct = total > 0 ? Math.round((cadastrados / total) * 100) : 0;
       $('progressoFillM1').style.width = pct + '%';
@@ -1135,7 +1198,59 @@
       }
     }
 
-    // ============ MOMENTO 3: CONFIRMAÇÕES DE VISUALIZAÇÃO ============
+    // ============ WHATSAPP DO ORGANIZADOR ============
+    function atualizarHintWhatsapp() {
+      const raw = $('whatsappOrganizadorInput').value;
+      const digits = normalizarNumeroWhatsapp(raw);
+      const hint = $('hintWhatsapp');
+      if (!raw.trim()) {
+        hint.className = 'hint-wpp';
+        hint.innerHTML = 'Se preenchido, o participante envia o código e o recibo <strong>direto para você</strong> pelo WhatsApp.';
+      } else if (digits.length >= 12) {
+        hint.className = 'hint-wpp ok';
+        hint.innerHTML = `✅ Será usado: <strong>${formatarNumeroExibicao(digits)}</strong>`;
+      } else {
+        hint.className = 'hint-wpp';
+        hint.innerHTML = '⚠️ Número incompleto. Digite DDD + número (ex.: 11 99999-8888).';
+      }
+    }
+
+    function salvarWhatsappOrganizador() {
+      const ev = eventos[eventoAtualId];
+      if (!ev) return;
+      const raw = $('whatsappOrganizadorInput').value.trim();
+
+      if (!raw) {
+        ev.whatsapp = '';
+        ev.atualizadoEm = Date.now();
+        salvarEventos();
+        $('whatsappOrganizadorInput').value = '';
+        atualizarHintWhatsapp();
+        const btn = $('btnSalvarWhatsapp');
+        const t = btn.textContent;
+        btn.textContent = '✓ Removido';
+        setTimeout(() => btn.textContent = t, 1200);
+        return;
+      }
+
+      const digits = normalizarNumeroWhatsapp(raw);
+      if (digits.length < 12 || digits.length > 13) {
+        alert('⚠️ Número inválido. Use DDD + número, ex.: (11) 99999-8888 ou 5511999998888.');
+        return;
+      }
+
+      ev.whatsapp = digits;
+      ev.atualizadoEm = Date.now();
+      salvarEventos();
+      $('whatsappOrganizadorInput').value = formatarNumeroExibicao(digits);
+      atualizarHintWhatsapp();
+      const btn = $('btnSalvarWhatsapp');
+      const t = btn.textContent;
+      btn.textContent = '✓ Salvo!';
+      setTimeout(() => btn.textContent = t, 1200);
+    }
+
+    // ============ MOMENTO 3: CONFIRMAÇÕES ============
     function registrarConfirmacaoVis() {
       const input = $('inputCodigoVis');
       const codigo = input.value.trim();
@@ -1304,12 +1419,8 @@
       const nome = participantes[index];
       participantes.splice(index, 1);
       const ev = eventos[eventoAtualId];
-      if (ev.listasDesejos && ev.listasDesejos[nome]) {
-        delete ev.listasDesejos[nome];
-      }
-      if (ev.confirmacoesVis && ev.confirmacoesVis[nome]) {
-        delete ev.confirmacoesVis[nome];
-      }
+      if (ev.listasDesejos && ev.listasDesejos[nome]) delete ev.listasDesejos[nome];
+      if (ev.confirmacoesVis && ev.confirmacoesVis[nome]) delete ev.confirmacoesVis[nome];
       salvarEstadoAtual();
       renderizarPainel();
     }
@@ -1357,6 +1468,7 @@
     function reenviarLinkCadastro(nome) {
       const ev = eventos[eventoAtualId];
       const payload = { e: ev.nome, q: nome };
+      if (ev.whatsapp) payload.w = ev.whatsapp;
       const link = window.location.origin + window.location.pathname + '#w=' + encodePayload(payload);
       compartilharLinkCadastro(nome, link);
     }
@@ -1371,6 +1483,7 @@
 
       const links = participantes.map(p => {
         const payload = { e: ev.nome, q: p };
+        if (ev.whatsapp) payload.w = ev.whatsapp;
         return { nome: p, link: base + '#w=' + encodePayload(payload) };
       });
 
@@ -1407,14 +1520,10 @@
 
     function copiarTodosLinks() {
       if (!window._linksCadastro) return;
-      const texto = window._linksCadastro
-        .map(l => `${l.nome}: ${l.link}`)
-        .join('\n');
+      const texto = window._linksCadastro.map(l => `${l.nome}: ${l.link}`).join('\n');
       navigator.clipboard.writeText(texto).then(() => {
-        alert('✅ Todos os links copiados! Cole no bloco de notas para ir mandando um por um.');
-      }).catch(() => {
-        alert('Não foi possível copiar automaticamente. Selecione os links manualmente.');
-      });
+        alert('✅ Todos os links copiados!');
+      }).catch(() => alert('Não foi possível copiar automaticamente.'));
     }
 
     function compartilharLinkCadastro(nome, link) {
@@ -1483,17 +1592,12 @@
     function gerarSorteioValido(participantes, qtd) {
       const n = participantes.length;
       if (n < qtd + 1) return null;
-
       const maxTentativas = 5000;
       for (let t = 0; t < maxTentativas; t++) {
         const rodadas = [];
-        for (let r = 0; r < qtd; r++) {
-          rodadas.push(shuffle(participantes));
-        }
+        for (let r = 0; r < qtd; r++) rodadas.push(shuffle(participantes));
         const sorteado = participantes.map((_, i) => rodadas.map(rod => rod[i]));
-        if (sorteioValido(participantes, sorteado, qtd)) {
-          return sorteado;
-        }
+        if (sorteioValido(participantes, sorteado, qtd)) return sorteado;
       }
       return null;
     }
@@ -1508,9 +1612,7 @@
       }
 
       if (resultadoAtual && resultadoAtual.length > 0) {
-        if (!confirm('⚠️ Já existe um sorteio para este evento.\n\nSe sortear de novo, os resultados antigos serão substituídos. Os LINKS ANTIGOS continuarão funcionando (mas ninguém deveria usar).\n\nDeseja sortear novamente?')) {
-          return;
-        }
+        if (!confirm('⚠️ Já existe um sorteio para este evento.\n\nDeseja sortear novamente?')) return;
       }
 
       const sorteado = gerarSorteioValido(participantes, qtd);
@@ -1531,7 +1633,7 @@
       $('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    // ============ MOMENTO 2: ver links ============
+    // ============ MOMENTO 2 ============
     function verLinksSorteio() {
       if (!resultadoAtual) return;
       renderizarResultado(resultadoAtual);
@@ -1544,9 +1646,8 @@
       const desejos = nomes.map(n => (ev.listasDesejos && ev.listasDesejos[n]) || null);
 
       const payload = { q: quem, t: nomes, e: ev.nome };
-      if (desejos.some(d => d)) {
-        payload.d = desejos;
-      }
+      if (desejos.some(d => d)) payload.d = desejos;
+      if (ev.whatsapp) payload.w = ev.whatsapp;
 
       const base = window.location.origin + window.location.pathname;
       return base + '#r=' + encodePayload(payload);
@@ -1596,7 +1697,7 @@
       $('resultado').innerHTML = html;
     }
 
-    // ============ TELA: CADASTRO DE PRESENTES ============
+    // ============ TELA: CADASTRO ============
     function abrirTelaCadastro(payload) {
       $('telaCards').classList.add('escondido');
       $('telaPainel').classList.add('escondido');
@@ -1640,11 +1741,16 @@
       }).catch(() => { document.execCommand('copy'); alert('✅ Copiado!'); });
     }
 
+    // NOVO: usa o WhatsApp do organizador se estiver no payload
     function enviarCodigoWhatsApp() {
       const p = window._cadastroPayload;
       const codigo = $('codigoTexto').value;
       const msg = `🎁 *${p.e}*\n\nAqui está meu código da lista de desejos (${p.q}):\n\n${codigo}`;
-      window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+      const textoWpp = encodeURIComponent(msg);
+      const url = p.w
+        ? `https://wa.me/${p.w}?text=${textoWpp}`
+        : `https://wa.me/?text=${textoWpp}`;
+      window.open(url, '_blank');
     }
 
     // ============ TELA: REVELAÇÃO ============
@@ -1683,7 +1789,7 @@
         `;
       }).join('');
 
-      // Bloco de confirmação
+      // Confirmação
       const chaveConf = 'amigoOculto.confirmacao.' + (payload.e || '') + '.' + (payload.q || '');
       let confirmacaoSalva = null;
       try {
@@ -1694,7 +1800,7 @@
       const blocoConfirmacao = `
         <div class="bloco-confirmacao">
           <h4>✅ Já viu seu amigo?</h4>
-          <p>Sua confirmação deve ser enviada ao grupo de WhatsApp.</p>
+          <p>Sua confirmação deve ser enviada ao organizador ou ao grupo de WhatsApp.</p>
           <div id="confirmacaoConteudo"></div>
           <div class="recibo-preview" id="reciboPreview"></div>
         </div>
@@ -1754,6 +1860,19 @@
       );
     }
 
+    // NOVO: botões de envio usam o número do organizador se existir
+    function gerarBotoesEnvioRecibo(texto) {
+      const p = window._payloadRevelacao || {};
+      const textoWpp = encodeURIComponent(texto);
+      let html = '';
+
+      if (p.w) {
+        html += `<a class="btn-wpp-recibo" href="https://wa.me/${p.w}?text=${textoWpp}" target="_blank" rel="noopener">📱 Enviar para o organizador</a>`;
+      }
+      html += `<a class="btn-wpp-grupo-recibo" href="https://wa.me/?text=${textoWpp}" target="_blank" rel="noopener">👥 Enviar para o grupo</a>`;
+      return html;
+    }
+
     function confirmarVisualizacao() {
       const p = window._payloadRevelacao;
       if (!p) return;
@@ -1785,11 +1904,9 @@
 
       const preview = document.getElementById('reciboPreview');
       if (preview) {
-        const textoEsc = escapeHtml(texto);
-        const textoWpp = encodeURIComponent(texto);
         preview.innerHTML =
-          textoEsc +
-          `<a class="btn-wpp-recibo" href="https://wa.me/?text=${textoWpp}" target="_blank" rel="noopener">📱 Enviar para o grupo (WhatsApp)</a>`;
+          escapeHtml(texto) +
+          `<div class="btn-row">${gerarBotoesEnvioRecibo(texto)}</div>`;
         preview.classList.add('visivel');
       }
 
@@ -1801,13 +1918,12 @@
       navigator.clipboard.writeText(texto).then(() => {
         const preview = document.getElementById('reciboPreview');
         if (preview) {
-          const textoWpp = encodeURIComponent(texto);
           preview.innerHTML =
             escapeHtml(texto) +
-            `<a class="btn-wpp-recibo" href="https://wa.me/?text=${textoWpp}" target="_blank" rel="noopener">📱 Enviar para o grupo (WhatsApp)</a>`;
+            `<div class="btn-row">${gerarBotoesEnvioRecibo(texto)}</div>`;
           preview.classList.add('visivel');
         }
-        alert('✅ Recibo copiado! Cole no grupo do WhatsApp.');
+        alert('✅ Recibo copiado!');
       }).catch(() => alert('Não foi possível copiar. Selecione o texto manualmente.'));
     }
 
@@ -1873,6 +1989,7 @@
             resultado: ev.resultado || null,
             qtdSorteios: ev.qtdSorteios || 1,
             confirmacoesVis: ev.confirmacoesVis || {},
+            whatsapp: typeof ev.whatsapp === 'string' ? ev.whatsapp : '',
             criadoEm: ev.criadoEm || Date.now(),
             atualizadoEm: ev.atualizadoEm || Date.now()
           };
@@ -1886,7 +2003,7 @@
       reader.readAsText(file);
     }
 
-    // ============ INICIALIZAÇÃO ============
+    // ============ INIT ============
     window.addEventListener('hashchange', rotear);
     window.addEventListener('load', () => {
       carregarEventos();
